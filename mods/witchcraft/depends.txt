@@ -1,4 +1,5 @@
 default
+playereffects
 vessels
 tnt
 fire

@@ -431,6 +431,17 @@ minetest.register_node("witchcraft:pot_"..color, {
 		elseif wield_item == "witchcraft:potion_"..combine then
 			minetest.set_node(pos, {name="witchcraft:pot_"..cresult, param2=node.param2})
 			item:replace("vessels:glass_bottle")
+		elseif color == "yellow" and wield_item == "technic:lead_block" then
+			item:replace("default:goldblock")
+			minetest.set_node(pos, {name="witchcraft:pot", param2=node.param2})
+		elseif color == "yellow_2" and (wield_item == "glooptest:rubyblock" or
+        wield_item == "glooptest:sapphireblock" or
+        wield_item == "glooptest:emeraldblock" or
+        wield_item == "glooptest:topazblock" or
+        wield_item == "glooptest:amethystblock" 
+        ) then
+			item:replace("default:diamondblock")
+			minetest.set_node(pos, {name="witchcraft:pot", param2=node.param2})
 		end
 		if math.random(100) > 97 then
 			tnt.boom(pos, {damage_radius=3,radius=2,ignore_protection=false})
@@ -562,216 +573,336 @@ minetest.register_abm({
 	end
 })
 
+playereffects.register_effect_type("effect_invisibility", "Invisibility", "witchcraft_potion_darkpurple", {"invisibility"},
+    function(player)
+        local pos = player:getpos()
+
+        -- make player invisible
+        invisible(player, true)
+
+        -- play sound
+        minetest.sound_play("pop", {
+            pos = pos,
+            gain = 1.0,
+            max_hear_distance = 5
+        })
+
+        local playerpos = player:getpos();
+        minetest.add_particlespawner(
+            5, --amount
+            0.1, --time
+            {x=playerpos.x-1, y=playerpos.y+1, z=playerpos.z-1}, --minpos
+            {x=playerpos.x+1, y=playerpos.y+1, z=playerpos.z+1}, --maxpos
+            {x=-0, y=-0, z=-0}, --minvel
+            {x=0, y=0, z=0}, --maxvel
+            {x=-0.5,y=4,z=-0.5}, --minacc
+            {x=0.5,y=4,z=0.5}, --maxacc
+            0.5, --minexptime
+            1, --maxexptime
+            1, --minsize
+            2, --maxsize
+            false, --collisiondetection
+            "witchcraft_effect.png" --texture
+        )
+    end,
+    function(effect, player)
+        local pos = player:getpos()
+        if pos then
+            -- show aready hidden player
+            invisible(player, nil)
+
+            -- play sound
+            minetest.sound_play("pop", {
+                pos = pos,
+                gain = 1.0,
+                max_hear_distance = 5
+            })
+        end
+    end
+)
+
+function witchcraft.register_potion(potiondef)
+    local image = "witchcraft_potion_"..potiondef.basename..".png"
+    if potiondef.image then
+        image = potiondef.image
+    end
+    local groups = {vessel=1,dig_immediate=3,attached_node=1}
+    if potiondef.upgradable then
+        groups.potion = 1
+    else
+        groups.potion2 = 1
+    end
+    local on_use;
+    if potiondef.on_use then
+        on_use = potiondef.on_use
+    elseif potiondef.effect_type then
+        --playereffects.register_effect_type("effect_potion_"..potiondef.basename, "Effect "..potiondef.description, 
+        --    image, potiondef.effect_group, potiondef.apply, potiondef.cancel, false, true)
+        on_use = function(itemstack, user, thing)
+            playereffects.apply_effect_type(potiondef.effect_type, potiondef.duration, user)
+            itemstack:take_item()
+            return {name = "vessels:glass_bottle"}
+        end
+    else
+        on_use = function(itemstack, user, thing)
+            itemstack:take_item()
+            return {name = "vessels:glass_bottle"}
+        end
+    end
+    minetest.register_craftitem("witchcraft:potion_"..potiondef.basename, {
+        description = potiondef.description,
+        wield_image = image,
+        inventory_image = image,
+        stack_max = 1,
+        groups = groups,
+        on_use = on_use
+    })
+end
+
+witchcraft.register_potion({
+    basename = "red",
+    description = "Tasty Potion",
+    effect_group = "food",
+    upgradable = true,
+    on_use = minetest.item_eat(30, "vessels:glass_bottle"),
+})
+
+witchcraft.register_potion({
+    basename = "red_2",
+    description = "Tasty Potion (lv2)",
+    image = "witchcraft_potion_red.png^[colorize:black:50",
+    effect_group = "food",
+    on_use = minetest.item_eat(100, "vessels:glass_bottle"),
+})
+
+witchcraft.register_potion({
+    basename = "darkpurple",
+    description = "Shady Potion",
+    effect_type = "effect_invisibility",
+    duration = 20,
+    upgradable = true
+})
+
+witchcraft.register_potion({
+    basename = "darkpurple_2",
+    image = "witchcraft_potion_darkpurple.png^[colorize:black:50",
+    description = "Shady Potion (lv_2)",
+    effect_type = "effect_invisibility",
+    duration = 30,
+    upgradable = false
+})
+
+
 --potions and splash potions (level1)
 
-minetest.register_node("witchcraft:potion_red", {
-	description = "Tasty Potion",
-	drawtype = "plantlike",
-	tiles = {"witchcraft_potion_red.png"},
-	wield_image = "witchcraft_potion_red.png",
-	paramtype = "light",
-	stack_max = 1,
-	is_ground_content = false,
-	walkable = false,
-	selection_box = {
-		type = "fixed",
-		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
-	},
-	groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
-	sounds = default.node_sound_glass_defaults(),
-	inventory_image = "witchcraft_potion_red.png",
-	on_use = minetest.item_eat(30, "vessels:glass_bottle"),
-})
+--minetest.register_node("witchcraft:potion_red", {
+--	description = "Tasty Potion",
+--	drawtype = "plantlike",
+--	tiles = {"witchcraft_potion_red.png"},
+--	wield_image = "witchcraft_potion_red.png",
+--	paramtype = "light",
+--	stack_max = 1,
+--	is_ground_content = false,
+--	walkable = false,
+--	selection_box = {
+--		type = "fixed",
+--		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+--	},
+--	groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
+--	sounds = default.node_sound_glass_defaults(),
+--	inventory_image = "witchcraft_potion_red.png",
+--	on_use = minetest.item_eat(30, "vessels:glass_bottle"),
+--})
 
-minetest.register_node("witchcraft:potion_red_2", {
-	description = "Tasty Potion (lv2)",
-	drawtype = "plantlike",
-	tiles = {"witchcraft_potion_red.png^[colorize:black:50"},
-	wield_image = "witchcraft_potion_red.png^[colorize:black:50",
-	paramtype = "light",
-	stack_max = 1,
-	is_ground_content = false,
-	walkable = false,
-	selection_box = {
-		type = "fixed",
-		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
-	},
-	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
-	sounds = default.node_sound_glass_defaults(),
-	inventory_image = "witchcraft_potion_red.png^[colorize:black:50",
-	on_use = minetest.item_eat(100, "vessels:glass_bottle"),
-})
+-- minetest.register_node("witchcraft:potion_red_2", {
+-- 	description = "Tasty Potion (lv2)",
+-- 	drawtype = "plantlike",
+-- 	tiles = {"witchcraft_potion_red.png^[colorize:black:50"},
+-- 	wield_image = "witchcraft_potion_red.png^[colorize:black:50",
+-- 	paramtype = "light",
+-- 	stack_max = 1,
+-- 	is_ground_content = false,
+-- 	walkable = false,
+-- 	selection_box = {
+-- 		type = "fixed",
+-- 		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+-- 	},
+-- 	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+-- 	sounds = default.node_sound_glass_defaults(),
+-- 	inventory_image = "witchcraft_potion_red.png^[colorize:black:50",
+-- 	on_use = minetest.item_eat(100, "vessels:glass_bottle"),
+-- })
 
-minetest.register_node("witchcraft:potion_darkpurple", {
-	description = "Shady Potion",
-	drawtype = "plantlike",
-	tiles = {"witchcraft_potion_darkpurple.png"},
-	is_ground_content = false,
-	walkable = false,
-	selection_box = {
-		type = "fixed",
-		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
-	},
-	groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
-	sounds = default.node_sound_glass_defaults(),
-	stack_max = 1,
-	wield_image = "witchcraft_potion_darkpurple.png",
-	inventory_image = "witchcraft_potion_darkpurple.png",
-	on_use = function(itemstack, user)
+-- minetest.register_node("witchcraft:potion_darkpurple", {
+-- 	description = "Shady Potion",
+-- 	drawtype = "plantlike",
+-- 	tiles = {"witchcraft_potion_darkpurple.png"},
+-- 	is_ground_content = false,
+-- 	walkable = false,
+-- 	selection_box = {
+-- 		type = "fixed",
+-- 		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+-- 	},
+-- 	groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
+-- 	sounds = default.node_sound_glass_defaults(),
+-- 	stack_max = 1,
+-- 	wield_image = "witchcraft_potion_darkpurple.png",
+-- 	inventory_image = "witchcraft_potion_darkpurple.png",
+-- 	on_use = function(itemstack, user)
+-- 
+-- 		local pos = user:getpos()
+-- 
+-- 		-- make player invisible
+-- 		invisible(user, true)
+-- 
+-- 		-- play sound
+-- 		minetest.sound_play("pop", {
+-- 			pos = pos,
+-- 			gain = 1.0,
+-- 			max_hear_distance = 5
+-- 		})
+-- 
+-- 		-- display 10 second warning
+-- 		minetest.after(290, function()
+-- 
+-- 			if user:getpos() then
+-- 
+-- 				minetest.chat_send_player(user:get_player_name(),
+-- 					">>> You have 10 seconds before invisibility wears off!")
+-- 			end
+-- 		end)
+-- 
+-- 		-- make player visible 5 minutes later
+-- 		minetest.after(300, function()
+-- 
+-- 			if user:getpos() then
+-- 
+-- 				-- show aready hidden player
+-- 				invisible(user, nil)
+-- 
+-- 				-- play sound
+-- 				minetest.sound_play("pop", {
+-- 					pos = pos,
+-- 					gain = 1.0,
+-- 					max_hear_distance = 5
+-- 				})
+-- 			end
+-- 		end)
+-- 
+-- 	--effect
+-- 	local playerpos = user:getpos();
+-- 			minetest.add_particlespawner(
+-- 			5, --amount
+-- 			0.1, --time
+-- 			{x=playerpos.x-1, y=playerpos.y+1, z=playerpos.z-1}, --minpos
+-- 			{x=playerpos.x+1, y=playerpos.y+1, z=playerpos.z+1}, --maxpos
+-- 			{x=-0, y=-0, z=-0}, --minvel
+-- 			{x=0, y=0, z=0}, --maxvel
+-- 			{x=-0.5,y=4,z=-0.5}, --minacc
+-- 			{x=0.5,y=4,z=0.5}, --maxacc
+-- 			0.5, --minexptime
+-- 			1, --maxexptime
+-- 			1, --minsize
+-- 			2, --maxsize
+-- 			false, --collisiondetection
+-- 			"witchcraft_effect.png" --texture
+-- 		)
+-- 		
+-- 		-- take item
+-- 		if not minetest.setting_getbool("creative_mode") then
+-- 
+-- 			itemstack:take_item()
+-- 
+-- 			return {name = "vessels:glass_bottle"}
+-- 		end
+-- 	end,
+-- })
 
-		local pos = user:getpos()
 
-		-- make player invisible
-		invisible(user, true)
-
-		-- play sound
-		minetest.sound_play("pop", {
-			pos = pos,
-			gain = 1.0,
-			max_hear_distance = 5
-		})
-
-		-- display 10 second warning
-		minetest.after(290, function()
-
-			if user:getpos() then
-
-				minetest.chat_send_player(user:get_player_name(),
-					">>> You have 10 seconds before invisibility wears off!")
-			end
-		end)
-
-		-- make player visible 5 minutes later
-		minetest.after(300, function()
-
-			if user:getpos() then
-
-				-- show aready hidden player
-				invisible(user, nil)
-
-				-- play sound
-				minetest.sound_play("pop", {
-					pos = pos,
-					gain = 1.0,
-					max_hear_distance = 5
-				})
-			end
-		end)
-
-	--effect
-	local playerpos = user:getpos();
-			minetest.add_particlespawner(
-			5, --amount
-			0.1, --time
-			{x=playerpos.x-1, y=playerpos.y+1, z=playerpos.z-1}, --minpos
-			{x=playerpos.x+1, y=playerpos.y+1, z=playerpos.z+1}, --maxpos
-			{x=-0, y=-0, z=-0}, --minvel
-			{x=0, y=0, z=0}, --maxvel
-			{x=-0.5,y=4,z=-0.5}, --minacc
-			{x=0.5,y=4,z=0.5}, --maxacc
-			0.5, --minexptime
-			1, --maxexptime
-			1, --minsize
-			2, --maxsize
-			false, --collisiondetection
-			"witchcraft_effect.png" --texture
-		)
-		
-		-- take item
-		if not minetest.setting_getbool("creative_mode") then
-
-			itemstack:take_item()
-
-			return {name = "vessels:glass_bottle"}
-		end
-	end,
-})
-
-
-minetest.register_node("witchcraft:potion_darkpurple_2", {
-	description = "Shady Potion (lv2)",
-	drawtype = "plantlike",
-	tiles = {"witchcraft_potion_darkpurple.png^[colorize:black:50"},
-	is_ground_content = false,
-	walkable = false,
-	selection_box = {
-		type = "fixed",
-		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
-	},
-	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
-	sounds = default.node_sound_glass_defaults(),
-	stack_max = 1,
-	wield_image = "witchcraft_potion_darkpurple.png^[colorize:black:50",
-	inventory_image = "witchcraft_potion_darkpurple.png^[colorize:black:50",
-	on_use = function(itemstack, user)
-
-		local pos = user:getpos()
-
-		-- make player invisible
-		invisible(user, true)
-
-		-- play sound
-		minetest.sound_play("pop", {
-			pos = pos,
-			gain = 1.0,
-			max_hear_distance = 5
-		})
-
-		-- display 10 second warning
-		minetest.after(340, function()
-
-			if user:getpos() then
-
-				minetest.chat_send_player(user:get_player_name(),
-					">>> You have 10 seconds before invisibility wears off!")
-			end
-		end)
-
-		-- make player visible 5 minutes later
-		minetest.after(350, function()
-
-			if user:getpos() then
-
-				-- show aready hidden player
-				invisible(user, nil)
-
-				-- play sound
-				minetest.sound_play("pop", {
-					pos = pos,
-					gain = 1.0,
-					max_hear_distance = 5
-				})
-			end
-		end)
-
-	--effect
-	local playerpos = user:getpos();
-			minetest.add_particlespawner(
-			5, --amount
-			0.1, --time
-			{x=playerpos.x-1, y=playerpos.y+1, z=playerpos.z-1}, --minpos
-			{x=playerpos.x+1, y=playerpos.y+1, z=playerpos.z+1}, --maxpos
-			{x=-0, y=-0, z=-0}, --minvel
-			{x=0, y=0, z=0}, --maxvel
-			{x=-0.5,y=4,z=-0.5}, --minacc
-			{x=0.5,y=4,z=0.5}, --maxacc
-			0.5, --minexptime
-			1, --maxexptime
-			1, --minsize
-			2, --maxsize
-			false, --collisiondetection
-			"witchcraft_effect.png" --texture
-		)
-		
-		-- take item
-		if not minetest.setting_getbool("creative_mode") then
-
-			itemstack:take_item()
-
-			return {name = "vessels:glass_bottle"}
-		end
-	end,
-})
+--minetest.register_node("witchcraft:potion_darkpurple_2", {
+--	description = "Shady Potion (lv2)",
+--	drawtype = "plantlike",
+--	tiles = {"witchcraft_potion_darkpurple.png^[colorize:black:50"},
+--	is_ground_content = false,
+--	walkable = false,
+--	selection_box = {
+--		type = "fixed",
+--		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+--	},
+--	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+--	sounds = default.node_sound_glass_defaults(),
+--	stack_max = 1,
+--	wield_image = "witchcraft_potion_darkpurple.png^[colorize:black:50",
+--	inventory_image = "witchcraft_potion_darkpurple.png^[colorize:black:50",
+--	on_use = function(itemstack, user)
+--
+--		local pos = user:getpos()
+--
+--		-- make player invisible
+--		invisible(user, true)
+--
+--		-- play sound
+--		minetest.sound_play("pop", {
+--			pos = pos,
+--			gain = 1.0,
+--			max_hear_distance = 5
+--		})
+--
+--		-- display 10 second warning
+--		minetest.after(340, function()
+--
+--			if user:getpos() then
+--
+--				minetest.chat_send_player(user:get_player_name(),
+--					">>> You have 10 seconds before invisibility wears off!")
+--			end
+--		end)
+--
+--		-- make player visible 5 minutes later
+--		minetest.after(350, function()
+--
+--			if user:getpos() then
+--
+--				-- show aready hidden player
+--				invisible(user, nil)
+--
+--				-- play sound
+--				minetest.sound_play("pop", {
+--					pos = pos,
+--					gain = 1.0,
+--					max_hear_distance = 5
+--				})
+--			end
+--		end)
+--
+--	--effect
+--	local playerpos = user:getpos();
+--			minetest.add_particlespawner(
+--			5, --amount
+--			0.1, --time
+--			{x=playerpos.x-1, y=playerpos.y+1, z=playerpos.z-1}, --minpos
+--			{x=playerpos.x+1, y=playerpos.y+1, z=playerpos.z+1}, --maxpos
+--			{x=-0, y=-0, z=-0}, --minvel
+--			{x=0, y=0, z=0}, --maxvel
+--			{x=-0.5,y=4,z=-0.5}, --minacc
+--			{x=0.5,y=4,z=0.5}, --maxacc
+--			0.5, --minexptime
+--			1, --maxexptime
+--			1, --minsize
+--			2, --maxsize
+--			false, --collisiondetection
+--			"witchcraft_effect.png" --texture
+--		)
+--		
+--		-- take item
+--		if not minetest.setting_getbool("creative_mode") then
+--
+--			itemstack:take_item()
+--
+--			return {name = "vessels:glass_bottle"}
+--		end
+--	end,
+--})
 
 minetest.register_node("witchcraft:potion_brown", {
 	description = "Murky Potion",
@@ -1488,9 +1619,9 @@ minetest.register_node("witchcraft:potion_yellow", {
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		if pointed_thing.type == "node" and
-				minetest.get_node(pointed_thing.above).name == "air" then
-			if not minetest.is_protected(pointed_thing.above, player) then
-				minetest.set_node(pointed_thing.above, {name="default:goldblock"})
+			minetest.get_node(pointed_thing.under).name == "technic:lead_block" then
+			if not minetest.is_protected(pointed_thing.under, player) then
+				minetest.set_node(pointed_thing.under, {name="default:goldblock"})
 			else
 				minetest.chat_send_player(player, "This area is protected.")
 			end

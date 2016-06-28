@@ -19,6 +19,7 @@ dofile(path.."/dirtmonster.lua") -- PilzAdam
 dofile(path.."/dungeonmaster.lua") -- PilzAdam
 dofile(path.."/oerkki.lua") -- PilzAdam
 dofile(path.."/sandmonster.lua") -- PilzAdam
+dofile(path.."/ironmonster.lua") -- icerider
 dofile(path.."/stonemonster.lua") -- PilzAdam
 dofile(path.."/treemonster.lua") -- PilzAdam
 dofile(path.."/wolf.lua") -- PilzAdam

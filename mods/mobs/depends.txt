@@ -1,3 +1,5 @@
 default
+exertion
 mesecons_materials?
 unified_inventory?
+witchcraft

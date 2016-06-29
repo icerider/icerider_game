@@ -122,14 +122,17 @@ minetest.register_craftitem("mobs:bucket_milk", {
 	description = "Bucket of Milk",
 	inventory_image = "mobs_bucket_milk.png",
 	stack_max = 1,
-	on_use = minetest.item_eat(8, 'bucket:bucket_empty'),
+	on_use = function(item, user, pointed_thing)
+		exertion.getPlayerState(user).state.poisoned = math.max(exertion.getPlayerState(user).state.poisoned - 2, 0)
+		return minetest.item_eat(8, "bucket:bucket_empty")(item,user,pointed_thing)
+	end
 })
 
 -- cheese wedge
 minetest.register_craftitem("mobs:cheese", {
 	description = "Cheese",
 	inventory_image = "mobs_cheese.png",
-	on_use = minetest.item_eat(4),
+	on_use = minetest.item_eat(4)
 })
 
 minetest.register_craft({

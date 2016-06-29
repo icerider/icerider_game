@@ -1,7 +1,6 @@
 default
 vessels
 tnt
-mobs
 fire
 unified_inventory
 exertion

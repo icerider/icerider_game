@@ -1152,7 +1152,7 @@ minetest.register_entity(name, {
 
 					dist = get_distance(p, s)
 
-					if dist < self.view_range then
+					if dist < self.view_range and (not witchcraft.is_player_invisibility(player)) then
 					-- field of view check goes here
 
 						-- choose closest player to attack
@@ -1226,7 +1226,7 @@ minetest.register_entity(name, {
 				p = player:getpos()
 				dist = get_distance(p, s)
 
-				if dist < self.view_range then
+				if dist < self.view_range and not witchcraft.is_player_invisibility(player) then
 					self.following = player
 					break
 				end
@@ -1274,7 +1274,7 @@ minetest.register_entity(name, {
 				local dist = get_distance(p, s)
 
 				-- dont follow if out of range
-				if dist > self.view_range then
+				if dist > self.view_range or witchcraft.is_player_invisibility(self.following) then
 					self.following = nil
 				else
 					local vec = {
@@ -1489,7 +1489,7 @@ minetest.register_entity(name, {
 		local dist = get_distance(p, s)
 
 		-- stop attacking if player or out of range
-		if dist > self.view_range
+		if dist > self.view_range or (witchcraft.is_player_invisibility(self.attack) and dist > 6)
 		or not self.attack
 		or not self.attack:getpos()
 		or self.attack:get_hp() <= 0 then

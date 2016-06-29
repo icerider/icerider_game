@@ -18,6 +18,28 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 --changes so that bottles can't stack
+local MOD_NAME = minetest.get_current_modname() or "witchcraft";
+local MOD_PATH = minetest.get_modpath(MOD_NAME);
+
+local witchcraft = { MOD_NAME = MOD_NAME, MOD_PATH = MOD_PATH };
+_G[MOD_NAME] = witchcraft;
+--
+--invisibility potion by Tenplus1(DWTFYWT V2), see darkpurple potion for on_use effect
+
+
+invisibility = {}
+
+function witchcraft.is_player_invisibility(player)
+    if player then
+        local name = player:get_player_name()
+        return invisibility[name]
+    else
+        return false
+    end
+end
+
+
+
 minetest.override_item("vessels:glass_bottle", {
 	description = "Small Bottle (empty)",
 	drawtype = "plantlike",
@@ -2275,11 +2297,6 @@ minetest.register_node("witchcraft:potion_blue2_2", {
 	end
 })
 
---invisibility potion by Tenplus1(DWTFYWT V2), see darkpurple potion for on_use effect
-
-
-invisibility = {}
-
 -- reset player invisibility if they go offline
 
 minetest.register_on_leaveplayer(function(player)
@@ -2302,7 +2319,6 @@ invisible = function(player, toggle)
 	local prop
 
 	if toggle == true then
-
 		-- hide player and name tag
 		prop = {
 			visual_size = {x = 0, y = 0},

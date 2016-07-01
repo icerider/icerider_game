@@ -5,6 +5,7 @@ minetest.register_craftitem("witchcraft:scroll_day", {
 	description = "Scroll of day",
 	inventory_image = "witchcraft_scroll.png^witchcraft_sun_over.png",
 	stack_max = 1,
+	groups = {scroll=1},
 	on_use = function(item)
 	minetest.set_timeofday(0.5)
 	item:take_item()
@@ -16,6 +17,7 @@ minetest.register_craftitem("witchcraft:scroll_night", {
 	description = "Scroll of night",
 	inventory_image = "witchcraft_scroll.png^witchcraft_moon_over.png",
 	stack_max = 1,
+	groups = {scroll=1},
 	on_use = function(item)
 	minetest.set_timeofday(0)
 	item:take_item()
@@ -27,6 +29,7 @@ minetest.register_craftitem("witchcraft:scroll_teleport", {
 	description = "Scroll of teleport",
 	inventory_image = "witchcraft_scroll.png^witchcraft_teleport_over.png",
 	stack_max = 1,
+	groups = {scroll=1},
 	on_use = function(item, player, pointed_thing)
 		minetest.sound_play("teleport",
 			{to_player=player:get_player_name(), gain = 1.0})
@@ -41,6 +44,7 @@ minetest.register_craftitem("witchcraft:scroll_wild", {
 	description = "Scroll of Wild",
 	inventory_image = "witchcraft_scroll.png^witchcraft_dark_over.png",
 	stack_max = 1,
+	groups = {scroll=1},
 	on_use = function(item, placer)
 	local pos = placer:getpos();
 	minetest.env:add_entity(pos, "pmobs:dog")
@@ -54,6 +58,7 @@ minetest.register_craftitem("witchcraft:scroll_fireball", {
 	description = "Scroll of fireball",
 	inventory_image = "witchcraft_scroll.png^witchcraft_fire_over.png",
 	stack_max = 1,
+	groups = {scroll=1},
 	on_use = function(item, placer, pos)
 	local dir = placer:get_look_dir();
 	local playerpos = placer:getpos();
@@ -71,6 +76,7 @@ minetest.register_craftitem("witchcraft:scroll_lightning", {
 	description = "Scroll of lightning",
 	inventory_image = "witchcraft_scroll.png^witchcraft_thunder_over.png",
 	stack_max = 1,
+	groups = {scroll=1},
 	on_use = function(item, placer, pos)
 	local playerpos = placer:getpos();
 	local dir = placer:get_look_dir();
@@ -85,6 +91,7 @@ minetest.register_craftitem("witchcraft:scroll_icicle", {
 	description = "Scroll of icicle",
 	inventory_image = "witchcraft_scroll.png^witchcraft_ice_over.png",
 	stack_max = 1,
+	groups = {scroll=1},
 	on_use = function(item, placer, pos)
 	local dir = placer:get_look_dir();
 	local playerpos = placer:getpos();
@@ -106,6 +113,7 @@ minetest.register_craftitem("witchcraft:scroll_nature", {
 	description = "Scroll of nature",
 	inventory_image = "witchcraft_scroll.png^witchcraft_leaf_over.png",
 	stack_max = 1,
+	groups = {scroll=1},
 	on_use = function(item, placer, pos)
 	local dir = placer:get_look_dir();
 	local playerpos = placer:getpos();
@@ -120,12 +128,14 @@ minetest.register_craftitem("witchcraft:scroll_nature", {
 
 minetest.register_craftitem("witchcraft:scroll", {
 	description = "Blank Scroll",
+	groups = {scroll=1},
 	inventory_image = "witchcraft_scroll.png",
 })
 
 minetest.register_craftitem("witchcraft:scroll_recipe", {
 	description = "Recipe Scroll",
 	inventory_image = "witchcraft_scroll.png^witchcraft_writing_over.png",
+	groups = {scroll=1},
 	on_use = function(itemstack, user, pointed_thing)
     
 	local formspec = "size[10,9]"..
@@ -139,6 +149,7 @@ minetest.register_craftitem("witchcraft:scroll_recipe", {
 if minetest.get_modpath("pmobs")then
 minetest.register_craft({
 	output = 'witchcraft:scroll_wild',
+	groups = {scroll=1},
 	recipe = {
 		{'mobs:meat_raw'},
 		{'witchcraft:scroll'},

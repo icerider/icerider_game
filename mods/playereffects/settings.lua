@@ -12,4 +12,4 @@ playereffects.use_autosave = true
 playereffects.autosave_time = 10
 
 -- If true, this loads some examples from example.lua.
-playereffects.use_examples = false
+playereffects.use_examples = true

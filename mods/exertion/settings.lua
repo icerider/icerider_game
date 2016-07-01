@@ -63,7 +63,7 @@ healing_perDay = 8;
  --
  -- default: drinkingDistance = 1.5;
  --
-drinkDistance = 1;
+drinkDistance = 1.5;
 
 --- Amount of water to drink in points (half-icons) each period when able.
  --

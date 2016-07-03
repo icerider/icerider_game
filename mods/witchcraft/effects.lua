@@ -18,6 +18,23 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
+function use_bottle(itemstack, user)
+        local replace_with_item = "vessels:glass_bottle"
+        if itemstack:is_empty() then
+            itemstack:add_item(replace_with_item)
+        else
+            local inv = user:get_inventory()
+            if inv:room_for_item("main", {name=replace_with_item}) then
+                inv:add_item("main", replace_with_item)
+            else
+                local pos = user:getpos()
+                pos.y = math.floor(pos.y + 0.5)
+                core.add_item(pos, replace_with_item)
+            end
+        end
+end
+
 function add_drink_spawner(playerpos)
         minetest.add_particlespawner(
             5, --amount
@@ -94,65 +111,6 @@ function add_dark_spawner(playerpos)
         )
 end
 
---invisibility potion by Tenplus1(DWTFYWT V2), see darkpurple potion for on_use effect
-
-invisibility = {}
-
-function witchcraft.is_player_invisibility(player)
-    if player then
-        local name = player:get_player_name()
-        return invisibility[name]
-    else
-        return false
-    end
-end
-
--- reset player invisibility if they go offline
-
-minetest.register_on_leaveplayer(function(player)
-
-	local name = player:get_player_name()
-
-	if invisibility[name] then
-		invisibility[name] = nil
-	end
-end)
-
-invisible = function(player, toggle)
-
-	if not player then return false end
-
-	local name = player:get_player_name()
-
-	invisibility[name] = toggle
-
-	local prop
-
-	if toggle == true then
-		-- hide player and name tag
-		prop = {
-			visual_size = {x = 0, y = 0},
-			collisionbox = {0, 0, 0, 0, 0, 0}
-		}
-
-		player:set_nametag_attributes({
-			color = {a = 0, r = 255, g = 255, b = 255}
-		})
-	else
-		-- show player and tag
-		prop = {
-			visual_size = {x = 1, y = 1},
-			collisionbox = {-0.35, -1, -0.35, 0.35, 1, 0.35}
-		}
-
-		player:set_nametag_attributes({
-			color = {a = 255, r = 255, g = 255, b = 255}
-		})
-	end
-
-	player:set_properties(prop)
-
-end
 
 playereffects.register_effect_type("invisibility", "Invisibility", "witchcraft_potion_darkpurple", {"invisibility"},
     function(player)
@@ -285,7 +243,7 @@ playereffects.register_effect_type("regen", "Strong Regeneration", "heart.png", 
 
 playereffects.register_effect_type("breath", "Water Breath", "bubble.png", {"health"},
     function(player)
-        player:set_breath(12)
+        player:set_breath(11)
     end,
     nil, nil, nil, 1
 )
@@ -361,7 +319,7 @@ playereffects.register_effect_type("antidot", "Antidot", "witchcraft_potion_redb
         local player_state = exertion.getPlayerState(player)
         if player_state then
             player_state.state.poisoned = math.max(0, player_state.state.poisoned - 1)
-            player_staet:updateHud()
+            player_state:updateHud()
         end
     end,
     nil, nil, nil, 10
@@ -372,7 +330,7 @@ playereffects.register_effect_type("strong_antidot", "Strong Antidot", "witchcra
         local player_state = exertion.getPlayerState(player)
         if player_state then
             player_state.state.poisoned = math.max(0, player_state.state.poisoned - 1)
-            player_staet:updateHud()
+            player_state:updateHud()
         end
     end,
     nil, nil, nil, 1
@@ -383,7 +341,7 @@ playereffects.register_effect_type("toxin", "Toxin", "witchcraft_potion_brown", 
         local player_state = exertion.getPlayerState(player)
         if player_state then
             player_state.state.poisoned = math.max(0, player_state.state.poisoned + 1)
-            player_staet:updateHud()
+            player_state:updateHud()
         end
     end,
     nil, nil, nil, 10
@@ -404,39 +362,220 @@ playereffects.register_effect_type("slowpoison", "Poison", "heart.png", {"health
 )
 
 function potion_change_node(from_node, to_node, above, spawner)
-    return function(item, user, pointed_thing)
-        local player = user:get_player_name()
-        local pos = nil
-        if above then
-            pos = pointed_thing.above
-        else
-            pos = pointed_thing.under
-        end
-        if pointed_thing.type == "node" then
-            for k, v in ipair(from_node)do
+    return function(itemstack, user, pointed_thing)
+        if itemstack:take_item() ~= nil then
+            local player = user:get_player_name()
+            local pos = nil
+            if above then
+                pos = pointed_thing.above
+            else
+                pos = pointed_thing.under
+            end
+            if pointed_thing.type == "node" then
+                for k, v in ipairs(from_node)do
                 if minetest.get_node(pos).name == v then
                     if not minetest.is_protected(pos, player) then
-                        minetest.set_node(pos, {name=to_node})
-                        if spawner then
-                            spawner(pos)
-                        end
+                    minetest.set_node(pos, {name=to_node})
+                    if spawner then
+                        spawner(pos)
+                    end
                     else
-                        minetest.chat_send_player(player, "This area is protected.")
+                    minetest.chat_send_player(player, "This area is protected.")
                     end
                     break
                 end
+                end
             end
+            use_bottle(itemstack, user)
         end
-
-        item:replace("vessels:glass_bottle")
-        return item
+        return itemstack
     end
 end
 
-function go_home_effect(item, user, pointed_thing)
-    minetest.sound_play("teleport",
-        {to_player=user:get_player_name(), gain = 1.0})
-    unified_inventory.go_home(user)
-    item:replace("vessels:glass_bottle")
-    return item
+function go_home_effect(itemstack, user, pointed_thing)
+    if itemstack:take_item() ~= nil then
+        minetest.sound_play("teleport",
+            {to_player=user:get_player_name(), gain = 1.0})
+        unified_inventory.go_home(user)
+        use_bottle(itemstack, user)
+    end
+    return itemstack
+end
+
+function register_magic(name, textures, damage, node_action, area_nodes_action, spawner)
+    minetest.register_entity(name, {
+        textures = textures,
+        velocity = 0.1,
+        damage = 2,
+        collisionbox = {0, 0, 0, 0, 0, 0},
+        on_step = function(self, obj, pos)
+            local remove = minetest.after(2, function() 
+                self.object:remove()
+            end)
+            local pos = self.object:getpos()
+            local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)
+            for k, obj in pairs(objs) do
+                if obj:get_luaentity() ~= nil then
+                    if obj:get_luaentity().name ~= name and obj:get_luaentity().name ~= "__builtin:item" then
+                        obj:punch(self.object, 1.0, {
+                            full_punch_interval=1.0,
+                            damage_groups={fleshy=damage},
+                        }, nil)
+                        --self.object:remove()
+                    end
+                end
+            end
+            for dx=0,1 do
+                for dy=0,1 do
+                    for dz=0,1 do
+                        local p = {x=pos.x+dx, y=pos.y, z=pos.z+dz}
+                        local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+                        local n = minetest.env:get_node(p).name
+                        if node_action(self, p, t, n) then
+                            self.object:remove()
+                            return
+                        end
+                    end
+                end
+            end
+            if spawner then
+                local apos = self.object:getpos()
+                spawner(apos)
+            end
+        end,
+        hit_node = function(self, pos, node)
+            local pos = self.object:getpos()
+            for dx=-4,4 do
+                for dy=-4,4 do
+                    for dz=-4,4 do
+                        local p = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+                        local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+                        local n = minetest.env:get_node(pos).name
+                        area_nodes_action(self, p, t, n)
+                    end
+                end
+            end
+        end
+    })
+end
+
+register_magic("witchcraft:fire", {"witchcraft_flame.png"}, 10,
+    function(self, p, t, n)
+        if n ~= "witchcraft:fire" and n ~= "air" and n ~="default:dirt_with_grass" and n ~="default:dirt_with_dry_grass" and n ~="default:stone"  then
+            minetest.env:set_node(t, {name="fire:basic_flame"})
+        elseif n =="default:dirt_with_grass" or n =="default:dirt_with_dry_grass" then
+            self.object:remove()
+            return true
+        end
+    end,
+    function(self, p, t, n)
+        if math.random(1, 50) <= 35 then
+            minetest.env:remove_node(p)
+        end
+        if minetest.registered_nodes[n].groups.flammable or math.random(1, 100) <=5 then
+            minetest.env:set_node(t, {name="fire:basic_flame"})
+        end
+    end,
+    function(apos)
+        local part = minetest.add_particlespawner(
+            10, --amount
+            0.3, --time
+            {x=apos.x-0.3, y=apos.y-0.3, z=apos.z-0.3}, --minpos
+            {x=apos.x+0.3, y=apos.y+0.3, z=apos.z+0.3}, --maxpos
+            {x=-0, y=-0, z=-0}, --minvel
+            {x=0, y=0, z=0}, --maxvel
+            {x=0,y=-0.5,z=0}, --minacc
+            {x=0.5,y=0.5,z=0.5}, --maxacc
+            1, --minexptime
+            1, --maxexptime
+            1, --minsize
+            2, --maxsize
+            false, --collisiondetection
+            "witchcraft_flame.png" --texture
+        )
+    end
+)
+
+register_magic("witchcraft:tnt_splash", {"witchcraft_splash_yellgrn.png"}, 2,
+    function(self, p, t, n)
+        if n ~= "witchcraft:tnt_splash" and n ~="default:obsidian" and n ~= "air" then
+            local pos = self.object:getpos()
+            minetest.sound_play("default_break_glass.1.ogg", {
+            pos = self.object:getpos(),
+            gaint = 1.0,
+            max_hear_distance = 20,
+            })
+            tnt.boom(pos, {damage_radius=5,radius=3,ignore_protection=false})
+            return true
+        end
+    end,
+    function(self, p, t, n)
+        if math.random(1, 50) <= 35 then
+            tnt.boom(n, {damage_radius=5,radius=3,ignore_protection=false})
+        end
+        if minetest.registered_nodes[n].groups.flammable or math.random(1, 100) <=5 then
+            minetest.env:set_node(t, {name="fire:basic_flame"})
+        end
+    end,
+    nil
+)
+
+register_magic("witchcraft:fire_splash", {"witchcraft_splash_orange.png"}, 10,
+    function(self, p, t, n)
+        if n ~= "witchcraft:fire_splash" and n ~= "air" then
+            minetest.env:set_node(t, {name="fire:basic_flame"})
+            minetest.sound_play("default_break_glass.1", {
+                pos = self.object:getpos(),
+                max_hear_distance = 20,
+                gain = 10.0,
+            })
+            self.object:remove()
+        elseif n =="default:dirt_with_grass" or n =="default:dirt_with_dry_grass" then
+            return true
+        end
+    end,
+    function(self, p, t, n)
+        if math.random(1, 50) <= 1 then
+            minetest.env:remove_node(p)
+        end
+        if minetest.registered_nodes[n].groups.flammable or math.random(1, 100) <=5 then
+            minetest.env:set_node(t, {name="fire:basic_flame"})
+        end
+    end,
+    nil
+)
+
+function spawn_magic(magic, texture, vec_func, accel) 
+    return function(itemstack, placer, pointed_thing)
+        if itemstack:take_item() ~= nil then
+            local dir = placer:get_look_dir();
+            local playerpos = placer:getpos();
+            local vec = vec_func(dir)
+            local obj = minetest.env:add_entity({x=playerpos.x+dir.x*1.5,y=playerpos.y+1.5+dir.y,z=playerpos.z+0+dir.z}, magic)
+            obj:setvelocity(vec)
+            if accel then
+                obj:setacceleration(accel)
+            end
+            if texture then
+                local part = minetest.add_particlespawner(
+                        10, --amount
+                        0.3, --time
+                        {x=playerpos.x-0.3, y=playerpos.y+1.5, z=playerpos.z-0.3}, --minpos
+                        {x=playerpos.x+0.3, y=playerpos.y+1.5, z=playerpos.z+0.3}, --maxpos
+                        {x=dir.x*3,y=dir.y*3,z=dir.z*3}, --minvel
+                        {x=dir.x*3,y=dir.y*3,z=dir.z*3}, --maxvel
+                        {x=0,y=-0.5,z=0}, --minacc
+                        {x=0.5,y=0.5,z=0.5}, --maxacc
+                        1, --minexptime
+                        2, --maxexptime
+                        1, --minsize
+                        2, --maxsize
+                        false, --collisiondetection
+                        texture
+                    )
+            end
+            use_bottle(itemstack, placer)
+        end
+        return itemstack
+    end
 end

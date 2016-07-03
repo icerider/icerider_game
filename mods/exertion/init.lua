@@ -134,7 +134,19 @@ minetest.register_on_item_eat(
                ps:addPoison(-hpChange);
             end;
          end;
-         itemStack:add_item(replacementItem);
+
+         if itemStack:is_empty() then
+             itemStack:add_item(replacementItem)
+         else
+             local inv = player:get_inventory()
+             if inv:room_for_item("main", {name=replacementItem}) then
+                 inv:add_item("main", replacementItem)
+             else
+                 local pos = player:getpos()
+                 pos.y = math.floor(pos.y + 0.5)
+                 core.add_item(pos, replacementItem)
+             end
+         end
       end;
       return itemStack;
    end);

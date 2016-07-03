@@ -991,80 +991,80 @@ witchcraft.register_potion({
 
 
 minetest.register_entity("witchcraft:fire", {
-	textures = {"witchcraft_flame.png"},
-	velocity = 0.1,
-	damage = 2,
-	collisionbox = {0, 0, 0, 0, 0, 0},
-	on_step = function(self, obj, pos)		
-		local remove = minetest.after(2, function() 
-		self.object:remove()
-		end)
-		local pos = self.object:getpos()
-		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)	
-			for k, obj in pairs(objs) do
-				if obj:get_luaentity() ~= nil then
-					if obj:get_luaentity().name ~= "witchcraft:fire" and obj:get_luaentity().name ~= "__builtin:item" then
-						obj:punch(self.object, 1.0, {
-							full_punch_interval=1.0,
-							damage_groups={fleshy=3},
-						}, nil)
-					self.object:remove()
-					end
-				end
-			end
-			for dx=0,1 do
-						for dy=0,1 do
-							for dz=0,1 do
-								local p = {x=pos.x+dx, y=pos.y, z=pos.z+dz}
-								local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
-								local n = minetest.env:get_node(p).name
-								if n ~= "witchcraft:fire" and n ~= "air" and n ~="default:dirt_with_grass" and n ~="default:dirt_with_dry_grass" and n ~="default:stone"  then	
-									minetest.env:set_node(t, {name="fire:basic_flame"})
-								elseif n =="default:dirt_with_grass" or n =="default:dirt_with_dry_grass" then
-									self.object:remove()
-									return
-								end
-							end
-						end
-					end
-			hit_node = function(self, pos, node)
-     	local pos = self.object:getpos()
-		for dx=-4,4 do
-			for dy=-4,4 do
-				for dz=-4,4 do
-					local p = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
-					local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
-					local n = minetest.env:get_node(pos).name
-					if math.random(1, 50) <= 35 then
-						minetest.env:remove_node(p)
-					end
-					if minetest.registered_nodes[n].groups.flammable or math.random(1, 100) <=5 then
-										minetest.env:set_node(t, {name="fire:basic_flame"})
-					end
-				end
-			end
-		end
-		end
+    textures = {"witchcraft_flame.png"},
+    velocity = 0.1,
+    damage = 2,
+    collisionbox = {0, 0, 0, 0, 0, 0},
+    on_step = function(self, obj, pos)
+        local remove = minetest.after(2, function() 
+            self.object:remove()
+        end)
+        local pos = self.object:getpos()
+        local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)
+        for k, obj in pairs(objs) do
+            if obj:get_luaentity() ~= nil then
+                if obj:get_luaentity().name ~= "witchcraft:fire" and obj:get_luaentity().name ~= "__builtin:item" then
+                    obj:punch(self.object, 1.0, {
+                        full_punch_interval=1.0,
+                        damage_groups={fleshy=3},
+                    }, nil)
+                    self.object:remove()
+                end
+            end
+        end
+        for dx=0,1 do
+            for dy=0,1 do
+                for dz=0,1 do
+                    local p = {x=pos.x+dx, y=pos.y, z=pos.z+dz}
+                    local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+                    local n = minetest.env:get_node(p).name
+                    if n ~= "witchcraft:fire" and n ~= "air" and n ~="default:dirt_with_grass" and n ~="default:dirt_with_dry_grass" and n ~="default:stone"  then	
+                        minetest.env:set_node(t, {name="fire:basic_flame"})
+                    elseif n =="default:dirt_with_grass" or n =="default:dirt_with_dry_grass" then
+                        self.object:remove()
+                        return
+                    end
+                end
+            end
+        end
+        hit_node = function(self, pos, node)
+            local pos = self.object:getpos()
+            for dx=-4,4 do
+                for dy=-4,4 do
+                    for dz=-4,4 do
+                        local p = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+                        local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+                        local n = minetest.env:get_node(pos).name
+                        if math.random(1, 50) <= 35 then
+                            minetest.env:remove_node(p)
+                        end
+                        if minetest.registered_nodes[n].groups.flammable or math.random(1, 100) <=5 then
+                            minetest.env:set_node(t, {name="fire:basic_flame"})
+                        end
+                    end
+                end
+            end
+        end
 
-		local apos = self.object:getpos()
-		local part = minetest.add_particlespawner(
-			10, --amount
-			0.3, --time
-			{x=apos.x-0.3, y=apos.y-0.3, z=apos.z-0.3}, --minpos
-			{x=apos.x+0.3, y=apos.y+0.3, z=apos.z+0.3}, --maxpos
-			{x=-0, y=-0, z=-0}, --minvel
-			{x=0, y=0, z=0}, --maxvel
-			{x=0,y=-0.5,z=0}, --minacc
-			{x=0.5,y=0.5,z=0.5}, --maxacc
-			1, --minexptime
-			1, --maxexptime
-			1, --minsize
-			2, --maxsize
-			false, --collisiondetection
-			"witchcraft_flame.png" --texture
-		)
-		
-	end,
+        local apos = self.object:getpos()
+        local part = minetest.add_particlespawner(
+            10, --amount
+            0.3, --time
+            {x=apos.x-0.3, y=apos.y-0.3, z=apos.z-0.3}, --minpos
+            {x=apos.x+0.3, y=apos.y+0.3, z=apos.z+0.3}, --maxpos
+            {x=-0, y=-0, z=-0}, --minvel
+            {x=0, y=0, z=0}, --maxvel
+            {x=0,y=-0.5,z=0}, --minacc
+            {x=0.5,y=0.5,z=0.5}, --maxacc
+            1, --minexptime
+            1, --maxexptime
+            1, --minsize
+            2, --maxsize
+            false, --collisiondetection
+            "witchcraft_flame.png" --texture
+        )
+        
+    end,
 })
 
 

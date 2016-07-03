@@ -18,15 +18,14 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 --changes so that bottles can't stack
-local MOD_NAME = minetest.get_current_modname() or "witchcraft";
-local MOD_PATH = minetest.get_modpath(MOD_NAME);
-
-local witchcraft = { MOD_NAME = MOD_NAME, MOD_PATH = MOD_PATH };
-_G[MOD_NAME] = witchcraft;
 --
 
 function witchcraft.register_potion(potiondef)
-    local image = "witchcraft_potion_"..potiondef.basename..".png"
+    local itemtype = "potion"
+    if potiondef.itemtype then
+        itemtype = potiondef.itemtype
+    end
+    local image = "witchcraft_"..itemtype.."_"..potiondef.basename..".png"
     if potiondef.image then
         image = potiondef.image
     end
@@ -41,27 +40,31 @@ function witchcraft.register_potion(potiondef)
         on_use = potiondef.on_use
     elseif potiondef.effect_type then
         on_use = function(itemstack, user, thing)
-            playereffects.apply_effect_type(potiondef.effect_type, potiondef.duration, user)
-            itemstack:take_item()
-            if potiondef.spawner then
-                potiondef.spawner(user:getpos())
-            else
-                add_drink_spawner(user:getpos())
+            if itemstack:take_item() ~= nil  then
+                playereffects.apply_effect_type(potiondef.effect_type, potiondef.duration, user)
+                if potiondef.spawner then
+                    potiondef.spawner(user:getpos())
+                else
+                    add_drink_spawner(user:getpos())
+                end
+                use_bottle(itemstack, user)
             end
-            return {name = "vessels:glass_bottle"}
+            return itemstack
         end
     else
         on_use = function(itemstack, user, thing)
-            if potiondef.spawner then
-                potiondef.spawner(user:getpos())
-            else
-                add_drink_spawner(user:getpos())
+            if itemstack:take_item() ~= nil  then
+                if potiondef.spawner then
+                    potiondef.spawner(user:getpos())
+                else
+                    add_drink_spawner(user:getpos())
+                end
+                use_bottle(itemstack, user)
             end
-            itemstack:take_item()
-            return {name = "vessels:glass_bottle"}
+            return itemstack
         end
     end
-    minetest.register_craftitem("witchcraft:potion_"..potiondef.basename, {
+    minetest.register_craftitem("witchcraft:"..itemtype.."_"..potiondef.basename, {
         description = potiondef.description,
         wield_image = image,
         inventory_image = image,
@@ -107,7 +110,7 @@ witchcraft.register_potion({
     basename = "brown",
     description = "Murky Potion",
     effect_type = "toxin",
-    duration = 30,
+    duration = 3,
     upgradable = true
 })
 
@@ -116,16 +119,22 @@ witchcraft.register_potion({
     image = "witchcraft_potion_brown.png^[colorize:black:50",
     description = "Murky Potion (lv_2)",
     effect_type = "toxin",
-    duration = 50
+    duration = 5
 })
 
 witchcraft.register_potion({
     basename = "yellgrn",
     description = "Dodgy Potion",
-    upgradable = true
-    on_use = function(pos, placer)
-        local pos = placer:getpos();
-        tnt.boom(pos, {damage_radius=5,radius=3,ignore_protection=false})
+    upgradable = true,
+    on_use = function(itemstack, placer)
+        if itemstack:take_item() ~= nil then
+            use_bottle(itemstack, placer)
+            minetest.after(0, function()
+                local pos = placer:getpos();
+                tnt.boom(pos, {damage_radius=5,radius=3,ignore_protection=false})
+            end)
+        end
+        return itemstack
     end,
 })
 
@@ -133,9 +142,15 @@ witchcraft.register_potion({
     basename = "yellgrn_2",
     description = "Dodgy Potion (lv_2)",
     image = "witchcraft_potion_yellgrn.png^[colorize:black:50",
-    on_use = function(pos, placer)
-        local pos = placer:getpos();
-        tnt.boom(pos, {damage_radius=10,radius=4,ignore_protection=false})
+    on_use = function(itemstack, placer)
+        if itemstack:take_item() ~= nil then
+            use_bottle(itemstack, placer)
+            minetest.after(0, function()
+                local pos = placer:getpos();
+                tnt.boom(pos, {damage_radius=10,radius=4,ignore_protection=false})
+            end)
+        end
+        return itemstack
     end,
 })
 
@@ -169,7 +184,7 @@ witchcraft.register_potion({
     basename = "grey",
     description = "Evil Potion",
     upgradable = true,
-    duration = 200,
+    duration = 20,
     effect_type = "slowpoison",
 })
 
@@ -190,7 +205,7 @@ witchcraft.register_potion({
 witchcraft.register_potion({
     basename = "green",
     description = "Melon Potion",
-    on_use = potion_change_node({"air"}, "farmin:melon_8", true, add_drink_spawner)
+    on_use = potion_change_node({"air"}, "farming:melon_8", true, add_drink_spawner)
 })
 
 witchcraft.register_potion({
@@ -210,7 +225,7 @@ witchcraft.register_potion({
         "glooptest:emeraldblock",
         "glooptest:topazblock",
         "glooptest:amethystblock",
-    }, "default:goldblock", false, add_drink_spawner)
+    }, "default:diamondblock", false, add_drink_spawner)
 })
 
 witchcraft.register_potion({
@@ -283,7 +298,7 @@ witchcraft.register_potion({
     description = "Antidot Potion",
     effect_type = "antidot",
     upgradable = true,
-    duration = 40
+    duration = 4
 })
 
 witchcraft.register_potion({
@@ -308,4 +323,47 @@ witchcraft.register_potion({
     description = "Waterly Potion (lv_2)",
     effect_type = "diving",
     duration = 60
+})
+
+witchcraft.register_potion({
+    basename = "orange",
+    description = "Dragon Potion",
+    on_use = spawn_magic("witchcraft:fire", "witchcraft_flame.png", 
+        function(dir)
+            return {x=dir.x*2, y=dir.y*2.5, z=dir.z*2}
+        end
+    )
+})
+
+witchcraft.register_potion({
+    basename = "orange_2",
+    image = "witchcraft_potion_orange.png^[colorize:black:50",
+    description = "Dragon Potion (lv_2)",
+    on_use = spawn_magic("witchcraft:fire", "witchcraft_flame.png^[colorize:blue:200", 
+        function(dir)
+            return {x=dir.x*3, y=dir.y*3.5, z=dir.z*3}
+        end
+    )
+})
+
+witchcraft.register_potion({
+    basename = "orange",
+    itemtype = "splash",
+    description = "Dragon Splash Potion",
+    on_use = spawn_magic("witchcraft:fire_splash", nil, 
+        function(dir)
+            return {x=dir.x*6, y=dir.y*3.5, z=dir.z*6}
+        end, {x=0,y=-9.8,z=0}
+    )
+})
+
+witchcraft.register_potion({
+    basename = "yellgrn",
+    itemtype = "splash",
+    description = "Dodgy Splash Potion",
+    on_use = spawn_magic("witchcraft:tnt_splash", nil, 
+        function(dir)
+            return {x=dir.x*7, y=dir.y*3.5, z=dir.z*7}
+        end, {x=0,y=-9.8,z=0}
+    )
 })

@@ -236,7 +236,7 @@ minetest.register_craft({
 --splash potions crafting
 
 minetest.register_craft({
-	output = 'witchcraft:splash_yellwgrn',
+	output = 'witchcraft:splash_yellgrn',
 	recipe = {
 		{'vessels:glass_fragments'},
 		{'witchcraft:potion_yellgrn'},
@@ -296,27 +296,27 @@ minetest.register_node("witchcraft:pot", {
 
 local witchcraft = {}
 witchcraft.pot = {
+	{"aqua", "", "", "", "", "blue", "cyan"},
 	{"blue", "brown", "default:dirt", "blue2", "flowers:geranium", "red", "purple"},
 	{"blue2", "yellow", "default:steelblock", "yellow", "default:copperblock", "green2", "aqua"},
-	{"darkpurple", "cyan", "flowers:mushroom_red", "green", "farming:weed", "yellow", "redbrown"},
-	{"purple", "blue2", "flowers:waterlily", "gpurple", "default:mese_crystal", "magenta", "darkpurple"},
-	{"magenta", "purple", "witchcraft:bottle_eyes", "darkpurple", "flowers:mushroom_red", "purple", "darkpurple"},
-	{"red", "grey", "default:gravel", "gred", "default:mese_crystal", "blue", "purple"},
-	{"redbrown", "magenta", "flowers:mushroom_brown", "magenta", "default:stone", "grey", "brown"},
 	{"brown", "red", "witchcraft:herb", "grey", "farming_plus:strawberry_item", "red", "redbrown"},
-	{"orange", "redbrown", "witchcraft:bottle_slime", "yellow", "farming_plus:orange_item", "green", "yellgrn"},
-	{"yellow", "yellgrn", "tnt:tnt", "cyan2", "mobs:minotaur_eye", "darkpurple", "redbrown"},
-	{"yellgrn", "green", "default:gold_lump", "orange", "mobs:lava_orb", "grey", "magenta"},
-	{"green2", "darkpurple", "default:glass", "red", "default:gold_lump", "blue2", "aqua"},
-	{"green", "green2", "default:apple", "ggreen", "default:mese_crystal", "orange", "yellgrn"},
-	{"aqua", "", "", "", "", "blue", "cyan"},
 	{"cyan", "aqua", "default:diamond", "gcyan", "default:mese_crystal", "green", "cyan2"},
-	{"grey", "orange", "default:torch", "brown", "default:apple", "yellgrn", "magenta"},
-	{"ggreen", "", "", "", "", "", ""},
 	{"cyan2", "", "", "", "", "", ""},
+	{"darkpurple", "cyan", "flowers:mushroom_red", "green", "farming:weed", "yellow", "redbrown"},
+	{"gcyan", "", "", "", "", "", ""},
+	{"ggreen", "", "", "", "", "", ""},
 	{"gpurple", "", "", "", "", "", ""},
 	{"gred", "", "", "", "", "", ""},
-	{"gcyan", "", "", "", "", "", ""},
+	{"green2", "darkpurple", "default:glass", "red", "default:gold_lump", "blue2", "aqua"},
+	{"green", "green2", "default:apple", "ggreen", "default:mese_crystal", "orange", "yellgrn"},
+	{"grey", "orange", "default:torch", "brown", "default:apple", "yellgrn", "magenta"},
+	{"magenta", "purple", "witchcraft:bottle_eyes", "darkpurple", "flowers:mushroom_red", "purple", "darkpurple"},
+	{"orange", "redbrown", "witchcraft:bottle_slime", "yellow", "farming_plus:orange_item", "green", "yellgrn"},
+	{"purple", "blue2", "flowers:waterlily", "gpurple", "default:mese_crystal", "magenta", "darkpurple"},
+	{"redbrown", "magenta", "flowers:mushroom_brown", "magenta", "default:stone", "grey", "brown"},
+	{"red", "grey", "default:gravel", "gred", "default:mese_crystal", "blue", "purple"},
+	{"yellow", "yellgrn", "tnt:tnt", "cyan2", "mobs:minotaur_eye", "darkpurple", "redbrown"},
+	{"yellgrn", "green", "default:gold_lump", "orange", "mobs:lava_orb", "grey", "magenta"},
 }
 
 --the pot itself
@@ -330,6 +330,7 @@ local ingredient2 = row[5]
 local combine = row[6]
 local cresult = row[7]
 minetest.register_node("witchcraft:pot_"..color, {
+  description = (color.." brew pot"):gsub("(%l)(%w*)", function(a,b) return string.upper(a)..b end),
 	tiles = {
 		{ name = "witchcraft_pot_"..color..".png",
 			animation = {type="vertical_frames", length=3.0} },
@@ -359,39 +360,16 @@ minetest.register_node("witchcraft:pot_"..color, {
 		}
 	},
 	on_rightclick = function(pos, node, clicker, item, _)
-		local wield_item = clicker:get_wielded_item():get_name()
-		if wield_item == "vessels:glass_bottle" then
-			item:replace("witchcraft:potion_"..color)
-			minetest.set_node(pos, {name="witchcraft:pot", param2=node.param2})
-		else
-		if wield_item == ingredient then
-			minetest.set_node(pos, {name="witchcraft:pot_"..newcolor, param2=node.param2})
-			item:take_item()
-		elseif wield_item == ingredient2 then
-			minetest.set_node(pos, {name="witchcraft:pot_"..newcolor2, param2=node.param2})
-			item:take_item()
-		elseif wield_item == "bucket:bucket_water" then
-			minetest.set_node(pos, {name="witchcraft:pot_blue", param2=node.param2})
-			item:replace("bucket:bucket_empty")
-		elseif wield_item == "witchcraft:potion_"..combine then
-			minetest.set_node(pos, {name="witchcraft:pot_"..cresult, param2=node.param2})
-			item:replace("vessels:glass_bottle")
-		elseif color == "yellow" and wield_item == "technic:lead_block" then
-			item:replace("default:goldblock")
-			minetest.set_node(pos, {name="witchcraft:pot", param2=node.param2})
-		elseif color == "yellow_2" and (wield_item == "glooptest:rubyblock" or
-        wield_item == "glooptest:sapphireblock" or
-        wield_item == "glooptest:emeraldblock" or
-        wield_item == "glooptest:topazblock" or
-        wield_item == "glooptest:amethystblock" 
-        ) then
-			item:replace("default:diamondblock")
-			minetest.set_node(pos, {name="witchcraft:pot", param2=node.param2})
-		end
-		if math.random(100) > 97 then
-			tnt.boom(pos, {damage_radius=3,radius=2,ignore_protection=false})
-		end
-	end
+        local wield_item = clicker:get_wielded_item():get_name()
+        if wield_item == "vessels:glass_bottle" then
+            item:replace("witchcraft:potion_"..color)
+            minetest.set_node(pos, {name="witchcraft:pot", param2=node.param2})
+        else
+            local result = technic.get_recipe("cauldron", {"witchcraft:pot_"..color, wield_item})
+        if result then
+            minetest.set_node(pos, {name=result.output, param2=node.param2})
+        end
+    end
 	end,
 	groups = {cracky=1, falling_node=1, oddly_breakable_by_hand=1}
 })
@@ -517,3 +495,22 @@ minetest.register_abm({
 		})
 	end
 })
+
+technic.register_recipe_type("cauldron", {
+	description = "Cauldron brewing",
+	input_size = 2,
+})
+
+function technic.register_cauldron_recipe(data)
+	data.time = data.time or 12
+	technic.register_recipe("cauldron", data)
+end
+
+local recipes = {
+	{"witchcraft:pot_blue",         "default:dirt",           "witchcraft:pot_brown"},
+	{"witchcraft:pot_brown",         "witchcraft:herb",           "witchcraft:pot_red"},
+}
+
+for _, data in pairs(recipes) do
+	technic.register_cauldron_recipe({input = {data[1], data[2]}, output = data[3], time = data[4]})
+end

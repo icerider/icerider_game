@@ -17,6 +17,12 @@ local stuck_timeout = 3 -- how long before mob gets stuck in place and starts se
 local stuck_path_timeout = 10 -- how long will mob follow path before giving up
 
 -- internal functions
+function is_player_invisibility(player)
+	if witchcraft and witchcraft.is_player_invisibility and witchcraft.is_player_invisibility(player) then
+		return true
+	end
+	return false
+end
 
 local pi = math.pi
 local square = math.sqrt
@@ -1152,7 +1158,7 @@ minetest.register_entity(name, {
 
 					dist = get_distance(p, s)
 
-					if dist < self.view_range and (not witchcraft.is_player_invisibility(player)) then
+					if dist < self.view_range and not is_player_invisibility(player) then
 					-- field of view check goes here
 
 						-- choose closest player to attack
@@ -1226,7 +1232,7 @@ minetest.register_entity(name, {
 				p = player:getpos()
 				dist = get_distance(p, s)
 
-				if dist < self.view_range and not witchcraft.is_player_invisibility(player) then
+				if dist < self.view_range and not is_player_invisibility(player) then
 					self.following = player
 					break
 				end
@@ -1274,7 +1280,7 @@ minetest.register_entity(name, {
 				local dist = get_distance(p, s)
 
 				-- dont follow if out of range
-				if dist > self.view_range or witchcraft.is_player_invisibility(self.following) then
+				if dist > self.view_range or is_player_invisibility(self.following) then
 					self.following = nil
 				else
 					local vec = {
@@ -1489,7 +1495,7 @@ minetest.register_entity(name, {
 		local dist = get_distance(p, s)
 
 		-- stop attacking if player or out of range
-		if dist > self.view_range or (witchcraft.is_player_invisibility(self.attack) and dist > 6)
+		if dist > self.view_range or is_player_invisibility(self.attack) and dist > 6
 		or not self.attack
 		or not self.attack:getpos()
 		or self.attack:get_hp() <= 0 then

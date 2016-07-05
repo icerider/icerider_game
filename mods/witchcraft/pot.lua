@@ -296,68 +296,99 @@ minetest.register_node("witchcraft:pot", {
 
 local witchcraft = {}
 witchcraft.pot = {
-    {"blue",1},
-    {"blue2",1},
-    {"grey",1},
-    {"red",1},
-    {"green",1},
-    {"purple",1},
-    {"yellow",1},
-    {"brown",1},
-    {"orange",1},
-    {"magenta",1},
-    {"gcyan",3},
-    {"aqua",2},
-    {"redbrown",2},
-    {"darkpurple",4}
+    "blue",
+    "blue2",
+    "grey",
+    "red",
+    "green",
+    "purple",
+    "yellow",
+    "brown",
+    "orange",
+    "magenta",
+    "gcyan",
+    "aqua",
+    "redbrown",
+    "darkpurple",
 }
 
 --the pot itself
 
 for _, color in ipairs(witchcraft.pot) do
-minetest.register_node("witchcraft:pot_"..color, {
-  description = (color.." brew pot"):gsub("(%l)(%w*)", function(a,b) return string.upper(a)..b end),
-	tiles = {
-		{ name = "witchcraft_pot_"..color..".png",
-			animation = {type="vertical_frames", length=3.0} },
-		"witchcraft_pot_bottom.png",
-		"witchcraft_pot_side.png",
-		"witchcraft_pot_side.png",
-		"witchcraft_pot_side.png",
-		"witchcraft_pot_side.png"
-	},
-	drawtype = "nodebox",
-	paramtype = "light",
-	drop = {
-		items = {
-			{items = {'witchcraft:pot'}, rarity = 1},
-		}
-	},
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-0.4375, -0.5, -0.4375, 0.4375, -0.4375, 0.4375}, -- NodeBox1
-			{-0.375, -0.4375, -0.375, 0.375, -0.375, 0.375}, -- NodeBox2
-			{-0.3125, -0.375, -0.3125, 0.3125, -0.3125, 0.3125}, -- NodeBox3
-			{-0.375, -0.3125, -0.375, 0.375, 0.5, 0.375}, -- NodeBox4
-			{-0.4375, -0.25, -0.4375, 0.4375, 0.3125, 0.4375}, -- NodeBox5
-			{-0.5, -0.1875, -0.5, 0.5, 0.3125, 0.5}, -- NodeBox6
-			{-0.4375, 0.375, -0.4375, 0.4375, 0.5, 0.4375}, -- NodeBox7
-		}
-	},
-	on_rightclick = function(pos, node, clicker, item, _)
+    minetest.register_node("witchcraft:pot_"..color, {
+
+    description = (color.." brew pot"):gsub("(%l)(%w*)", function(a,b) return string.upper(a)..b end),
+    tiles = {
+        { name = "witchcraft_pot_"..color..".png",
+            animation = {type="vertical_frames", length=3.0} },
+        "witchcraft_pot_bottom.png",
+        "witchcraft_pot_side.png",
+        "witchcraft_pot_side.png",
+        "witchcraft_pot_side.png",
+        "witchcraft_pot_side.png"
+    },
+    drawtype = "nodebox",
+    paramtype = "light",
+    drop = {
+        items = {
+            {items = {'witchcraft:pot'}, rarity = 1},
+        }
+    },
+
+    node_box = {
+        type = "fixed",
+        fixed = {
+            {-0.4375, -0.5, -0.4375, 0.4375, -0.4375, 0.4375}, -- NodeBox1
+            {-0.375, -0.4375, -0.375, 0.375, -0.375, 0.375}, -- NodeBox2
+            {-0.3125, -0.375, -0.3125, 0.3125, -0.3125, 0.3125}, -- NodeBox3
+            {-0.375, -0.3125, -0.375, 0.375, 0.5, 0.375}, -- NodeBox4
+            {-0.4375, -0.25, -0.4375, 0.4375, 0.3125, 0.4375}, -- NodeBox5
+            {-0.5, -0.1875, -0.5, 0.5, 0.3125, 0.5}, -- NodeBox6
+            {-0.4375, 0.375, -0.4375, 0.4375, 0.5, 0.4375}, -- NodeBox7
+        }
+    },
+    on_rightclick = function(pos, node, clicker, item, _)
         local wield_item = clicker:get_wielded_item():get_name()
         if wield_item == "vessels:glass_bottle" then
-            item:replace("witchcraft:potion_"..color)
-            minetest.set_node(pos, {name="witchcraft:pot", param2=node.param2})
+            fill_bottle(item, clicker,"witchcraft:potion_"..color)
+            local meta = minetest.get_meta(pos)
+            local capacity = (meta:get_int("capacity") or 1) - 1
+
+            if capacity <= 0 then
+                minetest.set_node(pos, {name="witchcraft:pot", param2=node.param2})
+            else
+                meta:set_int("capacity", capacity)
+            end
         else
-            local result = technic.get_recipe("cauldron", {"witchcraft:pot_"..color, wield_item})
-        if result then
-            minetest.set_node(pos, {name=result.output, param2=node.param2})
+            local result = technic.get_recipe("cauldron", {ItemStack("witchcraft:pot_"..color),
+                                                           ItemStack(wield_item)})
+            local capacity = nil
+            if result then
+                local spl = string.gmatch(result.output, "%S+")
+                local output = spl()
+                capacity = spl() or 1
+                minetest.set_node(pos, {name=output, param2=node.param2})
+            end
+            local meta = minetest.get_meta(pos)
+            if string.find(wield_item, "witchcraft:potion_grey") then
+                capacity = (meta:get_int("capacity") or 1)
+                if wield_item  == "witchcraft:potion_grey_2"
+                then
+                    capacity = capacity + 2
+                else
+                    capacity = capacity + 1
+                end
+            end
+            if capacity then
+                meta:set_int("capacity", capacity)
+                item:take_item()
+                if string.find(wield_item, "witchcraft:potion_") then
+                    use_bottle(item, clicker)
+                end
+            end
         end
-    end
-	end,
-	groups = {cracky=1, falling_node=1, oddly_breakable_by_hand=1}
+    end,
+    groups = {cracky=1, falling_node=1, oddly_breakable_by_hand=1}
 })
 end
 
@@ -493,7 +524,7 @@ function technic.register_cauldron_recipe(data)
 end
 
 local recipes = {
-	{"witchcraft:pot_blue",         "flowers:mushroom_brown",         "witchcraft:pot_brown"},
+	{"witchcraft:pot_blue",         "flowers:mushroom_brown",         "witchcraft:pot_brown 2"},
 	{"witchcraft:pot_blue",         "mobs:dung",                      "witchcraft:pot_brown"},
 	{"witchcraft:pot_blue",         "flowers:geranium",               "witchcraft:pot_blue2"},
 	{"witchcraft:pot_blue",         "flowers:blueberries",            "witchcraft:pot_blue2"},

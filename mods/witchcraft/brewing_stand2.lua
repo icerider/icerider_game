@@ -14,11 +14,11 @@ function technic.register_potion_recipe(data)
 end
 
 local recipes = {
-	{"witchcraft:potion_blue 2",         "witchcraft:potion_grey",           "witchcraft:potion_yellow_2"},
+	{"witchcraft:potion_blue 2", "witchcraft:potion_grey", "",   "witchcraft:potion_yellow_2"},
 }
 
 for _, data in pairs(recipes) do
-	technic.register_potion_recipe({input = {data[1], data[2]}, output = data[3], time = data[4]})
+	technic.register_potion_recipe({input = {data[1], data[2], data[3]}, output = data[4], time = data[5]})
 end
 
 
@@ -38,7 +38,7 @@ local formspec =
 	"label[0,0;"..machine_name.."]"..
 	"image[2,2;1,1;default_furnace_fire_bg.png]"..
 	"list[current_name;fuel;2,3;1,1;]"..
-	"list[current_name;src;2,1;2,1;]"..
+	"list[current_name;src;1,1;3,1;]"..
 	"list[current_name;dst;5,1;2,2;]"..
 	"list[current_player;main;0,5;8,4;]"..
 	"listring[current_name;dst]"..
@@ -69,7 +69,7 @@ minetest.register_node("witchcraft:brewing_stand2", {
         meta:set_string("infotext", machine_name)
         local inv = meta:get_inventory()
         inv:set_size("fuel", 1)
-        inv:set_size("src", 2)
+        inv:set_size("src", 3)
         inv:set_size("dst", 4)
     end,
     --can_dig = technic.machine_can_dig,
@@ -107,7 +107,7 @@ minetest.register_node("witchcraft:brewing_stand2_active", {
     paramtype = "light",
     light_source = 3,
     drop = "witchcraft:brewing_stand2",
-    groups = {cracky=1, oddly_breakable_by_hand=1},
+    groups = {cracky=1, oddly_breakable_by_hand=1, not_in_creative_inventory=1},
     sounds = default.node_sound_stone_defaults(),
 	--can_dig = technic.machine_can_dig,
 	--allow_metadata_inventory_put = technic.machine_inventory_put,
@@ -136,12 +136,6 @@ minetest.register_abm({
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		local meta = minetest.get_meta(pos)
 		local inv    = meta:get_inventory()
-		
-		if inv:get_size("src") == 1 then -- Old furnace -> convert it
-			inv:set_size("src", 2)
-			inv:set_stack("src", 2, inv:get_stack("src2", 1))
-			inv:set_size("src2", 0)
-		end
 		
 		local recipe = nil
 
@@ -189,7 +183,7 @@ minetest.register_abm({
 					"image[2,2;1,1;default_furnace_fire_bg.png^[lowpart:"..
 					(100 - percent)..":default_furnace_fire_fg.png]"..
 					"list[current_name;fuel;2,3;1,1;]"..
-					"list[current_name;src;2,1;2,1;]"..
+					"list[current_name;src;1,1;3,1;]"..
 					"list[current_name;dst;5,1;2,2;]"..
 					"list[current_player;main;0,5;8,4;]"..
 					"listring[current_name;dst]"..

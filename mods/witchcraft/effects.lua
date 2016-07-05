@@ -35,6 +35,24 @@ function use_bottle(itemstack, user)
         end
 end
 
+function fill_bottle(itemstack, user, replace_with_item)
+    if itemstack:take_item() ~= nil then
+        if itemstack:is_empty() then
+            itemstack:add_item(replace_with_item)
+        else
+            local inv = user:get_inventory()
+            if inv:room_for_item("main", {name=replace_with_item}) then
+                inv:add_item("main", replace_with_item)
+            else
+                local pos = user:getpos()
+                pos.y = math.floor(pos.y + 0.5)
+                core.add_item(pos, replace_with_item)
+            end
+        end
+    end
+end
+
+
 function add_drink_spawner(playerpos)
         minetest.add_particlespawner(
             5, --amount

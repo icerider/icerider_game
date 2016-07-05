@@ -25,9 +25,9 @@ end
 minetest.register_craft({
 	output = 'witchcraft:brewing_stand2',
 	recipe = {
-		{'default:brick', 'default:brick', 'default:brick'},
-		{'default:brick', 'default:torch', 'default:brick'},
-		{'default:brick', 'default:brick', 'default:brick'},
+		{'vessels:glass_bottle', '', 'vessels:glass_bottle'},
+		{'default:obsidian_glass', 'group:stick', 'default:obsidian_glass'},
+		{'', 'group:stick', ''},
 	}
 })
 

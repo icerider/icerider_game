@@ -217,7 +217,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'witchcraft:bottle_eyes 1',
 	recipe = {
-		{'bucket:bucket_water'},
+		{'mobs:minotaur_eye'},
 		{'vessels:drinking_glass'},
 	}
 })
@@ -296,39 +296,25 @@ minetest.register_node("witchcraft:pot", {
 
 local witchcraft = {}
 witchcraft.pot = {
-	{"aqua", "", "", "", "", "blue", "cyan"},
-	{"blue", "brown", "default:dirt", "blue2", "flowers:geranium", "red", "purple"},
-	{"blue2", "yellow", "default:steelblock", "yellow", "default:copperblock", "green2", "aqua"},
-	{"brown", "red", "witchcraft:herb", "grey", "farming_plus:strawberry_item", "red", "redbrown"},
-	{"cyan", "aqua", "default:diamond", "gcyan", "default:mese_crystal", "green", "cyan2"},
-	{"cyan2", "", "", "", "", "", ""},
-	{"darkpurple", "cyan", "flowers:mushroom_red", "green", "farming:weed", "yellow", "redbrown"},
-	{"gcyan", "", "", "", "", "", ""},
-	{"ggreen", "", "", "", "", "", ""},
-	{"gpurple", "", "", "", "", "", ""},
-	{"gred", "", "", "", "", "", ""},
-	{"green2", "darkpurple", "default:glass", "red", "default:gold_lump", "blue2", "aqua"},
-	{"green", "green2", "default:apple", "ggreen", "default:mese_crystal", "orange", "yellgrn"},
-	{"grey", "orange", "default:torch", "brown", "default:apple", "yellgrn", "magenta"},
-	{"magenta", "purple", "witchcraft:bottle_eyes", "darkpurple", "flowers:mushroom_red", "purple", "darkpurple"},
-	{"orange", "redbrown", "witchcraft:bottle_slime", "yellow", "farming_plus:orange_item", "green", "yellgrn"},
-	{"purple", "blue2", "flowers:waterlily", "gpurple", "default:mese_crystal", "magenta", "darkpurple"},
-	{"redbrown", "magenta", "flowers:mushroom_brown", "magenta", "default:stone", "grey", "brown"},
-	{"red", "grey", "default:gravel", "gred", "default:mese_crystal", "blue", "purple"},
-	{"yellow", "yellgrn", "tnt:tnt", "cyan2", "mobs:minotaur_eye", "darkpurple", "redbrown"},
-	{"yellgrn", "green", "default:gold_lump", "orange", "mobs:lava_orb", "grey", "magenta"},
+    {"blue",1},
+    {"blue2",1},
+    {"grey",1},
+    {"red",1},
+    {"green",1},
+    {"purple",1},
+    {"yellow",1},
+    {"brown",1},
+    {"orange",1},
+    {"magenta",1},
+    {"gcyan",3},
+    {"aqua",2},
+    {"redbrown",2},
+    {"darkpurple",4}
 }
 
 --the pot itself
 
-for _, row in ipairs(witchcraft.pot) do
-local color = row[1]
-local newcolor = row[2]
-local newcolor2 = row[4]
-local ingredient = row[3]
-local ingredient2 = row[5]
-local combine = row[6]
-local cresult = row[7]
+for _, color in ipairs(witchcraft.pot) do
 minetest.register_node("witchcraft:pot_"..color, {
   description = (color.." brew pot"):gsub("(%l)(%w*)", function(a,b) return string.upper(a)..b end),
 	tiles = {
@@ -507,8 +493,31 @@ function technic.register_cauldron_recipe(data)
 end
 
 local recipes = {
-	{"witchcraft:pot_blue",         "default:dirt",           "witchcraft:pot_brown"},
-	{"witchcraft:pot_brown",         "witchcraft:herb",           "witchcraft:pot_red"},
+	{"witchcraft:pot_blue",         "flowers:mushroom_brown",         "witchcraft:pot_brown"},
+	{"witchcraft:pot_blue",         "mobs:dung",                      "witchcraft:pot_brown"},
+	{"witchcraft:pot_blue",         "flowers:geranium",               "witchcraft:pot_blue2"},
+	{"witchcraft:pot_blue",         "flowers:blueberries",            "witchcraft:pot_blue2"},
+	{"witchcraft:pot_blue",         "flowers:mushroom_red",           "witchcraft:pot_red"},
+	{"witchcraft:pot_blue",         "flowers:rose",                   "witchcraft:pot_red"},
+	{"witchcraft:pot_blue",         "default:apple",                  "witchcraft:pot_red"},
+	{"witchcraft:pot_blue",         "flowers:sunflower",              "witchcraft:pot_yellow"},
+	{"witchcraft:pot_blue",         "flowers:dandelion_yellow",       "witchcraft:pot_yellow"},
+	{"witchcraft:pot_blue",         "flowers:viola",                  "witchcraft:pot_purple"},
+	{"witchcraft:pot_blue",         "farming:grapes",                 "witchcraft:pot_purple"},
+	{"witchcraft:pot_blue",         "witchcraft:herb",                "witchcraft:pot_green"},
+	{"witchcraft:pot_blue",         "group:leaves",                   "witchcraft:pot_green"},
+	{"witchcraft:pot_blue",         "flowers:orange_tulip",           "witchcraft:pot_orange"},
+	{"witchcraft:pot_blue",         "farming_plus:orange_item",       "witchcraft:pot_orange"},
+	{"witchcraft:pot_blue",         "bushes:blackberry",              "witchcraft:pot_magenta"},
+	{"witchcraft:pot_blue",         "bushes:raspberry",               "witchcraft:pot_magenta"},
+	{"witchcraft:pot_blue",         "default:mese_crystal_fragment",  "witchcraft:pot_grey"},
+	{"witchcraft:pot_blue",         "mobs:zombie_tibia",              "witchcraft:pot_grey"},
+	{"witchcraft:pot_blue",         "mobs:lava_orb",                  "witchcraft:pot_grey"},
+	{"witchcraft:pot_blue",         "mobs:minotaur_horn",             "witchcraft:pot_grey"},
+	{"witchcarft:pot_brown",        "witchcraft:bottle_eyes",         "witchcarft:pot_gcyan"},
+	{"witchcarft:pot_red",          "mobs:minotaur_lots_of_fur",      "witchcarft:pot_darkpurple"},
+	{"witchcarft:pot_yellow",       "mobs:dungeon_master_diamond",    "witchcarft:pot_aqua"},
+	{"witchcarft:pot_orange",       "mobs:dungeon_master_blood",      "witchcarft:pot_redbrown"},
 }
 
 for _, data in pairs(recipes) do

@@ -300,7 +300,7 @@ dofile(minetest.get_modpath("farming_plus").."/strawberries.lua")
 dofile(minetest.get_modpath("farming_plus").."/rhubarb.lua")
 
 -- ========= POTATOES =========
-dofile(minetest.get_modpath("farming_plus").."/potatoes.lua")
+-- dofile(minetest.get_modpath("farming_plus").."/potatoes.lua")
 
 -- ========= TOMATOES =========
 dofile(minetest.get_modpath("farming_plus").."/tomatoes.lua")
@@ -315,7 +315,7 @@ dofile(minetest.get_modpath("farming_plus").."/bananas.lua")
 dofile(minetest.get_modpath("farming_plus").."/carrots.lua")
 
 -- ========= COCOA =========
-dofile(minetest.get_modpath("farming_plus").."/cocoa.lua")
+--dofile(minetest.get_modpath("farming_plus").."/cocoa.lua")
 
 -- ========= PUMPKIN =========
 dofile(minetest.get_modpath("farming_plus").."/pumpkin.lua")

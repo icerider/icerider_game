@@ -524,7 +524,7 @@ function technic.register_cauldron_recipe(data)
 end
 
 local recipes = {
-	{"witchcraft:pot_blue",         "flowers:mushroom_brown",         "witchcraft:pot_brown 2"},
+	{"witchcraft:pot_blue",         "flowers:mushroom_brown",         "witchcraft:pot_brown"},
 	{"witchcraft:pot_blue",         "mobs:dung",                      "witchcraft:pot_brown"},
 	{"witchcraft:pot_blue",         "flowers:geranium",               "witchcraft:pot_blue2"},
 	{"witchcraft:pot_blue",         "flowers:blueberries",            "witchcraft:pot_blue2"},

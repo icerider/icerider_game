@@ -410,6 +410,171 @@ function potion_change_node(from_node, to_node, above, spawner)
     end
 end
 
+function potion_farming_grow(itemstack, user, pointed_thing)
+    if itemstack:take_item() ~= nil then
+        local player = user:get_player_name()
+        local pos = nil
+        --if above then
+        --    pos = pointed_thing.above
+        --else
+        --    pos = pointed_thing.under
+        --end
+        pos = pointed_thing.under
+        growing = {
+            {"farming:wheat_", "farming:wheat_8",},
+            {"farming:barley_", "farming:barley_7",},
+            {"farming:tomato_", "farming:tomato_8",},
+            {"farming:raspberry_", "farming:raspberry_4",},
+            {"farming:pumpkin_", "farming:pumpkin",},
+            {"farming:potato_", "farming:potato_4",},
+            {"farming:melon_", "farming:melon_8",},
+            {"farming:rhubar_", "farming:rhubarb_3",},
+            {"farming:grapes_", "farming:grapes_8",},
+            {"farming:cotton_", "farming:cotton_8",},
+            {"farming:corn_", "farming:corn_8",},
+            {"farming:coffee_", "farming:coffee_5",},
+            {"farming:cocoa_", "farming:cocoa_3",},
+            {"farming:carrot_", "farming:carrot_8",},
+            {"farming:cucumber_", "farming:cucumber_4",},
+            {"farming:blueberry_", "farming:blueberry_4",},
+            {"farming:beanpole_", "farming:beanpole_5",},
+            {"farming_plus:carrot_", "farming_plus:carrot",},
+            {"farming_plus:orange_", "farming_plus:orange",},
+            {"farming_plus:potato_", "farming_plus:potato",},
+            {"farming_plus:rhubarb_", "farming_plus:rhubarb",},
+            {"farming_plus:strawberry_", "farming_plus:strawberry",},
+            {"farming_plus:tomato_", "farming_plus:tomato",},
+        }
+        if pointed_thing.type == "node" then
+            for k, v in ipairs(growing)do
+                local pfrom = v[1]
+                local pto = v[2]
+                if string.find(minetest.get_node(pos).name,pfrom) then
+                    if not minetest.is_protected(pos, player) then
+                        minetest.set_node(pos, {name=pto})
+                    else
+                        minetest.chat_send_player(player, "This area is protected.")
+                    end
+                    break
+                end
+            end
+        end
+        use_bottle(itemstack, user)
+    end
+    return itemstack
+end
+
+function grow_tree(pos)
+    local mapgen = minetest.get_mapgen_params().mgname
+    if mapgen == "v6" then
+        default.grow_tree(pos, random(1, 4) == 1)
+    else
+        default.grow_new_apple_tree(pos)
+    end
+end
+
+function grow_default_jungle(pos)
+    local mapgen = minetest.get_mapgen_params().mgname
+    if mapgen == "v6" then
+        default.grow_jungle_tree(pos)
+    else
+        default.grow_new_jungle_tree(pos)
+    end
+end
+
+local function is_snow_nearby(pos)
+    local x, y, z = pos.x, pos.y, pos.z
+    local c_snow = minetest.get_content_id("default:snow")
+    local c_snowblock = minetest.get_content_id("default:snowblock")
+    local c_dirtsnow = minetest.get_content_id("default:dirt_with_snow")
+
+    local vm = minetest.get_voxel_manip()
+    local minp, maxp = vm:read_from_map(
+        {x = x - 1, y = y - 1, z = z - 1},
+        {x = x + 1, y = y + 1, z = z + 1}
+    )
+    local a = VoxelArea:new({MinEdge = minp, MaxEdge = maxp})
+    local data = vm:get_data()
+
+    for yy = y - 1, y + 1 do
+    for zz = z - 1, z + 1 do
+        local vi  = a:index(x - 1, yy, zz)
+        for xx = x - 1, x + 1 do
+            local nodid = data[vi]
+            if nodid == c_snow or nodid == c_snowblock or nodid == c_dirtsnow then
+                return true
+            end
+            vi  = vi + 1
+        end
+    end
+    end
+
+    return false
+end
+
+function grow_pine(pos)
+    local mapgen = minetest.get_mapgen_params().mgname
+    local snow = is_snow_nearby(pos)
+    if mapgen == "v6" then
+        default.grow_pine_tree(pos, snow)
+    elseif snow then
+        default.grow_new_snowy_pine_tree(pos)
+    else
+        default.grow_new_pine_tree(pos)
+    end
+end
+
+
+function potion_tree_grow(itemstack, user, pointed_thing)
+    if itemstack:take_item() ~= nil then
+        local player = user:get_player_name()
+        local pos = nil
+        --if above then
+        --    pos = pointed_thing.above
+        --else
+        --    pos = pointed_thing.under
+        --end
+        pos = pointed_thing.under
+            local growing = {
+                {"default:acacia_sapling", default.grow_new_acacia_tree},
+                {"default:aspen_sapling", default.grow_new_aspen_tree},
+                {"default:junglesapling", grow_default_jungle},
+                {"default:pine_sapling", grow_pine},
+                {"default:sapling", grow_tree},
+                {"farming_plus:banana_sapling", },
+                {"farming_plus:cocoa_sapling", },
+                {"moretrees:apple_tree_sapling", },
+                {"moretrees:beech_sapling", },
+                {"moretrees:birch_sapling", },
+                {"moretrees:cedar_sapling", },
+                {"moretrees:fir_sapling", },
+                {"moretrees:oak_sapling", },
+                {"moretrees:rubber_tree_sapling", },
+                {"moretrees:sequoia_sapling", },
+                {"moretrees:spruce_sapling", },
+                {"moretrees:willow_sapling", },
+            }
+        else
+        end
+        if pointed_thing.type == "node" then
+            for k, v in ipairs(growing)do
+                local pfrom = v[1]
+                local pto = v[2]
+                if string.find(minetest.get_node(pos).name,pfrom) then
+                    if not minetest.is_protected(pos, player) then
+                        minetest.set_node(pos, {name=pto})
+                    else
+                        minetest.chat_send_player(player, "This area is protected.")
+                    end
+                    break
+                end
+            end
+        end
+        use_bottle(itemstack, user)
+    end
+    return itemstack
+end
+
 function go_home_effect(itemstack, user, pointed_thing)
     if itemstack:take_item() ~= nil then
         minetest.sound_play("teleport",

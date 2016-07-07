@@ -205,7 +205,7 @@ witchcraft.register_potion({
 witchcraft.register_potion({
     basename = "green",
     description = "Melon Potion",
-    on_use = potion_change_node({"air"}, "farming:melon_8", true, add_drink_spawner)
+    on_use = potion_farming_grow --change_node({"air"}, "farming:melon_8", true, add_drink_spawner)
 })
 
 witchcraft.register_potion({

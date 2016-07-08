@@ -467,7 +467,7 @@ end
 function grow_tree(pos)
     local mapgen = minetest.get_mapgen_params().mgname
     if mapgen == "v6" then
-        default.grow_tree(pos, random(1, 4) == 1)
+        default.grow_tree(pos, math.random(1, 4) == 1)
     else
         default.grow_new_apple_tree(pos)
     end
@@ -524,45 +524,53 @@ function grow_pine(pos)
     end
 end
 
+function grow_banana(pos)
+    farming.generate_tree(pos, "default:tree", "farming_plus:banana_leaves", {"default:dirt", "default:dirt_with_grass"}, {["farming_plus:banana"]=20})
+end
+
+function grow_cocoa(pos)
+    farming.generate_tree({x=pos.x, y=pos.y+1, z=pos.z}, "default:tree", "farming_plus:cocoa_leaves", {"default:sand", "default:desert_sand"}, {["farming_plus:cocoa"]=20})
+end
+
+function grow_model_tree(tree_model)
+    return function (pos)
+        minetest.remove_node(pos)
+        biome_lib:grow_tree(pos, tree_model)
+    end
+end
 
 function potion_tree_grow(itemstack, user, pointed_thing)
     if itemstack:take_item() ~= nil then
         local player = user:get_player_name()
         local pos = nil
-        --if above then
-        --    pos = pointed_thing.above
-        --else
-        --    pos = pointed_thing.under
-        --end
         pos = pointed_thing.under
-            local growing = {
-                {"default:acacia_sapling", default.grow_new_acacia_tree},
-                {"default:aspen_sapling", default.grow_new_aspen_tree},
-                {"default:junglesapling", grow_default_jungle},
-                {"default:pine_sapling", grow_pine},
-                {"default:sapling", grow_tree},
-                {"farming_plus:banana_sapling", },
-                {"farming_plus:cocoa_sapling", },
-                {"moretrees:apple_tree_sapling", },
-                {"moretrees:beech_sapling", },
-                {"moretrees:birch_sapling", },
-                {"moretrees:cedar_sapling", },
-                {"moretrees:fir_sapling", },
-                {"moretrees:oak_sapling", },
-                {"moretrees:rubber_tree_sapling", },
-                {"moretrees:sequoia_sapling", },
-                {"moretrees:spruce_sapling", },
-                {"moretrees:willow_sapling", },
-            }
-        else
-        end
+        local growing = {
+            {"default:acacia_sapling", grow_model_tree(moretrees.acacia_model)},
+            {"default:aspen_sapling", default.grow_new_aspen_tree},
+            {"default:junglesapling", grow_default_jungle},
+            {"default:pine_sapling", grow_pine},
+            {"default:sapling", grow_tree},
+            {"farming_plus:banana_sapling", grow_banana},
+            {"farming_plus:cocoa_sapling", grow_cocoa},
+            {"moretrees:apple_tree_sapling", grow_model_tree(moretrees.apple_tree_model) },
+            {"moretrees:beech_sapling", grow_model_tree(moretrees.beech_model)},
+            {"moretrees:birch_sapling", moretrees.grow_birch},
+            {"moretrees:cedar_sapling", grow_model_tree(moretrees.cedar_model)},
+            {"moretrees:fir_sapling", moretrees.grow_fir},
+            {"moretrees:oak_sapling", grow_model_tree(moretrees.oak_model)},
+            {"moretrees:palm_sapling", grow_model_tree(moretrees.palm_model)},
+            {"moretrees:rubber_tree_sapling", grow_model_tree(moretrees.rubber_tree_model)},
+            {"moretrees:sequoia_sapling", grow_model_tree(moretrees.sequoia_model)},
+            {"moretrees:spruce_sapling", moretrees.grow_spruce},
+            {"moretrees:willow_sapling", grow_model_tree(moretrees.willow_model)},
+        }
         if pointed_thing.type == "node" then
-            for k, v in ipairs(growing)do
+            for k, v in ipairs(growing) do
                 local pfrom = v[1]
                 local pto = v[2]
                 if string.find(minetest.get_node(pos).name,pfrom) then
                     if not minetest.is_protected(pos, player) then
-                        minetest.set_node(pos, {name=pto})
+                        pto(pos)
                     else
                         minetest.chat_send_player(player, "This area is protected.")
                     end
@@ -762,3 +770,82 @@ function spawn_magic(magic, texture, vec_func, accel)
         return itemstack
     end
 end
+
+minetest.register_node("witchcraft:portal", {
+	description = "Home Portal",
+	tiles = {
+		"portal_transparent.png",
+		"portal_transparent.png",
+		"portal_transparent.png",
+		"portal_transparent.png",
+		{
+			name = "portal.png",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 0.5,
+			},
+		},
+		{
+			name = "portal.png",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 0.5,
+			},
+		},
+	},
+	drawtype = "nodebox",
+	paramtype = "light",
+	paramtype2 = "facedir",
+	sunlight_propagates = true,
+	use_texture_alpha = true,
+	walkable = false,
+	diggable = false,
+	pointable = false,
+	buildable_to = false,
+	is_ground_content = false,
+	drop = "",
+	light_source = 5,
+	post_effect_color = {a = 180, r = 128, g = 0, b = 128},
+	alpha = 192,
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.5, -0.5, -0.1,  0.5, 0.5, 0.1},
+		},
+	},
+	--groups = {not_in_creative_inventory = 1}
+
+    after_place_node  = function(pos, placer, itemstack)
+       local p = {x=pos.x, y=pos.y+1, z=pos.z}
+       local p2 = minetest.dir_to_facedir(placer:get_look_dir())
+       minetest.add_node(p, {name="witchcraft:portal", paramtype2="facedir", param2=p2})
+    end,
+})
+
+minetest.register_abm({
+	nodenames = {"witchcraft:portal"},
+	interval = 1,
+	chance = 2,
+	action = function(pos, node)
+		minetest.add_particlespawner(
+			32, --amount
+			4, --time
+			{x = pos.x - 0.25, y = pos.y - 0.25, z = pos.z - 0.25}, --minpos
+			{x = pos.x + 0.25, y = pos.y + 0.25, z = pos.z + 0.25}, --maxpos
+			{x = -0.8, y = -0.8, z = -0.8}, --minvel
+			{x = 0.8, y = 0.8, z = 0.8}, --maxvel
+			{x = 0, y = 0, z = 0}, --minacc
+			{x = 0, y = 0, z = 0}, --maxacc
+			0.5, --minexptime
+			1, --maxexptime
+			1, --minsize
+			2, --maxsize
+			false, --collisiondetection
+			"witchcraft_particle.png" --texture
+		)
+  end
+})

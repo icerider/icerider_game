@@ -209,6 +209,13 @@ witchcraft.register_potion({
 })
 
 witchcraft.register_potion({
+    basename = "green_2",
+    image = "witchcraft_potion_green.png^[colorize:black:50",
+    description = "Melon Potion (lv_2)",
+    on_use = potion_tree_grow
+})
+
+witchcraft.register_potion({
     basename = "yellow",
     description = "Alchemy Potion",
     upgradable = true,

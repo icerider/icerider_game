@@ -41,7 +41,7 @@ mobs:register_mob("mobs:zombie", {
 		{name = "nether:apple",
 		chance = 2, min = 1, max = 2,},
 		{name = "mobs:zombie_tibia",
-		chance = 10, min = 1, max = 1,},
+		chance = 5, min = 1, max = 1,},
 		{name = "maptools:silver_coin",
 		chance = 1, min = 1, max = 1,},
 	},

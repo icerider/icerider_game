@@ -87,7 +87,7 @@ function add_smoke_spawner(playerpos)
             10, --minsize
             15, --maxsize
             false, --collisiondetection
-            "witchcraft_smoke.png%[colorize:magenta:50" --texture
+            "witchcraft_smoke.png^[colorize:magenta:50" --texture
         )
 end
 
@@ -106,7 +106,7 @@ function add_smoke_spawner_lv2(playerpos)
             10, --minsize
             15, --maxsize
             false, --collisiondetection
-            "witchcraft_smoke.png%[colorize:magenta:50" --texture
+            "witchcraft_smoke.png^[colorize:magenta:50" --texture
         )
 end
 
@@ -379,7 +379,7 @@ playereffects.register_effect_type("slowpoison", "Poison", "heart.png", {"health
     nil, nil, nil, 10
 )
 
-function potion_change_node(from_node, to_node, above, spawner)
+function potion_change_node(from_node, to_node, above, spawner, place)
     return function(itemstack, user, pointed_thing)
         if itemstack:take_item() ~= nil then
             local player = user:get_player_name()
@@ -389,11 +389,17 @@ function potion_change_node(from_node, to_node, above, spawner)
             else
                 pos = pointed_thing.under
             end
+            if place then
+                func = minetest.place_node
+            else
+                func = minetest.set_node
+            end
             if pointed_thing.type == "node" then
                 for k, v in ipairs(from_node)do
+                print("DEBUG"..minetest.get_node(pos).name)
                 if minetest.get_node(pos).name == v then
                     if not minetest.is_protected(pos, player) then
-                    minetest.set_node(pos, {name=to_node})
+                    func(pos, {name=to_node})
                     if spawner then
                         spawner(pos)
                     end
@@ -612,7 +618,7 @@ function register_magic(name, textures, damage, node_action, area_nodes_action, 
                             full_punch_interval=1.0,
                             damage_groups={fleshy=damage},
                         }, nil)
-                        --self.object:remove()
+                        self.object:remove()
                     end
                 end
             end
@@ -650,7 +656,44 @@ function register_magic(name, textures, damage, node_action, area_nodes_action, 
     })
 end
 
-register_magic("witchcraft:fire", {"witchcraft_flame.png"}, 10,
+register_magic("witchcraft:fire", {"witchcraft_flame.png"}, 12,
+    function(self, p, t, n)
+        if n ~= "witchcraft:fire" and n ~= "air" and n ~="default:dirt_with_grass" and n ~="default:dirt_with_dry_grass" and n ~="default:stone"  then
+            minetest.env:set_node(t, {name="fire:basic_flame"})
+        elseif n =="default:dirt_with_grass" or n =="default:dirt_with_dry_grass" then
+            self.object:remove()
+            return true
+        end
+    end,
+    function(self, p, t, n)
+        if math.random(1, 50) <= 35 then
+            minetest.env:remove_node(p)
+        end
+        if minetest.registered_nodes[n].groups.flammable or math.random(1, 100) <=5 then
+            minetest.env:set_node(t, {name="fire:basic_flame"})
+        end
+    end,
+    function(apos)
+        local part = minetest.add_particlespawner(
+            10, --amount
+            0.3, --time
+            {x=apos.x-0.3, y=apos.y-0.3, z=apos.z-0.3}, --minpos
+            {x=apos.x+0.3, y=apos.y+0.3, z=apos.z+0.3}, --maxpos
+            {x=-0, y=-0, z=-0}, --minvel
+            {x=0, y=0, z=0}, --maxvel
+            {x=0,y=-0.5,z=0}, --minacc
+            {x=0.5,y=0.5,z=0.5}, --maxacc
+            1, --minexptime
+            1, --maxexptime
+            1, --minsize
+            2, --maxsize
+            false, --collisiondetection
+            "witchcraft_flame.png" --texture
+        )
+    end
+)
+
+register_magic("witchcraft:fire_2", {"witchcraft_flame.png"}, 20,
     function(self, p, t, n)
         if n ~= "witchcraft:fire" and n ~= "air" and n ~="default:dirt_with_grass" and n ~="default:dirt_with_dry_grass" and n ~="default:stone"  then
             minetest.env:set_node(t, {name="fire:basic_flame"})
@@ -711,7 +754,7 @@ register_magic("witchcraft:tnt_splash", {"witchcraft_splash_yellgrn.png"}, 2,
     nil
 )
 
-register_magic("witchcraft:fire_splash", {"witchcraft_splash_orange.png"}, 10,
+register_magic("witchcraft:fire_splash", {"witchcraft_splash_orange.png"}, 15,
     function(self, p, t, n)
         if n ~= "witchcraft:fire_splash" and n ~= "air" then
             minetest.env:set_node(t, {name="fire:basic_flame"})
@@ -771,81 +814,129 @@ function spawn_magic(magic, texture, vec_func, accel)
     end
 end
 
-minetest.register_node("witchcraft:portal", {
-	description = "Home Portal",
-	tiles = {
-		"portal_transparent.png",
-		"portal_transparent.png",
-		"portal_transparent.png",
-		"portal_transparent.png",
-		{
-			name = "portal.png",
-			animation = {
-				type = "vertical_frames",
-				aspect_w = 16,
-				aspect_h = 16,
-				length = 0.5,
-			},
-		},
-		{
-			name = "portal.png",
-			animation = {
-				type = "vertical_frames",
-				aspect_w = 16,
-				aspect_h = 16,
-				length = 0.5,
-			},
-		},
-	},
-	drawtype = "nodebox",
-	paramtype = "light",
-	paramtype2 = "facedir",
-	sunlight_propagates = true,
-	use_texture_alpha = true,
-	walkable = false,
-	diggable = false,
-	pointable = false,
-	buildable_to = false,
-	is_ground_content = false,
-	drop = "",
-	light_source = 5,
-	post_effect_color = {a = 180, r = 128, g = 0, b = 128},
-	alpha = 192,
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-0.5, -0.5, -0.1,  0.5, 0.5, 0.1},
-		},
-	},
-	--groups = {not_in_creative_inventory = 1}
+function drink_item(waterSize) 
+    return function(itemstack, player, pointed_thing)
+        if itemstack:take_item() ~= nil then
+            exertion.drinkItem(player, waterSize)
+            use_bottle(itemstack, player)
+        end
+        return itemstack
+    end
+end
 
-    after_place_node  = function(pos, placer, itemstack)
-       local p = {x=pos.x, y=pos.y+1, z=pos.z}
-       local p2 = minetest.dir_to_facedir(placer:get_look_dir())
-       minetest.add_node(p, {name="witchcraft:portal", paramtype2="facedir", param2=p2})
+local portal_def = {
+    tiles = {
+        "nether_transparent.png",
+        "nether_transparent.png",
+        "nether_transparent.png",
+        "nether_transparent.png",
+        {
+            name = "nether_portal.png",
+            animation = {
+                type = "vertical_frames",
+                aspect_w = 16,
+                aspect_h = 16,
+                length = 0.5,
+            },
+        },
+        {
+            name = "nether_portal.png",
+            animation = {
+                type = "vertical_frames",
+                aspect_w = 16,
+                aspect_h = 16,
+                length = 0.5,
+            },
+        },
+    },
+    drawtype = "nodebox",
+    paramtype = "light",
+    paramtype2 = "facedir",
+    sunlight_propagates = true,
+    use_texture_alpha = true,
+    walkable = false,
+    pointable = true,
+    drop = "",
+    light_source = 10,
+    post_effect_color = {a = 180, r = 128, g = 0, b = 128},
+    alpha = 192,
+    node_box = {
+        type = "fixed",
+        fixed = {
+            {-0.5, -0.5, -0.1,  0.5, 0.5, 0.1},
+        },
+    },
+    groups = {not_in_creative_inventory = 1, snappy=1, oddly_breakable_by_hand=1},
+    on_rightclick = function(pos, node, player, stack, pointed_thing)
+        if node.name == "witchcraft:portal_top" then
+            pos.y = pos.y - 1
+        end
+        local meta = minetest.get_meta(pos)
+        local target = meta:get_string("target")
+        if target == "home" then
+            unified_inventory.go_home(player)
+            minetest.remove_node(pos)
+            local p = {x=pos.x, y=pos.y+1, z=pos.z}
+            minetest.remove_node(p)
+            p = player:getpos()
+            minetest.place_node(p, {name="witchcraft:portal"})
+            minetest.get_meta(p):set_string("target",minetest.pos_to_string(pos))
+        else
+            local target = minetest.string_to_pos(meta:get_string("target"))
+            minetest.remove_node(pos)
+            local p = {x=pos.x, y=pos.y+1, z=pos.z}
+            minetest.remove_node(p)
+            if target then
+                player:setpos(target)
+            end
+        end
     end,
-})
+    after_destruct = function(pos, oldnode)
+        pos.y = pos.y - 1
+        minetest.remove_node(pos)
+    end
+}
+
+minetest.register_node("witchcraft:portal_top", table.copy(portal_def))
+
+portal_def.description = "Home Portal"
+groups = {snappy=1, oddly_breakable_by_hand=1}
+portal_def.after_place_node  = function(pos, placer, itemstack)
+        local node = minetest.get_node(pos)
+       local p = {x=pos.x, y=pos.y+1, z=pos.z}
+       local p2 = node.param2
+       minetest.add_node(p, {name="witchcraft:portal_top", paramtype2="facedir", param2=p2})
+       minetest.get_meta(pos):set_string("target","home")
+    end
+
+portal_def.after_destruct = function(pos, oldnode)
+        pos.y = pos.y + 1
+        minetest.remove_node(pos)
+    end
+
+minetest.register_node("witchcraft:portal", table.copy(portal_def))
 
 minetest.register_abm({
-	nodenames = {"witchcraft:portal"},
-	interval = 1,
-	chance = 2,
-	action = function(pos, node)
-		minetest.add_particlespawner(
-			32, --amount
-			4, --time
-			{x = pos.x - 0.25, y = pos.y - 0.25, z = pos.z - 0.25}, --minpos
-			{x = pos.x + 0.25, y = pos.y + 0.25, z = pos.z + 0.25}, --maxpos
-			{x = -0.8, y = -0.8, z = -0.8}, --minvel
-			{x = 0.8, y = 0.8, z = 0.8}, --maxvel
-			{x = 0, y = 0, z = 0}, --minacc
-			{x = 0, y = 0, z = 0}, --maxacc
-			0.5, --minexptime
-			1, --maxexptime
-			1, --minsize
-			2, --maxsize
-			false, --collisiondetection
-			"witchcraft_particle.png" --texture
-		)
-  end
+    nodenames = {"witchcraft:portal", "witchcraft:portal_top"},
+    interval = 1,
+    chance = 2,
+    action = function(pos, node)
+        minetest.add_particlespawner(
+            32, --amount
+            4, --time
+            {x = pos.x - 0.25, y = pos.y - 0.25, z = pos.z - 0.25}, --minpos
+            {x = pos.x + 0.25, y = pos.y + 0.25, z = pos.z + 0.25}, --maxpos
+            {x = -0.8, y = -0.8, z = -0.8}, --minvel
+            {x = 0.8, y = 0.8, z = 0.8}, --maxvel
+            {x = 0, y = 0, z = 0}, --minacc
+            {x = 0, y = 0, z = 0}, --maxacc
+            0.5, --minexptime
+            1, --maxexptime
+            1, --minsize
+            2, --maxsize
+            false, --collisiondetection
+            "nether_particle.png" --texture
+        )
+    end
 })
+

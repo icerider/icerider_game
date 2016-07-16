@@ -150,3 +150,26 @@ minetest.register_on_item_eat(
       end;
       return itemStack;
    end);
+
+function exertion.drinkItem(player, waterChange)
+         local ps = playerStates[player];
+         if ps then
+            if waterChange > 0 then
+               local pp = math.max(0, settings.foodPoisoningProb);
+
+               if math.random() <= 1.0 - pp then
+                  local update = false;
+                  update = ps:addWater(waterChange, true) or update;
+                  if update then ps:updateHud(); end;
+               else
+                  minetest.chat_send_player(player:get_player_name(),
+                                            settings.foodPoisoningMessage);
+                  ps:addPoison(waterChange);
+               end;
+            elseif waterChange < 0 then
+               minetest.chat_send_player(player:get_player_name(),
+                                         settings.foodPoisoningMessage);
+               ps:addPoison(-waterChange);
+            end;
+         end;
+end;

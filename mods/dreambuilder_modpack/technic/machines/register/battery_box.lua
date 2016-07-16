@@ -2,7 +2,8 @@
 local S = technic.getter
 
 technic.register_power_tool("technic:battery", 10000)
-technic.register_power_tool("technic:red_energy_crystal", 50000)
+technic.register_power_tool("technic:re_battery", 20000)
+technic.register_power_tool("technic:red_energy_crystal", 60000)
 technic.register_power_tool("technic:green_energy_crystal", 150000)
 technic.register_power_tool("technic:blue_energy_crystal", 450000)
 
@@ -15,9 +16,42 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_tool("technic:battery", {
-	description = S("RE Battery"),
+minetest.register_craft({
+	output = 'technic:re_battery',
+	recipe = {
+		{'group:wood', 'technic:zink_ingot', 'group:wood'},
+		{'group:wood', 'moreores:silver_ingot',   'group:wood'},
+		{'group:wood', 'technic:zink_ingot', 'group:wood'},
+	}
+})
+
+minetest.register_craftitem("technic:battery", {
+	description = S("Battery"),
 	inventory_image = "technic_battery.png",
+})
+
+minetest.register_craftitem("technic:lead_battery", {
+	description = S("Lead/Acid Battery"),
+	inventory_image = "technic_pb_battery.png",
+})
+
+minetest.register_craftitem("technic:h2so4", {
+	description = S("Sulfur Acid"),
+	inventory_image = "technic_sulfur_acid.png",
+})
+
+minetest.register_craft({
+	output = 'technic:lead_battery',
+	recipe = {
+		{'technic:lead_ingot', 'technic:lead_ingot', 'technic:lead_ingot'},
+		{'homedecor:plastic_sheeting', 'technic:h2so4',   'homedecor:plastic_sheeting'},
+		{'homedecor:plastic_sheeting', 'homedecor:plastic_sheeting', 'homedecor:plastic_sheeting'},
+	}
+})
+
+minetest.register_tool("technic:re_battery", {
+	description = S("RE Battery"),
+	inventory_image = "technic_re_battery.png",
 	wear_represents = "technic_RE_charge",
 	on_refill = technic.refill_RE_charge,
 	tool_capabilities = {

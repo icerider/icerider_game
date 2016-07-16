@@ -68,7 +68,7 @@ function witchcraft.register_potion(potiondef)
         description = potiondef.description,
         wield_image = image,
         inventory_image = image,
-        stack_max = 5,
+        stack_max = 50,
         groups = groups,
         on_use = on_use
     })
@@ -79,7 +79,7 @@ witchcraft.register_potion({
     description = "Tasty Potion",
     effect_group = "food",
     upgradable = true,
-    on_use = minetest.item_eat(30, "vessels:glass_bottle"),
+    on_use = minetest.item_eat(20, "vessels:glass_bottle"),
 })
 
 witchcraft.register_potion({
@@ -87,43 +87,26 @@ witchcraft.register_potion({
     description = "Tasty Potion (lv2)",
     image = "witchcraft_potion_red.png^[colorize:black:50",
     effect_group = "food",
-    on_use = minetest.item_eat(100, "vessels:glass_bottle"),
+    on_use = minetest.item_eat(60, "vessels:glass_bottle"),
+})
+
+witchcraft.register_potion({
+    basename = "red_blue",
+    description = "Shady Potion",
+    effect_type = "invisibility",
+    duration = 30,
+    upgradable = true
 })
 
 witchcraft.register_potion({
     basename = "darkpurple",
-    description = "Shady Potion",
-    effect_type = "invisibility",
-    duration = 20,
-    upgradable = true
-})
-
-witchcraft.register_potion({
-    basename = "darkpurple_2",
-    image = "witchcraft_potion_darkpurple.png^[colorize:black:50",
     description = "Shady Potion (lv_2)",
     effect_type = "invisibility",
-    duration = 35,
+    duration = 60,
 })
 
 witchcraft.register_potion({
-    basename = "brown",
-    description = "Murky Potion",
-    effect_type = "toxin",
-    duration = 3,
-    upgradable = true
-})
-
-witchcraft.register_potion({
-    basename = "brown_2",
-    image = "witchcraft_potion_brown.png^[colorize:black:50",
-    description = "Murky Potion (lv_2)",
-    effect_type = "toxin",
-    duration = 5
-})
-
-witchcraft.register_potion({
-    basename = "yellgrn",
+    basename = "orange",
     description = "Dodgy Potion",
     upgradable = true,
     on_use = function(itemstack, placer)
@@ -139,9 +122,9 @@ witchcraft.register_potion({
 })
 
 witchcraft.register_potion({
-    basename = "yellgrn_2",
+    basename = "orange_2",
     description = "Dodgy Potion (lv_2)",
-    image = "witchcraft_potion_yellgrn.png^[colorize:black:50",
+    image = "witchcraft_potion_orange.png^[colorize:black:50",
     on_use = function(itemstack, placer)
         if itemstack:take_item() ~= nil then
             use_bottle(itemstack, placer)
@@ -155,34 +138,21 @@ witchcraft.register_potion({
 })
 
 witchcraft.register_potion({
-    basename = "purple",
+    basename = "brown",
     description = "Smokey Potion",
     spawner = add_smoke_spawner,
     upgradable = true
 })
 
 witchcraft.register_potion({
-    basename = "purple_2",
-    image = "witchcraft_potion_purple.png^[colorize:black:50",
-    description = "Smokey Potion (lv_2)",
-    spawner = add_smoke_spawner_lv2,
-})
-
-witchcraft.register_potion({
-    basename = "gpurple",
+    basename = "lightyellow",
     description = "Filling Potion",
-    on_use = minetest.item_eat(10, "vessels:glass_bottle"),
-})
-
-witchcraft.register_potion({
-    basename = "gred",
-    description = "Hunger Potion",
-    on_use = minetest.item_eat(-4, "vessels:glass_bottle"),
+    on_use = minetest.item_eat(5, "vessels:glass_bottle"),
 })
 
 witchcraft.register_potion({
     basename = "grey",
-    description = "Evil Potion",
+    description = "Catalisator Potion",
     upgradable = true,
     duration = 20,
     effect_type = "slowpoison",
@@ -191,7 +161,7 @@ witchcraft.register_potion({
 witchcraft.register_potion({
     basename = "grey_2",
     image = "witchcraft_potion_grey.png^[colorize:black:50",
-    description = "Evil Potion (lv_2)",
+    description = "Catalisator Potion (lv_2)",
     effect_type = "poison",
     duration = 30,
 })
@@ -199,32 +169,37 @@ witchcraft.register_potion({
 witchcraft.register_potion({
     basename = "blue",
     description = "Bottle of Water",
-    on_use = potion_change_node({"air"}, "default:water_source", true)
+    on_use = drink_item(8)
+    --potion_change_node({"air", "default:water_flowing", "default:river_water_flowing"}, "default:water_source", true)
+})
+
+witchcraft.register_potion({
+    basename = "lava",
+    description = "Bottle of Lava",
+    on_use = potion_change_node({"air", "default:lava_flowing"}, "default:lava_source", true)
 })
 
 witchcraft.register_potion({
     basename = "green",
-    description = "Melon Potion",
-    on_use = potion_farming_grow --change_node({"air"}, "farming:melon_8", true, add_drink_spawner)
+    description = "Grow Plant Potion",
+    on_use = potion_farming_grow
 })
 
 witchcraft.register_potion({
-    basename = "green_2",
-    image = "witchcraft_potion_green.png^[colorize:black:50",
-    description = "Melon Potion (lv_2)",
+    basename = "green2",
+    description = "Grow Tree Potion",
     on_use = potion_tree_grow
 })
 
 witchcraft.register_potion({
-    basename = "yellow",
+    basename = "red_yellow",
     description = "Alchemy Potion",
     upgradable = true,
     on_use = potion_change_node({"technic:lead_block"}, "default:goldblock", false, add_drink_spawner)
 })
 
 witchcraft.register_potion({
-    basename = "yellow_2",
-    image = "witchcraft_potion_yellow.png^[colorize:black:50",
+    basename = "white",
     description = "Alchemy Potion (lv2)",
     on_use = potion_change_node({
         "glooptest:sapphireblock",
@@ -236,13 +211,7 @@ witchcraft.register_potion({
 })
 
 witchcraft.register_potion({
-    basename = "aqua",
-    description = "Complex Potion",
-    on_use = minetest.item_eat(0, "vessels:glass_bottle"),
-})
-
-witchcraft.register_potion({
-    basename = "magenta",
+    basename = "red_green",
     description = "Fast Potion",
     upgradable = true,
     effect_type = "high_speed",
@@ -250,36 +219,57 @@ witchcraft.register_potion({
 })
 
 witchcraft.register_potion({
-    basename = "magenta_2",
-    image = "witchcraft_potion_magenta.png^[colorize:black:50",
+    basename = "red_green_2",
+    image = "witchcraft_potion_red_green.png^[colorize:black:50",
     description = "Fast Potion (lv_2)",
     effect_type = "high_speed",
     duration = 30
 })
 
 witchcraft.register_potion({
-    basename = "cyan",
+    basename = "gpurple",
     description = "Light Potion",
     effect_type = "low_gravity",
     duration = 10
 })
 
 witchcraft.register_potion({
-    basename = "gcyan",
+    basename = "blue2",
     description = "Air Potion",
     effect_type = "breath",
-    duration = 30
+    duration = 20
 })
 
 witchcraft.register_potion({
-    basename = "cyan_2",
-    image = "witchcraft_potion_cyan.png^[colorize:black:50",
+    basename = "blue2_2",
+    image = "witchcraft_potion_blue2.png^[colorize:black:50",
+    description = "Air Potion (lv_2)",
+    effect_type = "breath",
+    duration = 50
+})
+
+witchcraft.register_potion({
+    basename = "cyan",
     description = "Teleport Potion",
     on_use = go_home_effect
 })
 
 witchcraft.register_potion({
-    basename = "green2",
+    basename = "aqua",
+    description = "Home Portal Potion",
+    on_use = potion_change_node({"air", "default:air"}, "witchcraft:portal", true, add_drink_spawner, true)
+})
+
+witchcraft.register_potion({
+    basename = "yellow",
+    description = "Low Jump Potion",
+    effect_type = "low_jump",
+    duration = 20
+})
+
+witchcraft.register_potion({
+    basename = "yellow_2",
+    image = "witchcraft_potion_yellow.png^[colorize:black:50",
     description = "Volatile Potion",
     effect_type = "high_jump",
     upgradable = true,
@@ -287,21 +277,15 @@ witchcraft.register_potion({
 })
 
 witchcraft.register_potion({
-    basename = "green2_2",
-    image = "witchcraft_potion_green2.png^[colorize:black:50",
+    basename = "ggreen",
     description = "Volatile Potion (lv_2)",
     effect_type = "high_jump",
     duration = 20
 })
 
-witchcraft.register_potion({
-    basename = "ggreen",
-    description = "Darkness Potion",
-    spawner = add_dark_spawner
-})
 
 witchcraft.register_potion({
-    basename = "redbrown",
+    basename = "purple",
     description = "Antidot Potion",
     effect_type = "antidot",
     upgradable = true,
@@ -309,15 +293,15 @@ witchcraft.register_potion({
 })
 
 witchcraft.register_potion({
-    basename = "redbrown_2",
-    image = "witchcraft_potion_redbrown.png^[colorize:black:50",
+    basename = "purple_2",
+    image = "witchcraft_potion_purple.png^[colorize:black:50",
     description = "Antidot Potion (lv_2)",
     effect_type = "strong_antidot",
     duration = 20
 })
 
 witchcraft.register_potion({
-    basename = "blue2",
+    basename = "magenta",
     description = "Waterly Potion",
     effect_type = "swimming",
     upgradable = true,
@@ -325,15 +309,15 @@ witchcraft.register_potion({
 })
 
 witchcraft.register_potion({
-    basename = "blue2_2",
-    image = "witchcraft_potion_blue2.png^[colorize:black:50",
+    basename = "magenta_2",
+    image = "witchcraft_potion_magenta.png^[colorize:black:50",
     description = "Waterly Potion (lv_2)",
     effect_type = "diving",
     duration = 60
 })
 
 witchcraft.register_potion({
-    basename = "orange",
+    basename = "yellgrn",
     description = "Dragon Potion",
     on_use = spawn_magic("witchcraft:fire", "witchcraft_flame.png", 
         function(dir)
@@ -343,10 +327,10 @@ witchcraft.register_potion({
 })
 
 witchcraft.register_potion({
-    basename = "orange_2",
-    image = "witchcraft_potion_orange.png^[colorize:black:50",
+    basename = "yellgrn_2",
+    image = "witchcraft_potion_yellgrn.png^[colorize:black:50",
     description = "Dragon Potion (lv_2)",
-    on_use = spawn_magic("witchcraft:fire", "witchcraft_flame.png^[colorize:blue:200", 
+    on_use = spawn_magic("witchcraft:fire_2", "witchcraft_flame.png^[colorize:blue:200", 
         function(dir)
             return {x=dir.x*3, y=dir.y*3.5, z=dir.z*3}
         end
@@ -354,7 +338,7 @@ witchcraft.register_potion({
 })
 
 witchcraft.register_potion({
-    basename = "orange",
+    basename = "yellgrn",
     itemtype = "splash",
     description = "Dragon Splash Potion",
     on_use = spawn_magic("witchcraft:fire_splash", nil, 
@@ -365,7 +349,7 @@ witchcraft.register_potion({
 })
 
 witchcraft.register_potion({
-    basename = "yellgrn",
+    basename = "orange",
     itemtype = "splash",
     description = "Dodgy Splash Potion",
     on_use = spawn_magic("witchcraft:tnt_splash", nil, 
@@ -374,3 +358,20 @@ witchcraft.register_potion({
         end, {x=0,y=-9.8,z=0}
     )
 })
+
+witchcraft.register_potion({
+    basename = "gcyan",
+    description = "Strong Regeneration Potion",
+    effect_type = "regen",
+    upgradable = true,
+    duration = 20
+})
+
+witchcraft.register_potion({
+    basename = "gred",
+    description = "Regeneration Potion",
+    effect_type = "slowregen",
+    upgradable = true,
+    duration = 10
+})
+

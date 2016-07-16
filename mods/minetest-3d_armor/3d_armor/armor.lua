@@ -6,6 +6,7 @@ ARMOR_DROP = minetest.get_modpath("bones") ~= nil
 ARMOR_DESTROY = false
 ARMOR_LEVEL_MULTIPLIER = 1
 ARMOR_HEAL_MULTIPLIER = 1
+ARMOR_STATE_MULTIPLIER = 0.7
 ARMOR_RADIATION_MULTIPLIER = 1
 ARMOR_MATERIALS = {
 	wood = "group:wood",
@@ -169,10 +170,11 @@ armor.set_player_armor = function(self, player)
 						local texture = def.texture or item:gsub("%:", "_")
 						table.insert(textures, texture..".png")
 						preview = preview.."^"..texture.."_preview.png"
-						armor_level = armor_level + level
+						armor_level = armor_level + level - level * ARMOR_STATE_MULTIPLIER * stack:get_wear() / 65535.0
 						state = state + stack:get_wear()
 						items = items + 1
-						armor_heal = armor_heal + (def.groups["armor_heal"] or 0)
+						local cur_armor_heal = def.groups["armor_heal"] or 0
+						armor_heal = armor_heal + cur_armor_heal - cur_armor_heal * ARMOR_STATE_MULTIPLIER * stack:get_wear() / 65535.0
 						armor_fire = armor_fire + (def.groups["armor_fire"] or 0)
 						armor_water = armor_water + (def.groups["armor_water"] or 0)
 						armor_radiation = armor_radiation + (def.groups["armor_radiation"] or 0)
@@ -535,7 +537,7 @@ end
 minetest.register_on_player_hpchange(function(player, hp_change)
 	local name, player_inv, armor_inv = armor:get_valid_player(player, "[on_hpchange]")
 	print("[on_hpchange]"..hp_change)
-	if name and hp_change < 0 then
+	if name and hp_change <= 0 then
 
 		-- used for insta kill tools/commands like /kill (doesnt damage armor)
 		if hp_change < -100 then
@@ -561,12 +563,12 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 					if desc then
 						minetest.chat_send_player(name, "Your "..desc.." got destroyed!")
 					end
-					armor:set_player_armor(player)
-					armor:update_inventory(player)
 				end
 				heal_max = heal_max + heal
 			end
 		end
+		armor:set_player_armor(player)
+		armor:update_inventory(player)
 		armor.def[name].state = state
 		armor.def[name].count = items
 		heal_max = heal_max * ARMOR_HEAL_MULTIPLIER

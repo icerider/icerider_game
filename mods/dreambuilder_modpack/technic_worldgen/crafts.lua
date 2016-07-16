@@ -135,6 +135,18 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = 'cooking',
+	recipe = "technic:sulfur_dust",
+	output = "technic:h2so4",
+})
+
+minetest.register_craft({
+	type = 'cooking',
+	recipe = "technic:sulfur_lump",
+	output = "technic:h2so4",
+})
+
+minetest.register_craft({
+	type = 'cooking',
 	recipe = "technic:cast_iron_ingot",
 	cooktime = 2,
 	output = "technic:wrought_iron_ingot",

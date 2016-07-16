@@ -95,7 +95,6 @@ minetest.register_node("witchcraft:shelf", {
 	end,
 })
 
---ingredients
 
 minetest.register_node("witchcraft:bottle_eyes", {
 	description = "Jar of eyes",
@@ -284,6 +283,13 @@ minetest.register_node("witchcraft:pot", {
 		if wield_item == "bucket:bucket_water" or
 				wield_item == "bucket:bucket_river_water" then
 			minetest.set_node(pos, {name="witchcraft:pot_blue", param2=node.param2})
+			local meta = minetest.get_meta(pos)
+			meta:set_int("capacity", 3)
+			item:replace("bucket:bucket_empty")
+		elseif wield_item == "bucket:bucket_lava" then
+			minetest.set_node(pos, {name="witchcraft:pot_lava", param2=node.param2})
+			local meta = minetest.get_meta(pos)
+			meta:set_int("capacity", 3)
 			item:replace("bucket:bucket_empty")
 		elseif wield_item == "vessels:drinking_glass" then
 			item:replace("witchcraft:bottle_slime")
@@ -299,8 +305,11 @@ witchcraft.pot = {
     "blue",
     "blue2",
     "grey",
+    "grey_2",
+    "lightyellow",
     "red",
     "green",
+    "lava",
     "purple",
     "yellow",
     "brown",
@@ -308,6 +317,8 @@ witchcraft.pot = {
     "magenta",
     "gcyan",
     "aqua",
+    "yellgrn",
+    "yellgrn_2",
     "redbrown",
     "darkpurple",
 }
@@ -360,8 +371,20 @@ for _, color in ipairs(witchcraft.pot) do
                 meta:set_int("capacity", capacity)
             end
         else
-            local result = technic.get_recipe("cauldron", {ItemStack("witchcraft:pot_"..color),
+            local result = nil
+
+            result = technic.get_recipe("cauldron", {ItemStack("witchcraft:pot_"..color),
                                                            ItemStack(wield_item)})
+            if not result then
+                print("NO RESULT "..wield_item.."$$$$"..minetest.get_item_group(wield_item, "leaves"))
+                if minetest.get_item_group(wield_item, "leaves") > 0 then
+                    result = technic.get_recipe("cauldron", {ItemStack("witchcraft:pot_"..color),
+                                                                   ItemStack("group:leaves")})
+                end
+            end
+            if result then
+                print("RESULT "..wield_item)
+            end
             local capacity = nil
             if result then
                 local spl = string.gmatch(result.output, "%S+")
@@ -527,7 +550,7 @@ local recipes = {
 	{"witchcraft:pot_blue",         "flowers:mushroom_brown",         "witchcraft:pot_brown"},
 	{"witchcraft:pot_blue",         "mobs:dung",                      "witchcraft:pot_brown"},
 	{"witchcraft:pot_blue",         "flowers:geranium",               "witchcraft:pot_blue2"},
-	{"witchcraft:pot_blue",         "flowers:blueberries",            "witchcraft:pot_blue2"},
+	{"witchcraft:pot_blue",         "farming:blueberries",            "witchcraft:pot_blue2"},
 	{"witchcraft:pot_blue",         "flowers:mushroom_red",           "witchcraft:pot_red"},
 	{"witchcraft:pot_blue",         "flowers:rose",                   "witchcraft:pot_red"},
 	{"witchcraft:pot_blue",         "default:apple",                  "witchcraft:pot_red"},
@@ -535,22 +558,30 @@ local recipes = {
 	{"witchcraft:pot_blue",         "flowers:dandelion_yellow",       "witchcraft:pot_yellow"},
 	{"witchcraft:pot_blue",         "flowers:viola",                  "witchcraft:pot_purple"},
 	{"witchcraft:pot_blue",         "farming:grapes",                 "witchcraft:pot_purple"},
-	{"witchcraft:pot_blue",         "witchcraft:herb",                "witchcraft:pot_green"},
-	{"witchcraft:pot_blue",         "group:leaves",                   "witchcraft:pot_green"},
-	{"witchcraft:pot_blue",         "flowers:orange_tulip",           "witchcraft:pot_orange"},
+	{"witchcraft:pot_blue",         "witchcraft:herb",                "witchcraft:pot_green 4"},
+	{"witchcraft:pot_blue",         "group:leaves",                   "witchcraft:pot_green 2"},
+	{"witchcraft:pot_blue",         "flowers:tulip",                  "witchcraft:pot_orange"},
 	{"witchcraft:pot_blue",         "farming_plus:orange_item",       "witchcraft:pot_orange"},
 	{"witchcraft:pot_blue",         "bushes:blackberry",              "witchcraft:pot_magenta"},
 	{"witchcraft:pot_blue",         "bushes:raspberry",               "witchcraft:pot_magenta"},
-	{"witchcraft:pot_blue",         "default:mese_crystal_fragment",  "witchcraft:pot_grey"},
+	{"witchcraft:pot_blue",         "default:mese_crystal_fragment",  "witchcraft:pot_lightyellow"},
 	{"witchcraft:pot_blue",         "mobs:zombie_tibia",              "witchcraft:pot_grey"},
-	{"witchcraft:pot_blue",         "mobs:lava_orb",                  "witchcraft:pot_grey"},
-	{"witchcraft:pot_blue",         "mobs:minotaur_horn",             "witchcraft:pot_grey"},
-	{"witchcarft:pot_brown",        "witchcraft:bottle_eyes",         "witchcarft:pot_gcyan"},
-	{"witchcarft:pot_red",          "mobs:minotaur_lots_of_fur",      "witchcarft:pot_darkpurple"},
-	{"witchcarft:pot_yellow",       "mobs:dungeon_master_diamond",    "witchcarft:pot_aqua"},
-	{"witchcarft:pot_orange",       "mobs:dungeon_master_blood",      "witchcarft:pot_redbrown"},
+	{"witchcraft:pot_blue",         "mobs:lava_orb",                  "witchcraft:pot_grey 2"},
+	{"witchcraft:pot_blue",         "mobs:minotaur_horn",             "witchcraft:pot_grey 2"},
+	{"witchcraft:pot_brown",        "witchcraft:bottle_eyes",         "witchcraft:pot_gcyan 2"},
+	{"witchcraft:pot_red",          "mobs:minotaur_lots_of_fur",      "witchcraft:pot_darkpurple 2"},
+	{"witchcraft:pot_yellow",       "mobs:dungeon_master_diamond",    "witchcraft:pot_aqua 4"},
+	{"witchcraft:pot_orange",       "mobs:dungeon_master_blood",      "witchcraft:pot_grey_2 4"},
+	{"witchcraft:pot_blue2",        "default:apple",                  "witchcraft:pot_purple"},
+	{"witchcraft:pot_red",          "flowers:sunflower",              "witchcraft:pot_orange"},
+	{"witchcraft:pot_yellow",       "witchcraft:potion_gred",         "witchcraft:pot_cyan"},
+	{"witchcraft:pot_lava",         "farming:weed",                   "witchcraft:pot_yellgrn"},
+	{"witchcraft:pot_lava",         "witchcraft:potion_aqua",         "witchcraft:pot_aqua"},
+	{"witchcraft:pot_yellgrn",      "witchcraft:potion_grey",         "witchcraft:pot_yellgrn_2"},
 }
 
+--{"witchcraft:potion_yellow_2", "witchcraft:potion_brown 2", "witchcraft:potion_red_blue",   "witchcraft:potion_cyan"},
+--{"witchcraft:potion_cyan", "witchcraft:potion_grey2", "witchcraft:potion_brown 2",   "witchcraft:potion_aqua"},
 for _, data in pairs(recipes) do
 	technic.register_cauldron_recipe({input = {data[1], data[2]}, output = data[3], time = data[4]})
 end

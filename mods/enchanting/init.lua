@@ -29,12 +29,12 @@ function enchanting.formspec(pos, num)
 			..default.gui_slots..default.get_hotbar_bg(0.5,4.5)
 
 	local enchant_buttons = {
-		[[ image_button[3.9,0.85;4,0.92;bg_btn.png;fast;Efficiency]
-		image_button[3.9,1.77;4,1.12;bg_btn.png;durable;Durability] ]],
-		"image_button[3.9,0.85;4,0.92;bg_btn.png;strong;Strength]",
-		"image_button[3.9,2.9;4,0.92;bg_btn.png;sharp;Sharpness]",
-		[[ image_button[3.9,0.85;4,0.92;bg_btn.png;strong;Strength]
-		image_button[3.9,1.77;4,1.12;bg_btn.png;speed;Speed] ]]
+		[[ image_button[3.9,0.85;4,0.92;bg_btn.png;fast;Efficiency (Emerald)]
+		image_button[3.9,1.77;4,1.12;bg_btn.png;durable;Durability (Amethist)] ]],
+		"image_button[3.9,0.85;4,0.92;bg_btn.png;strong;Strength (Sapphire)]",
+		"image_button[3.9,2.9;4,0.92;bg_btn.png;sharp;Sharpness (Ruby)]",
+		[[ image_button[3.9,0.85;4,0.92;bg_btn.png;strong;Strength (Sapphire)]
+		image_button[3.9,1.77;4,1.12;bg_btn.png;speed;Speed (Topaz)] ]]
 	}
 
 	formspec = formspec..(enchant_buttons[num] or "")

@@ -13,7 +13,7 @@ mobs:register_mob("mobs:spider", {
 	-- health & armor
 	hp_min = 25,
 	hp_max = 35,
-	armor = 200,
+	armor = 100,
 	-- textures and model
 	collisionbox = {-0.9, -0.01, -0.7, 0.7, 0.6, 0.7},
 	visual = "mesh",
@@ -63,7 +63,7 @@ mobs:register_mob("mobs:spider", {
 })
 
 -- spawn on jungleleaves/jungletree, between 0 and 5 light, 1 in 10000 chance, 1 in area up to 31000 in height
-mobs:spawn_specific("mobs:spider", {"default:jungleleaves", "default:jungletree"}, {"air"}, -1, 20, 30, 10000, 1, -31000, 31000, false)
+mobs:spawn_specific("mobs:spider", {"default:jungleleaves", "default:jungletree"}, {"air"}, -1, 20, 30, 10000, 3, -31000, 31000, false)
 
 -- register spawn egg
 mobs:register_egg("mobs:spider", "Spider", "mobs_spider_inv.png", 1)

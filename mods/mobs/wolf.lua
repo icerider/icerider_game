@@ -9,9 +9,9 @@ mobs:register_mob("mobs:wolf", {
 	attack_type = "dogfight",
 	pathfinding = false,
 	reach = 2,
-	damage = 3,					-- 2 damages if tamed
+	damage = 4,					-- 2 damages if tamed
 	-- health & armor
-	hp_min = 15, hp_max = 20, armor = 200,
+	hp_min = 15, hp_max = 20, armor = 100,
 	-- textures and model
 	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1, 0.4},
 	visual = "mesh",
@@ -69,5 +69,5 @@ mobs:register_mob("mobs:wolf", {
 		end
 	end
 })
-mobs:spawn_specific("mobs:wolf", {"default:dirt_with_grass"}, {"air"}, -1, 3, 30, 15000, 1, -31000, 31000, false)
+mobs:spawn_specific("mobs:wolf", {"default:dirt_with_grass"}, {"air"}, -1, 3, 30, 15000, 3, -31000, 31000, false)
 mobs:register_egg("mobs:wolf", "Wolf", "mobs_wolf_inv.png", 1)

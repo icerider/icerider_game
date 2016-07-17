@@ -19,6 +19,11 @@ minetest.register_craftitem("farming:grapes", {
 			minetest.set_node(pointed_thing.under, {name = "farming:grapes_1"})
 
 			minetest.sound_play("default_place_node", {pos = pointed_thing.above, gain = 1.0})
+		elseif nodename == "witchcraft:pot_blue" then
+			pos = pointed_thing.under
+			minetest.set_node(pos, {name="witchcraft:pot_purple"})
+			local meta = minetest.get_meta(pos)
+			meta:set_int("capacity", capacity)
 		else
 			return
 		end

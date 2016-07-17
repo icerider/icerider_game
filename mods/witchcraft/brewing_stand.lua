@@ -19,7 +19,7 @@ local recipes = {
 	{"witchcraft:potion_red", "witchcraft:potion_grey", "witchcraft:potion_blue2",   "witchcraft:potion_red_blue"},
 	{"witchcraft:potion_red_blue", "witchcraft:potion_grey", "witchcraft:potion_brown",   "witchcraft:potion_darkpurple"},
 	{"witchcraft:potion_orange", "witchcraft:potion_grey", "default:coal_lump",   "witchcraft:potion_orange_2"},
-	{"witchcraft:potion_grey_2", "", "",   "witchcraft:potion_grey 2"},
+	{"witchcraft:potion_grey_2", "vessels:glass_bottle", "",   "witchcraft:potion_grey 2"},
 	{"witchcraft:potion_grey 2", "", "",   "witchcraft:potion_grey_2"},
 	{"witchcraft:potion_blue2 2", "", "",   "witchcraft:potion_blue2_2"},
 	{"witchcraft:potion_ggreen", "witchcraft:potion_grey", "witchcraft:potion_red_2",   "witchcraft:potion_gpurple"},
@@ -38,6 +38,9 @@ local recipes = {
 	{"witchcraft:potion_yellow", "witchcraft:potion_grey", "witchcraft:potion_yellow",  "witchcraft:potion_yellow_2"},
 	{"witchcraft:potion_yellow_2", "witchcraft:potion_grey", "witchcraft:potion_green 2",  "witchcraft:potion_ggreen"},
 	{"witchcraft:potion_red_2", "witchcraft:potion_grey", "witchcraft:potion_brown 2",  "witchcraft:potion_gred"},
+	{"technic:sulfur_lump", "vessels:glass_bottle", "",   "witchcraft:potion_so2"},
+	{"technic:sulfur_dust", "vessels:glass_bottle", "",   "witchcraft:potion_so2"},
+	{"witchcraft:potion_so2", "witchcraft:potion_blue", "",   "technic:h2so4"},
 }
 
 for _, data in pairs(recipes) do

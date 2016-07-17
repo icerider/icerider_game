@@ -41,9 +41,20 @@ minetest.register_craftitem("technic:h2so4", {
 })
 
 minetest.register_craft({
+     type = 'cooking',
+     recipe = "technic:lead_ingot",
+     output = "technic:lead_oxide_ingot",
+})
+
+minetest.register_craftitem("technic:so2", {
+	description = S("Sulfur Oxide"),
+	inventory_image = "technic_sulfur_acid.png",
+})
+
+minetest.register_craft({
 	output = 'technic:lead_battery',
 	recipe = {
-		{'technic:lead_ingot', 'technic:lead_ingot', 'technic:lead_ingot'},
+		{'technic:lead_oxide_ingot', 'technic:lead_ingot', 'technic:lead_ingot'},
 		{'homedecor:plastic_sheeting', 'technic:h2so4',   'homedecor:plastic_sheeting'},
 		{'homedecor:plastic_sheeting', 'homedecor:plastic_sheeting', 'homedecor:plastic_sheeting'},
 	}

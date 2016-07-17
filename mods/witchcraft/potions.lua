@@ -159,6 +159,14 @@ witchcraft.register_potion({
 })
 
 witchcraft.register_potion({
+    basename = "so2",
+    description = "Sulfur Oxide",
+    upgradable = true,
+    duration = 60,
+    effect_type = "slowpoison",
+})
+
+witchcraft.register_potion({
     basename = "grey_2",
     image = "witchcraft_potion_grey.png^[colorize:black:50",
     description = "Catalisator Potion (lv_2)",

@@ -63,7 +63,7 @@ mobs:register_mob("mobs:iron_monster", {
 })
 
 -- spawns on iron between -1 and 5 light, 1 in 9000 chance, 1 in area below -25
-mobs:spawn_specific("mobs:iron_monster", {"default:stone_with_iron", "glooptest:mineral_desert_iron"}, {"air"}, -1, 5, 30, 30000, 3, -31000, -155, false)
+mobs:spawn_specific("mobs:iron_monster", {"default:stone_with_iron", "glooptest:mineral_desert_iron"}, {"air"}, -1, 15, 30, 9000, 3, -31000, -155, false)
 
 -- register spawn egg
 mobs:register_egg("mobs:iron_monster", "Iron Monster", "mobs_iron_monster_inv.png", 1)

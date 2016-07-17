@@ -43,6 +43,11 @@ minetest.register_craftitem(":technic:lead_ingot", {
 	inventory_image = "technic_lead_ingot.png",
 })
 
+minetest.register_craftitem(":technic:lead_oxide_ingot", {
+	description = S("Lead Oxide Ingot"),
+	inventory_image = "technic_lead_oxide_ingot.png",
+})
+
 minetest.register_craftitem(":technic:sulfur_lump", {
 	description = S("Sulfur Lump"),
 	inventory_image = "technic_sulfur_lump.png",
@@ -131,18 +136,6 @@ minetest.register_craft({
 	type = 'cooking',
 	recipe = minetest.registered_aliases["technic:wrought_iron_ingot"],
 	output = "technic:cast_iron_ingot",
-})
-
-minetest.register_craft({
-	type = 'cooking',
-	recipe = "technic:sulfur_dust",
-	output = "technic:h2so4",
-})
-
-minetest.register_craft({
-	type = 'cooking',
-	recipe = "technic:sulfur_lump",
-	output = "technic:h2so4",
 })
 
 minetest.register_craft({

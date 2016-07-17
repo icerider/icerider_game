@@ -19,13 +19,13 @@ function technic.handle_machine_upgrades(meta)
 
 	if upg_item1 == "technic:control_logic_unit" then
 		tube_upgrade = tube_upgrade + 1
-	elseif upg_item1 == "technic:battery" then
+	elseif upg_item1 == "technic:lead_battery" then
 		EU_upgrade = EU_upgrade + 1
 	end
 
 	if upg_item2 == "technic:control_logic_unit" then
 		tube_upgrade = tube_upgrade + 1
-	elseif  upg_item2 == "technic:battery" then
+	elseif  upg_item2 == "technic:lead_battery" then
 		EU_upgrade = EU_upgrade + 1
 	end
 
@@ -39,7 +39,7 @@ local function on_machine_upgrade(meta, stack)
 		meta:set_int("public", 1)
 		return 1
 	elseif stack_name ~= "technic:control_logic_unit"
-	   and stack_name ~= "technic:battery" then
+	   and stack_name ~= "technic:lead_battery" then
 		return 0
 	end
 	return 1

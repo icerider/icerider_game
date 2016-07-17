@@ -9,6 +9,15 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = 'technic:mv_battery_box0',
+	recipe = {
+		{'technic:lead_battery', 'technic:lead_battery', 'technic:lead_battery'},
+		{'technic:lead_battery', 'technic:mv_transformer',  'technic:lead_battery'},
+		{'',                        'technic:mv_cable',        ''},
+	}
+})
+
 technic.register_battery_box({
 	tier           = "MV",
 	max_charge     = 200000,
@@ -18,5 +27,6 @@ technic.register_battery_box({
 	discharge_step = 8000,
 	upgrade        = 1,
 	tube           = 1,
+	mv             = 1
 })
 

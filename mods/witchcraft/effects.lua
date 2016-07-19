@@ -879,8 +879,12 @@ local portal_def = {
             local p = {x=pos.x, y=pos.y+1, z=pos.z}
             minetest.remove_node(p)
             p = player:getpos()
-            minetest.place_node(p, {name="witchcraft:portal"})
+            minetest.remove_node(p)
+            minetest.set_node(p, {name="witchcraft:portal"})
             minetest.get_meta(p):set_string("target",minetest.pos_to_string(pos))
+            p.y = p.y + 1
+            minetest.remove_node(p)
+            minetest.set_node(p, {name="witchcraft:portal_top"})
         else
             local target = minetest.string_to_pos(meta:get_string("target"))
             minetest.remove_node(pos)
@@ -902,7 +906,7 @@ minetest.register_node("witchcraft:portal_top", table.copy(portal_def))
 portal_def.description = "Home Portal"
 groups = {snappy=1, oddly_breakable_by_hand=1}
 portal_def.after_place_node  = function(pos, placer, itemstack)
-        local node = minetest.get_node(pos)
+       local node = minetest.get_node(pos)
        local p = {x=pos.x, y=pos.y+1, z=pos.z}
        local p2 = node.param2
        minetest.add_node(p, {name="witchcraft:portal_top", paramtype2="facedir", param2=p2})

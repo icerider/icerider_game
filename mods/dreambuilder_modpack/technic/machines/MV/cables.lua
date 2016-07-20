@@ -5,7 +5,7 @@ minetest.register_craft({
 	output = 'technic:mv_cable 3',
 	recipe ={
 		{'technic:rubber',   'technic:rubber',   'technic:rubber'},
-		{'technic:lv_cable', 'technic:lv_cable', 'technic:lv_cable'},
+		{'default:copper_ingot', 'default:copper_ingot', 'default:copper_ingot'},
 		{'technic:rubber',   'technic:rubber',   'technic:rubber'},
 	}
 }) 

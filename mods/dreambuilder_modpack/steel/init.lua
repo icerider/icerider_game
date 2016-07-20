@@ -237,7 +237,7 @@ minetest.register_craft({
 	output = 'steel:grate_soft 3',
 	recipe = {
 		{'default:steel_ingot', '', 'default:steel_ingot'},
-		{'default:steel_ingot', '', 'default:steel_ingot'},
+		{'default:steel_ingot', 'default:steel_ingot', 'default:steel_ingot'},
 	}
 })
 

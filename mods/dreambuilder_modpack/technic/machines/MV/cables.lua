@@ -10,5 +10,14 @@ minetest.register_craft({
 	}
 }) 
 
+minetest.register_craft({
+	output = 'technic:mv_cable 3',
+	recipe ={
+		{'technic:rubber',   'technic:rubber',   'technic:rubber'},
+		{'default:silver_ingot', 'default:silver_ingot', 'default:silver_ingot'},
+		{'technic:rubber',   'technic:rubber',   'technic:rubber'},
+	}
+}) 
+
 technic.register_cable("MV", 2.5/16)
 

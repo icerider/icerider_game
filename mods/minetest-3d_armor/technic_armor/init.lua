@@ -1,7 +1,7 @@
 local stats = {
 	lead = { name="Lead", material="technic:lead_ingot", armor=1.6, heal=0, use=500, radiation=80*1.1 },
 	brass = { name="Brass", material="technic:brass_ingot", armor=1.8, heal=0, use=650, radiation=43 },
-	cast = { name="Cast Iron", material="technic:cast_iron_ingot", armor=2.5, heal=8, use=200, radiation=40 },
+	--cast = { name="Cast Iron", material="technic:cast_iron_ingot", armor=2.5, heal=8, use=200, radiation=40 },
 	carbon = { name="Carbon Steel", material="technic:carbon_steel_ingot", armor=2.7, heal=10, use=100, radiation=40 },
 	stainless = { name="Stainless Steel", material="technic:stainless_steel_ingot", armor=2.7, heal=10, use=75, radiation=40 },
 }

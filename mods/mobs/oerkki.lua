@@ -65,6 +65,6 @@ mobs:register_mob("mobs:oerkki", {
 })
 -- spawns on stone/sandstone between 5 and -1 light, 1 in 9000 chance, 1 in area starting at -10 and below
 mobs:spawn_specific("mobs:oerkki", {"default:stone", "default:sandstone"}, {"air"}, -1, 5, 30, 9000, 2, -150, -75, false)
-mobs:spawn_specific("mobs:oerkki", {"default:stone", "default:sandstone"}, {"air"}, -1, 15, 30, 5000, 2, -31000, -150, false)
+mobs:spawn_specific("mobs:oerkki", {"default:stone", "default:sandstone"}, {"air"}, -1, 12, 30, 5000, 2, -31000, -150, false)
 -- register spawn egg
 mobs:register_egg("mobs:oerkki", "Oerkki", "mobs_oerkki_inv.png", 1)

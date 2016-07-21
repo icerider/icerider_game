@@ -60,25 +60,25 @@ if ARMOR_MATERIALS.steel then
 	minetest.register_tool("3d_armor:helmet_steel", {
 		description = "Steel Helmet",
 		inventory_image = "3d_armor_inv_helmet_steel.png",
-		groups = {armor_head=10, armor_heal=0, armor_use=500},
+		groups = {armor_head=8, armor_heal=0, armor_use=500},
 		wear = 0,
 	})
 	minetest.register_tool("3d_armor:chestplate_steel", {
 		description = "Steel Chestplate",
 		inventory_image = "3d_armor_inv_chestplate_steel.png",
-		groups = {armor_torso=15, armor_heal=0, armor_use=500},
+		groups = {armor_torso=12, armor_heal=0, armor_use=500},
 		wear = 0,
 	})
 	minetest.register_tool("3d_armor:leggings_steel", {
 		description = "Steel Leggings",
 		inventory_image = "3d_armor_inv_leggings_steel.png",
-		groups = {armor_legs=15, armor_heal=0, armor_use=500},
+		groups = {armor_legs=12, armor_heal=0, armor_use=500},
 		wear = 0,
 	})
 	minetest.register_tool("3d_armor:boots_steel", {
 		description = "Steel Boots",
 		inventory_image = "3d_armor_inv_boots_steel.png",
-		groups = {armor_feet=10, armor_heal=0, armor_use=500},
+		groups = {armor_feet=8, armor_heal=0, armor_use=500},
 		wear = 0,
 	})
 end

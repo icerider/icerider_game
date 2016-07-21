@@ -52,7 +52,7 @@ minetest.register_tool("default:pick_steel", {
 		full_punch_interval = 1.0,
 		max_drop_level=1,
 		groupcaps={
-			cracky = {times={[1]=4.00, [2]=1.60, [3]=0.80}, uses=20, maxlevel=2},
+			cracky = {times={[2]=1.80, [3]=1.00}, uses=20, maxlevel=2},
 		},
 		damage_groups = {fleshy=4},
 	},
@@ -129,10 +129,10 @@ minetest.register_tool("default:shovel_steel", {
 	inventory_image = "default_tool_steelshovel.png",
 	wield_image = "default_tool_steelshovel.png^[transformR90",
 	tool_capabilities = {
-		full_punch_interval = 1.1,
+		full_punch_interval = 1.2,
 		max_drop_level=1,
 		groupcaps={
-			crumbly = {times={[1]=1.50, [2]=0.90, [3]=0.40}, uses=30, maxlevel=2},
+			crumbly = {times={[1]=1.70, [2]=1.00, [3]=0.40}, uses=30, maxlevel=2},
 		},
 		damage_groups = {fleshy=3},
 	},
@@ -209,10 +209,10 @@ minetest.register_tool("default:axe_steel", {
 	description = "Steel Axe",
 	inventory_image = "default_tool_steelaxe.png",
 	tool_capabilities = {
-		full_punch_interval = 1.0,
+		full_punch_interval = 1.1,
 		max_drop_level=1,
 		groupcaps={
-			choppy={times={[1]=2.50, [2]=1.40, [3]=1.00}, uses=20, maxlevel=2},
+			choppy={times={[1]=2.60, [2]=1.50, [3]=1.20}, uses=20, maxlevel=2},
 		},
 		damage_groups = {fleshy=4},
 	},
@@ -286,12 +286,12 @@ minetest.register_tool("default:sword_steel", {
 	description = "Steel Sword",
 	inventory_image = "default_tool_steelsword.png",
 	tool_capabilities = {
-		full_punch_interval = 0.8,
+		full_punch_interval = 1.0,
 		max_drop_level=1,
 		groupcaps={
 			snappy={times={[1]=2.5, [2]=1.20, [3]=0.35}, uses=30, maxlevel=2},
 		},
-		damage_groups = {fleshy=6},
+		damage_groups = {fleshy=5},
 	}
 })
 minetest.register_tool("default:sword_bronze", {

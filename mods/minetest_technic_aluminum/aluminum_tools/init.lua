@@ -16,7 +16,7 @@ minetest.register_tool(":technic_aluminum:pick_aluminum", {
 	description = S("Aluminum Pickaxe"),
 	inventory_image = "aluminum_tool_pick_aluminum.png",
 	tool_capabilities = {
-		full_punch_interval = 0.8,
+		full_punch_interval = 0.7,
 		max_drop_level=1,
 		groupcaps={
 			cracky = {times={[1]=4.00, [2]=1.60, [3]=0.80}, uses=15, maxlevel=2},
@@ -39,7 +39,7 @@ minetest.register_tool(":technic_aluminum:shovel_aluminum", {
 	inventory_image = "aluminum_tool_shovel_aluminum.png",
 	wield_image = "aluminum_tool_shovel_aluminum.png^[transformR90",
 	tool_capabilities = {
-		full_punch_interval = 0.9,
+		full_punch_interval = 0.7,
 		max_drop_level=1,
 		groupcaps={
 			crumbly = {times={[1]=1.50, [2]=0.90, [3]=0.40}, uses=25, maxlevel=2},
@@ -61,7 +61,7 @@ minetest.register_tool(":technic_aluminum:axe_aluminum", {
 	description =  S("Aluminum Axe"),
 	inventory_image = "aluminum_tool_axe_aluminum.png",
 	tool_capabilities = {
-		full_punch_interval = 0.8,
+		full_punch_interval = 0.7,
 		max_drop_level=1,
 		groupcaps={
 			choppy={times={[1]=2.50, [2]=1.40, [3]=1.00}, uses=15, maxlevel=2},
@@ -83,7 +83,7 @@ minetest.register_tool(":technic_aluminum:sword_aluminum", {
 	description =  S("Aluminum Sword"),
 	inventory_image = "aluminum_tool_sword_aluminum.png",
 	tool_capabilities = {
-		full_punch_interval = 0.8,
+		full_punch_interval = 0.7,
 		max_drop_level=1,
 		groupcaps={
 			snappy={times={[1]=2.5, [2]=1.20, [3]=0.35}, uses=25, maxlevel=2},

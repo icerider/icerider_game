@@ -35,7 +35,7 @@ minetest.register_craftitem("mesecons_materials:silicon", {
 minetest.register_craft({
 	output = "mesecons_materials:silicon 4",
 	recipe = {
-		{"group:sand", "group:sand"},
-		{"group:sand", "default:steel_ingot"},
+		{"quartz:quartz_crystal", "quartz:quartz_crystal"},
+		{"quartz:quartz_crystal", "default:steel_ingot"},
 	}
 })

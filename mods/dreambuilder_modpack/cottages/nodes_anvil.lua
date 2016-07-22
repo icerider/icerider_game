@@ -156,7 +156,8 @@ minetest.register_node("cottages:anvil", {
 		end
 		-- only punching with the hammer is supposed to work
 		local wielded = puncher:get_wielded_item();
-		if( not( wielded ) or not( wielded:get_name() ) or wielded:get_name() ~= 'cottages:hammer') then
+		local wieldedtype = wielded:get_name():match("[a-zA-Z_]+:hammer_(.*)")
+		if( not( wielded ) or not( wielded:get_name() ) or not string.find(wielded:get_name(),'hammer')) then
  			return;
 		end
 		local name = puncher:get_player_name();
@@ -165,6 +166,34 @@ minetest.register_node("cottages:anvil", {
 		local inv  = meta:get_inventory();
 
 		local input = inv:get_stack('input',1);
+		local input_name = input:get_name()
+
+    if not wieldedtype then
+			return
+		end
+
+		if wieldedtype ~= "diamond" and wieldedtype ~= "mese" then
+			if input_name:find("carbon") or input_name:find("stainless") or input_name:find("cast") then
+				return
+			end
+			if wieldedtype ~= "bronze" then
+				if not input_name:find(wieldedtype) then
+					return
+				end
+			else
+				local type_list = {"bronze", "brass", "tin", "silver", "lead"}
+        local ffind = false
+        for k, v in ipairs(type_list) do
+            if input_name:find(v) then
+                ffind = true
+                break
+            end
+				end
+				if not ffind then
+					return
+				end
+			end
+		end
 
 		-- only tools can be repaired
 		if( not( input ) 
@@ -177,6 +206,7 @@ minetest.register_node("cottages:anvil", {
 					"label[2.5,-0.5;"..S("Owner: %s"):format(meta:get_string('owner') or "").."]");
 			return;
 		end
+    
 
 		-- 65535 is max damage
 		local damage_state = 40-math.floor(input:get_wear()/1638);
@@ -247,7 +277,7 @@ minetest.register_node("cottages:anvil", {
 		inv:set_stack("input", 1, input)
 
 		-- damage the hammer slightly
-		wielded:add_wear( 100 );
+		wielded:add_wear( 1500 );
 		puncher:set_wielded_item( wielded );
 
 		-- do not spam too much

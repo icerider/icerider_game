@@ -141,8 +141,8 @@ if not minetest.get_modpath("mesecons") then
 	minetest.register_craft( {
 		output = "mesecons_materials:silicon 4",
 		recipe = {
-			{ "default:sand", "default:sand" },
-			{ "default:sand", "default:steel_ingot" },
+			{ "quartz:quartz_crystal", "quartz:quartz_crystal" },
+			{ "quartz:quartz_crystal", "default:steel_ingot" },
 		},
 	})
 

@@ -10,5 +10,50 @@ minetest.register_craft({
 	}
 }) 
 
+minetest.register_craft({
+	output = 'technic:lv_cable 6',
+	recipe = {
+		{'default:paper',        'default:paper',        'default:paper'},
+		{'moreores:tin_ingot', 'moreores:tin_ingot', 'moreores:tin_ingot'},
+		{'default:paper',        'default:paper',        'default:paper'},
+	}
+}) 
+
+minetest.register_craft({
+	output = 'technic:lv_cable 6',
+	recipe = {
+		{'homedecor:plastic_sheeting',        'homedecor:plastic_sheeting',        'homedecor:plastic_sheeting'},
+		{'default:copper_ingot', 'default:copper_ingot', 'default:copper_ingot'},
+		{'homedecor:plastic_sheeting',        'homedecor:plastic_sheeting',        'homedecor:plastic_sheeting'},
+	}
+}) 
+
+minetest.register_craft({
+	output = 'technic:lv_cable 6',
+	recipe = {
+		{'default:paper',        'default:paper',        'default:paper'},
+		{'default:copper_ingot', 'default:copper_ingot', 'default:copper_ingot'},
+		{'default:paper',        'default:paper',        'default:paper'},
+	}
+}) 
+
+minetest.register_craft({
+	output = 'technic:lv_cable 6',
+	recipe = {
+		{'homedecor:plastic_sheeting',        'homedecor:plastic_sheeting',        'homedecor:plastic_sheeting'},
+		{'moreores:silver_ingot', 'moreores:silver_ingot', 'moreores:silver_ingot'},
+		{'homedecor:plastic_sheeting',        'homedecor:plastic_sheeting',        'homedecor:plastic_sheeting'},
+	}
+}) 
+
+minetest.register_craft({
+	output = 'technic:lv_cable 6',
+	recipe = {
+		{'default:paper',        'default:paper',        'default:paper'},
+		{'moreores:silver_ingot', 'moreores:silver_ingot', 'moreores:silver_ingot'},
+		{'default:paper',        'default:paper',        'default:paper'},
+	}
+}) 
+
 technic.register_cable("LV", 2/16)
 

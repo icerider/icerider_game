@@ -238,6 +238,8 @@ local function quarry_run(pos, node)
 		local c_air = minetest.get_content_id("air")
 		local c_water = minetest.get_content_id("default:water_source")
 		local c_water2 = minetest.get_content_id("default:water_flowing")
+		local c_water3 = minetest.get_content_id("default:water_source_2")
+		local c_water4 = minetest.get_content_id("default:water_flowing_2")
 		local c_lava = minetest.get_content_id("default:lava_source")
 		local c_lava2 = minetest.get_content_id("default:lava_flowing")
 		local c_stone = minetest.get_content_id("default:stone")
@@ -268,11 +270,11 @@ local function quarry_run(pos, node)
 			if not minetest.is_protected(p, owner) then
 				if b == c_air then
 					-- nothing
-				elseif b == c_water then
+				elseif b == c_water or b == c_water3 then
 					rem = true
 					water = water + 1
 					upl = true
-				elseif b == c_water2 then
+				elseif b == c_water2 or b == c_water4 then
 					upl = true
 				elseif b == c_lava then
 					rem = true

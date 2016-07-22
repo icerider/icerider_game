@@ -319,7 +319,7 @@ minetest.register_node("cottages:washing", {
                 on_rightclick = function(pos, node, player)
                    -- works only with water beneath
                    local node_under = minetest.get_node( {x=pos.x, y=(pos.y-1), z=pos.z} );
-		   if( not( node_under ) or node_under.name == "ignore" or (node_under.name ~= 'default:water_source' and node_under.name ~= 'default:water_flowing')) then
+		   if( not( node_under ) or node_under.name == "ignore" or (node_under.name ~= 'default:water_source' and node_under.name ~= 'default:water_flowing' and node_under.name ~= 'default:water_source_2' and node_under.name ~= 'default:water_flowing_2')) then
                       minetest.chat_send_player( player:get_player_name(), S("Sorry. This washing place is out of water. Please place it above water!"));
 		   else
                       minetest.chat_send_player( player:get_player_name(), S("You feel much cleaner after some washing."));

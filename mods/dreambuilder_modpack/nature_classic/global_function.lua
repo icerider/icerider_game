@@ -78,5 +78,5 @@ end
 
 function nature:is_near_water(pos)
     return nature.distance_from_water == -1 or minetest.find_node_near(pos, nature.distance_from_water,
-            { "default:water_source" }) ~= nil
+            { "default:water_source", "default:water_source_2" }) ~= nil
 end

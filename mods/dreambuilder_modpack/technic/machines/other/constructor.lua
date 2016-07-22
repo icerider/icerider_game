@@ -7,7 +7,9 @@ local function deploy_node(inv, slot_name, pos, node, machine_node)
 		   node.name == "default:lava_source" or
 		   node.name == "default:lava_flowing" or
 		   node.name == "default:water_source" or
-		   node.name == "default:water_flowing" then
+		   node.name == "default:water_flowing" or
+		   node.name == "default:water_source_2" or
+		   node.name == "default:water_flowing_2" then
 			return
 		end
 		local drops = minetest.get_node_drops(node.name, "")

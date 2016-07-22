@@ -151,7 +151,9 @@ local function reactor_structure_badness(pos)
 	local c_blast_concrete = minetest.get_content_id("technic:blast_resistant_concrete")
 	local c_stainless_steel = minetest.get_content_id("technic:stainless_steel_block")
 	local c_water_source = minetest.get_content_id("default:water_source")
+	local c_water_source2 = minetest.get_content_id("default:water_source_2")
 	local c_water_flowing = minetest.get_content_id("default:water_flowing")
+	local c_water_flowing2 = minetest.get_content_id("default:water_flowing_2")
 
 	local blastlayer, steellayer, waterlayer = 0, 0, 0
 
@@ -174,7 +176,8 @@ local function reactor_structure_badness(pos)
 		elseif x == pos1.x+2 or x == pos2.x-2 or
 		   y == pos1.y+2 or y == pos2.y-2 or
 		   z == pos1.z+2 or z == pos2.z-2 then
-			if cid == c_water_source or cid == c_water_flowing then
+			if cid == c_water_source or cid == c_water_flowing or 
+				cid == c_water_source2 or cid == c_water_flowing2 then
 				waterlayer = waterlayer + 1
 			end
 		end
@@ -411,7 +414,9 @@ local default_radiation_resistance_per_node = {
 	["default:stone_with_mese"] = 17,
 	["default:stonebrick"] = 17,
 	["default:water_flowing"] = 2.8,
+	["default:water_flowing_2"] = 2.8,
 	["default:water_source"] = 5.6,
+	["default:water_source_2"] = 5.6,
 	["farming:desert_sand_soil"] = 10,
 	["farming:desert_sand_soil_wet"] = 10,
 	["farming:soil"] = 8.2,

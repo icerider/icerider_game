@@ -22,7 +22,8 @@ minetest.register_craftitem("technic:geothermal", {
 
 local check_node_around = function(pos)
 	local node = minetest.get_node(pos)
-	if node.name == "default:water_source" or node.name == "default:water_flowing" then return 1 end
+	if node.name == "default:water_source" or node.name == "default:water_flowing" or
+		node.name == "default:water_source_2" or node.name == "default:water_flowing_2" then return 1 end
 	if node.name == "default:lava_source"  or node.name == "default:lava_flowing"  then return 2 end	
 	return 0
 end

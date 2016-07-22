@@ -37,7 +37,7 @@ minetest.register_craft({
 
 --thin ice to water
 minetest.register_craft({
-	output = "default:water_source",
+	output = "default:water_source_2",
 	type = "shapeless",
 	recipe = {"caverealms:thin_ice"}
 })

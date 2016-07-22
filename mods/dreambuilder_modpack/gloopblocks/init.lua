@@ -195,7 +195,7 @@ if minetest.setting_getbool("gloopblocks_mossy_conversion") ~= false then
 		for i in ipairs(mossyobjects) do
 			minetest.register_abm({
 				nodenames = { mossyobjects[i][1] },
-				neighbors = {"default:water_source", "default:water_flowing"},
+				neighbors = {"default:water_source", "default:water_flowing", "default:water_source_2", "default:water_flowing_2"},
 				interval = 120,
 				chance = 50,
 				action = function(pos, node)
@@ -756,13 +756,17 @@ if minetest.setting_getbool("gloopblocks_lavacooling") ~= false then
 	default.cool_lava = function(pos, node)
 		if node.name == "default:lava_source" then
 			if gloopblocks_search_nearby_nodes(pos,"default:water_source")
-			or gloopblocks_search_nearby_nodes(pos,"default:water_flowing") then
+			or gloopblocks_search_nearby_nodes(pos,"default:water_flowing")
+			or gloopblocks_search_nearby_nodes(pos,"default:water_source_2")
+			or gloopblocks_search_nearby_nodes(pos,"default:water_flowing_2") then
 				minetest.set_node(pos, {name="gloopblocks:obsidian_cooled"})
 			end
 		else -- Lava flowing
-			if gloopblocks_search_nearby_nodes(pos,"default:water_source") then
+			if gloopblocks_search_nearby_nodes(pos,"default:water_source")
+			or gloopblocks_search_nearby_nodes(pos,"default:water_source_2") then
 				minetest.set_node(pos, {name="gloopblocks:basalt_cooled"})
-			elseif gloopblocks_search_nearby_nodes(pos,"default:water_flowing") then
+			elseif gloopblocks_search_nearby_nodes(pos,"default:water_flowing")
+			or gloopblocks_search_nearby_nodes(pos,"default:water_flowing_2") then
 				minetest.set_node(pos, {name="gloopblocks:pumice_cooled"})
 			end
 		end

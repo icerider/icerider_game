@@ -78,7 +78,11 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 							"place "..source) then
 						return
 					end
-					minetest.add_node(pos, {name=source})
+					if source == "default:water_source" then
+						minetest.add_node(pos, {name="default:water_source_2"})
+					else
+						minetest.add_node(pos, {name=source})
+					end
 				end
 
 				-- Check if pointing to a buildable node
@@ -117,12 +121,17 @@ minetest.register_craftitem("bucket:bucket_empty", {
 		end
 		-- Check if pointing to a liquid source
 		local node = minetest.get_node(pointed_thing.under)
-		local liquiddef = bucket.liquids[node.name]
+		local nodename = node.name
+		if nodename == "default:water_source_2" then
+			nodename = "default:water_source"
+		end
+    print("DEBUG:".. nodename.. node.name)
+		local liquiddef = bucket.liquids[nodename]
 		local item_count = user:get_wielded_item():get_count()
 
 		if liquiddef ~= nil
 		and liquiddef.itemname ~= nil
-		and node.name == liquiddef.source then
+		and nodename == liquiddef.source then
 			if check_protection(pointed_thing.under,
 					user:get_player_name(),
 					"take ".. node.name) then

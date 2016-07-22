@@ -18,7 +18,10 @@ minetest.register_craft({
 local function check_node_around_mill(pos)
 	local node = minetest.get_node(pos)
 	if node.name == "default:water_flowing" or
-	   node.name == "default:water_source" then
+	   node.name == "default:water_source" or
+	   node.name == "default:water_flowing_2" or
+	   node.name == "default:water_source_2"
+       then
 		return true
 	end
 	return false

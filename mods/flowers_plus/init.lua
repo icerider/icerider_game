@@ -77,9 +77,9 @@ for i in ipairs(lilies_list) do
 			local top_node   = minetest.get_node(top_pos)
 
 			if biome_lib:get_nodedef_field(under_node.name, "buildable_to") then
-				if under_node.name ~= "default:water_source" then
+				if under_node.name ~= "default:water_source" and under_node.name ~= "default:water_source_2" then
 					place_pos = pt.under
-				elseif top_node.name ~= "default:water_source" 
+				elseif top_node.name ~= "default:water_source" and top_node.name ~= "default:water_source_2"
 				       and biome_lib:get_nodedef_field(top_node.name, "buildable_to") then
 					place_pos = top_pos
 				else
@@ -177,9 +177,9 @@ for i in ipairs(algae_list) do
 			local top_node   = minetest.get_node(top_pos)
 
 			if biome_lib:get_nodedef_field(under_node.name, "buildable_to") then
-				if under_node.name ~= "default:water_source" then
+				if under_node.name ~= "default:water_source" and under_node.name ~= "default:water_source_2" then
 					place_pos = pt.under
-				elseif top_node.name ~= "default:water_source" 
+				elseif top_node.name ~= "default:water_source" and top_node.name ~= "default:water_source_2"
 				       and biome_lib:get_nodedef_field(top_node.name, "buildable_to") then
 					place_pos = top_pos
 				else
@@ -398,7 +398,7 @@ biome_lib:spawn_on_surfaces({
 	},
 	avoid_radius = 2.5,
 	spawn_chance = SPAWN_CHANCE*4,
-	spawn_surfaces = {"default:water_source"},
+	spawn_surfaces = {"default:water_source", "default:water_source_2"},
 	avoid_nodes = {"group:flower", "group:flora" },
 	seed_diff = flowers_seed_diff,
 	light_min = 9,
@@ -428,7 +428,7 @@ biome_lib:spawn_on_surfaces({
 	seed_diff = flowers_seed_diff,
 	light_min = 4,
 	light_max = 10,
-	neighbors = {"default:water_source"},
+	neighbors = {"default:water_source", "default:water_source_2"},
 	ncount = 1,
 	facedir = 1
 })
@@ -442,7 +442,7 @@ biome_lib:spawn_on_surfaces({
 	seed_diff = flowers_seed_diff,
 	light_min = 4,
 	light_max = 10,
-	neighbors = {"default:water_source"},
+	neighbors = {"default:water_source", "default:water_source_2"},
 	ncount = 6,
 	facedir = 1
 })

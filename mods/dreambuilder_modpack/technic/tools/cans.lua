@@ -32,7 +32,7 @@ function technic.register_can(d)
 		on_use = function(itemstack, user, pointed_thing)
 			if pointed_thing.type ~= "node" then return end
 			local node = minetest.get_node(pointed_thing.under)
-			if node.name ~= data.liquid_source_name then return end
+			if node.name ~= data.liquid_source_name and node.name ~= data.liquid_source_name2 then return end
 			local charge = get_can_level(itemstack)
 			if charge == data.can_capacity then return end
 			if minetest.is_protected(pointed_thing.under, user:get_player_name()) then
@@ -63,7 +63,11 @@ function technic.register_can(d)
 				minetest.log("action", user:get_player_name().." tried to place "..data.liquid_source_name.." at protected position "..minetest.pos_to_string(pos).." with a "..data.can_name)
 				return
 			end
-			minetest.set_node(pos, {name=data.liquid_source_name})
+			if data.liquid_source_name2 ~= nil then
+				minetest.set_node(pos, {name=data.liquid_source_name2})
+			else
+				minetest.set_node(pos, {name=data.liquid_source_name})
+			end
 			charge = charge - 1
 			itemstack:set_metadata(tostring(charge))
 			set_can_wear(itemstack, charge, data.can_capacity)
@@ -84,6 +88,8 @@ technic.register_can({
 	can_capacity = 16,
 	liquid_source_name = "default:water_source",
 	liquid_flowing_name = "default:water_flowing",
+	liquid_source_name2 = "default:water_source_2",
+	liquid_flowing_name2 = "default:water_flowing_2",
 })
 
 minetest.register_craft({

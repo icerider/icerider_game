@@ -526,8 +526,8 @@ function biome_lib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 						end
 					else
 						local currentsurface = minetest.get_node(pos).name
-						if currentsurface ~= "default:water_source"
-						  or (currentsurface == "default:water_source" and #(minetest.find_nodes_in_area({x=pos.x, y=pos.y-biome.depth_max-1, z=pos.z}, {x=pos.x, y=pos.y, z=pos.z}, {"default:dirt", "default:dirt_with_grass", "default:sand"})) > 0 )
+						if currentsurface ~= "default:water_source" and currentsurface ~= "default:water_source_2"
+						  or ((currentsurface == "default:water_source" or currentsurface == "default:water_source_2") and #(minetest.find_nodes_in_area({x=pos.x, y=pos.y-biome.depth_max-1, z=pos.z}, {x=pos.x, y=pos.y, z=pos.z}, {"default:dirt", "default:dirt_with_grass", "default:sand"})) > 0 )
 						  then
 							local rnd = math.random(1, biome.spawn_plants_count)
 							local plant_to_spawn = biome.spawn_plants[rnd]

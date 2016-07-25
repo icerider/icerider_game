@@ -61,3 +61,12 @@ function beds.set_spawns()
 	end
 	beds.save_spawns()
 end
+
+function beds.set_spawns_player(player)
+	local p = player:getpos()
+	local name = player:get_player_name()
+	if not minetest.is_protected(p, name) then
+		beds.spawn[name] = p
+	end
+	beds.save_spawns()
+end

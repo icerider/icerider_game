@@ -38,13 +38,13 @@ useWallclock = true;
  --
  -- default: food_perDay = 4;
  --
-food_perDay = 4;
+food_perDay = 8;
 
 --- Base amount of water (hydration) lost each day, in points (half-icons).
  --
  -- default: water_perDay = 8;
  --
-water_perDay = 8;
+water_perDay = 12;
 
 --- Amount poison decreases each day, in points (half-icons).
  --
@@ -141,7 +141,7 @@ exertionStatuses.heavy =
  --
 fedStatuses = defaults.fedStatuses or {};
 fedStatuses.starving = 0;
-fedStatuses.hungry   = 1;
+fedStatuses.hungry   = 3;
 fedStatuses.full     = 10;
 
 --- Status values indicating how well hydrated the player is.  Each key is a
@@ -158,7 +158,7 @@ fedStatuses.full     = 10;
  --
 hydratedStatuses = defaults.hydratedStatuses or {};
 hydratedStatuses.dehydrated = 0;
-hydratedStatuses.thirsty    = 1;
+hydratedStatuses.thirsty    = 3;
 hydratedStatuses.hydrated   = 10;
 
 --- Status values indicating how badly poisoned the player is.  Each key is a
@@ -218,8 +218,8 @@ foodPoisoningProb = 0.025;
 foodMultipliers = defaults.foodMultipliers or
    { exertion = {}, fed = {}, hydrated = {}, poisoned = {} };
 foodMultipliers.exertion.none  = 1.0;
-foodMultipliers.exertion.light = 2.0;
-foodMultipliers.exertion.heavy = 3.0;
+foodMultipliers.exertion.light = 3.0;
+foodMultipliers.exertion.heavy = 5.0;
 
 --- Rate multipliers for amount of food decrease per period for each status
  -- (exertion, fed, hydrated, poisoned).  Each multiplier defaults to 1.0 if the
@@ -235,8 +235,8 @@ foodMultipliers.exertion.heavy = 3.0;
 waterMultipliers = defaults.waterMultipliers or
    { exertion = {}, fed = {}, hydrated = {}, poisoned = {} };
 waterMultipliers.exertion.none  = 1.0;
-waterMultipliers.exertion.light = 2.0;
-waterMultipliers.exertion.heavy = 3.0;
+waterMultipliers.exertion.light = 3.0;
+waterMultipliers.exertion.heavy = 5.0;
 
 --- Rate multipliers for healing per period for each status (exertion, fed,
  -- hydrated, poisoned).  Each multiplier defaults to 1.0 if the applicable

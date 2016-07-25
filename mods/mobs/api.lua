@@ -252,20 +252,21 @@ function check_for_death(self)
 	local pos = self.object:getpos()
 
 	for _,drop in pairs(self.drops) do
+		if not drop.name:find("wool") or not self.gotten then
+			if math.random(1, drop.chance) == 1 then
 
-		if math.random(1, drop.chance) == 1 then
+				obj = minetest.add_item(pos,
+					ItemStack(drop.name .. " "
+						.. math.random(drop.min, drop.max)))
 
-			obj = minetest.add_item(pos,
-				ItemStack(drop.name .. " "
-					.. math.random(drop.min, drop.max)))
+				if obj then
 
-			if obj then
-
-				obj:setvelocity({
-					x = math.random(-1, 1),
-					y = 6,
-					z = math.random(-1, 1)
-				})
+					obj:setvelocity({
+						x = math.random(-1, 1),
+						y = 6,
+						z = math.random(-1, 1)
+					})
+				end
 			end
 		end
 	end

@@ -52,7 +52,7 @@ for _, col in pairs(all_colours) do
 		jump = true,
 		-- drops raw meat and woll of its color when dead
 		drops = {
-			{name = "mobs:meat_raw", chance = 1, min = 2, max = 3},
+			{name = "mobs:meat_raw", chance = 1, min = 1, max = 2},
 			{name = "wool:"..col[1], chance = 1, min = 1, max = 1},
 		},
 		-- damaged by

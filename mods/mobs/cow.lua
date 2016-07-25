@@ -35,7 +35,7 @@ mobs:register_mob("mobs:cow", {
 	jump = true,
 	-- drops raw meat when dead
 	drops = {
-		{name = "mobs:meat_raw", chance = 1, min = 5, max = 10},
+		{name = "mobs:meat_raw", chance = 1, min = 2, max = 3},
 		{name = "mobs:leather", chance = 1, min = 0, max = 3},
 		{name = "maptools:silver_coin", chance = 10, min = 1, max = 1,},
 	},

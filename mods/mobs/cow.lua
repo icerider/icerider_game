@@ -124,7 +124,7 @@ minetest.register_craftitem("mobs:bucket_milk", {
 	stack_max = 1,
 	on_use = function(item, user, pointed_thing)
 		exertion.getPlayerState(user).state.poisoned = math.max(exertion.getPlayerState(user).state.poisoned - 2, 0)
-		return minetest.item_eat(8, "bucket:bucket_empty")(item,user,pointed_thing)
+		return minetest.item_eat(6, "bucket:bucket_empty")(item,user,pointed_thing)
 	end
 })
 

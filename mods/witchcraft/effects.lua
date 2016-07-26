@@ -439,6 +439,8 @@ function potion_farming_grow(itemstack, user, pointed_thing)
             {"farming:cotton_", "farming:cotton_8",},
             {"farming:corn_", "farming:corn_8",},
             {"farming:coffee_", "farming:coffee_5",},
+            {"farming:rice_", "farming:rice_4",},
+            {"farming:tea_", "farming:tea_4",},
             {"farming:cocoa_", "farming:cocoa_3",},
             {"farming:carrot_", "farming:carrot_8",},
             {"farming:cucumber_", "farming:cucumber_4",},

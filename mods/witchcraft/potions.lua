@@ -177,7 +177,7 @@ witchcraft.register_potion({
 witchcraft.register_potion({
     basename = "blue",
     description = "Bottle of Water",
-    on_use = drink_item(8)
+    on_use = minetest.item_eat(2, "vessels:glass_bottle"),
     --potion_change_node({"air", "default:water_flowing", "default:river_water_flowing"}, "default:water_source", true)
 })
 

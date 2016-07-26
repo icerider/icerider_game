@@ -219,29 +219,43 @@ local foods = {
     ["dwarves:tequila_with_lime"] = {5, 6},
     ["dwarves:sake"] = {4, 6},
     ["farming:onigiri"] = {3, 0},
-    ["farming:tea_cup"] = {0, 6},
+    ["farming:tea_cup"] = {0, 8},
 }
 
 minetest.register_on_item_eat(
    function(hpChange, replacementItem, itemStack, player, pointedThing)
+      local itemname = itemStack:get_name();
       if itemStack:take_item() ~= nil then
-         local itemname = itemStack:get_name();
-         local eat, drink, poisoned = foods[itemname];
-         if not eat then
+         local values = foods[itemname];
+
+         local eat, drink, poisoned;
+         if not values then
             print("Unknown food:"..itemname);
             eat = hpChange;
             drink = hpChange / 2;
+         else
+            eat, drink, poisoned = values[1], values[2], values[3]
          end
          if not poisoned then
             poisoned = settings.foodPoisoningProb;
          end
          local ps = playerStates[player];
          if ps then
-            if eat > 0 then
+            local mult = ps:get_food_mult(itemname)
+            if eat and mult > 0.4 then
+                minetest.chat_send_player(player:get_player_name(), "Try eat any other")
+            end
+            eat = eat * (1-mult)
+            drink = drink * (1-(mult/2))
+            print("DEBUG eat:"..eat)
+            if eat >= 0 then
                local pp = math.max(0, poisoned);
 
                if math.random() <= 1.0 - pp then
                   local update = false;
+                  if itemname == "mobs:meat" then
+                    eat = -10
+                  end
                   update = ps:addFood(eat, true) or update;
                   update = ps:addWater(drink, true) or update;
                   if update then ps:updateHud(); end;
@@ -255,6 +269,7 @@ minetest.register_on_item_eat(
                                          settings.foodPoisoningMessage);
                ps:addPoison(-eat);
             end;
+            ps:register_food(itemname)
          end;
 
          if itemStack:is_empty() then

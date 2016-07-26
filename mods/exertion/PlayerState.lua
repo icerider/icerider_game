@@ -142,6 +142,23 @@ function PlayerState.save()
    end;
 end;
 
+function PlayerState_ops:register_food(food)
+    table.insert(self.state.diet, food)
+    while(#self.state.diet > 10) do
+        table.remove(self.state.diet, 1)
+    end
+end
+
+function PlayerState_ops:get_food_mult(food)
+    local count = 0
+    for _, v in ipairs(self.state.diet) do
+        if v == food then
+            count = count + 1
+        end
+    end
+    return count / 10.;
+end
+
 --- Initializes a PlayerState object that is either newly created or loaded
  -- from the database from a previous login.
  --

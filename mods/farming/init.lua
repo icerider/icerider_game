@@ -698,6 +698,8 @@ dofile(farming.path.."/blueberry.lua")
 dofile(farming.path.."/beanpole.lua")
 dofile(farming.path.."/grapes.lua")
 dofile(farming.path.."/barley.lua")
+dofile(farming.path.."/rice.lua")
+dofile(farming.path.."/tea.lua")
 dofile(farming.path.."/donut.lua")
 dofile(farming.path.."/mapgen.lua")
 dofile(farming.path.."/compatibility.lua") -- Farming Plus compatibility

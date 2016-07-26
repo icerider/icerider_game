@@ -167,6 +167,7 @@ function PlayerState_ops:initialize(newState)
       self.state.jump_mod = 1.0;
       self.state.speed_armor = 1.0;
       self.state.jump_armor = 1.0;
+      self.state.diet = {};
 
       self.activity = 0;
       self.activityPolls = 0;
@@ -200,6 +201,7 @@ function PlayerState_ops:initialize(newState)
       self.state.hpGained = self.state.hpGained or 0;
       self.state.speed_armor = self.state.speed_armor or 1.0;
       self.state.jump_armor = self.state.jump_armor or 1.0;
+      self.state.diet = self.state.diet or {};
       self.state.airLost = 0;
 
       self.activity = 0;

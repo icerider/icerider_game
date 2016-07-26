@@ -75,10 +75,52 @@ minetest.register_node("vessels:glass_bottle", {
 	paramtype = "light",
 	is_ground_content = false,
 	walkable = false,
+	liquids_pointable = true,
 	selection_box = {
 		type = "fixed",
 		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
 	},
+	on_use = function(itemstack, user, pointed_thing)
+		-- Must be pointing to node
+		if pointed_thing.type ~= "node" then
+			return
+		end
+		-- Check if pointing to a liquid source
+		local node = minetest.get_node(pointed_thing.under)
+		local nodename = node.name
+		if nodename == "default:water_source_2" then
+			nodename = "default:water_source"
+		end
+		itemname = "witchcraft:potion_blue"
+		local item_count = user:get_wielded_item():get_count()
+
+		if nodename == "default:water_source" then
+			-- default set to return filled bucket
+			local giving_back = itemname
+
+			-- check if holding more than 1 empty bucket
+			if item_count > 1 then
+
+				-- if space in inventory add filled bucked, otherwise drop as item
+				local inv = user:get_inventory()
+				if inv:room_for_item("main", {name=itemname}) then
+					inv:add_item("main", itemname)
+				else
+					local pos = user:getpos()
+					pos.y = math.floor(pos.y + 0.5)
+					core.add_item(pos, itemname)
+				end
+
+				-- set to return empty buckets minus 1
+				giving_back = "vessels:glass_bottle "..tostring(item_count-1)
+
+			end
+
+			minetest.add_node(pointed_thing.under, {name="air"})
+
+			return ItemStack(giving_back)
+		end
+	end,
 	groups = {vessel=1,dig_immediate=3,attached_node=1},
 	sounds = default.node_sound_glass_defaults(),
 })

@@ -125,7 +125,6 @@ minetest.register_craftitem("bucket:bucket_empty", {
 		if nodename == "default:water_source_2" then
 			nodename = "default:water_source"
 		end
-    print("DEBUG:".. nodename.. node.name)
 		local liquiddef = bucket.liquids[nodename]
 		local item_count = user:get_wielded_item():get_count()
 

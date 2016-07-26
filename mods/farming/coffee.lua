@@ -28,14 +28,6 @@ minetest.register_node("farming:drinking_cup", {
 	sounds = default.node_sound_glass_defaults(),
 })
 
-minetest.register_craft( {
-	output = "farming:drinking_cup 5",
-	recipe = {
-		{ "default:glass", "", "default:glass" },
-		{"", "default:glass",""},
-	}
-})
-
 -- cold cup of coffee
 minetest.register_node("farming:coffee_cup", {
 	description = S("Cold Cup of Coffee"),

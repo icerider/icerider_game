@@ -8,6 +8,7 @@ for i = 3, 5 do
 			max_items = 1,
 			items = {
 				{items = {'farming:seed_wheat'}, rarity = 5},
+				{items = {'farming:seed_tea'}, rarity = 8},
 				{items = {'default:grass_1'}},
 			}
 		},
@@ -36,6 +37,7 @@ minetest.override_item("default:junglegrass", {
 		max_items = 1,
 		items = {
 			{items = {'farming:seed_cotton'}, rarity = 8},
+			{items = {'farming:seed_rice'}, rarity = 8},
 			{items = {'default:junglegrass'}},
 		}
 	},

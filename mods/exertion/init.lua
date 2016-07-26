@@ -111,132 +111,149 @@ minetest.register_globalstep(
    end);
 
 local foods = {
-    ["mobs:honey"] = 6,
-    ["mobs:beehive"] = 4,
-    ["mobs:chicken_egg_fried"] = 2,
-    ["mobs:chicken_raw"] = 2,
-    ["mobs:chicken_cooked"] = 2,
-    ["mobs:pork_raw"] = 4,
-    ["mobs:pork_cooked"] = 8,
-    ["mobs:bucket_milk"] = 6,
-    ["mobs:cheese"] = 4,
-    ["mobs:meat_raw"] = 3,
-    ["mobs:meat"] = 8,
-    ["witchcraft:potion_red"] = 20,
-    ["witchcraft:potion_red_2"] = 60,
-    ["witchcraft:potion_lightyellow"] = 5,
-    ["witchcraft:potion_blue"] = 1, --water
-    ["flowers:mushroom_red"] = -5,
-    ["flowers:mushroom_brown"] = 1,
-    ["default:applet"] = 2,
-    ["farming:rhubarb"] = 1,
-    ["farming:rhubarb_pie"] = 6,
-    ["farming:cucumber"] = 4,
-    ["farming:bread"] = 5,
-    ["farming:coffee_cup"] = 2,
-    ["farming:coffee_cup_hot"] = 3,
-    ["farming:blueberries"] = 1,
-    ["farming:muffing_blueberry"] = 2,
-    ["farming:cookie"] = 2,
-    ["farming:chocolate_dark"] = 3,
-    ["farming:beans"] = 1,
-    ["farming:carrot"] = 4,
-    ["farming:carrot_gold"] = 6,
-    ["farming:grapes"] = 2,
-    ["farming:corn"] = 3,
-    ["farming:corn_cob"] = 5,
-    ["farming:raspberries"] = 1,
-    ["farming:smoothie_raspberry"] = 2,
-    ["farming:donut"] = 4,
-    ["farming:donut_chocolate"] = 6,
-    ["farming:donut_apple"] = 6,
-    ["farming:tomate"] = 4,
-    ["farming:melon_slice"] = 2,
-    ["farming:pumpkin_slice"] = 2,
-    ["farming:pumpkin_bread"] = 8,
-    ["farming:popato"] = 1,
-    ["farming:baked_popato"] = 6,
-    ["cooked_rat"] = 6,
-    ["farming_plus:tomato_item"] = 4,
-    ["farming_plus:banana"] = 6,
-    ["farming_plus:banana"] = 6,
-    ["farming_plus:orange_item"] = 4,
-    ["farming_plus:carrot_item"] = 3,
-    ["farming_plus:strawberry_item"] = 2,
-    ["bushes:basket_strawberry"] = 18,
-    ["bushes:basket_blackberry"] = 18,
-    ["bushes:basket_blueberry"] = 18,
-    ["bushes:basket_raspberry"] = 18,
-    ["bushes:basket_gooseberry"] = 18,
-    ["bushes:basket_mixed_berry"] = 18,
-    ["bushes:sugar"] = 1,
-    ["bushes:strawberry_pie_raw"] = 4,
-    ["bushes:blackberry_pie_raw"] = 4,
-    ["bushes:blueberry_pie_raw"] = 4,
-    ["bushes:raspberry_pie_raw"] = 4,
-    ["bushes:gooseberry_pie_raw"] = 4,
-    ["bushes:mixed_berry_pie_raw"] = 4,
-    ["framing_plus:strawberry_item"] = 2, --1
-    ["bushes:strawberry_pie_cooked"] = 6,
-    ["bushes:blackberry_pie_cooked"] = 6,
-    ["bushes:blueberry_pie_cooked"] = 6,
-    ["bushes:raspberry_pie_cooked"] = 6,
-    ["bushes:gooseberry_pie_cooked"] = 6,
-    ["bushes:mixed_berry_pie_cooked"] = 6,
-    ["bushes:strawberry_pie_slice"] = 1,
-    ["bushes:blueberry_pie_slice"] = 1,
-    ["bushes:raspberry_pie_slice"] = 1,
-    ["bushes:blackberry_pie_slice"] = 1,
-    ["bushes:gooseberry_pie_slice"] = 1,
-    ["bushes:mixed_berry_pie_slice"] = 1,
-    ["beer_mug"] = 2,
-    ["homedecor:soda_can"] = 2,
-    ["moretrees:coconut_milk"] = 2,
-    ["moretrees:raw_coconut"] = 4,
-    ["moretrees:acorn_muffin"] = 4,
-    ["moretrees:spruce_nuts"] = 1,
-    ["moretrees:cedar_nuts"] = 1,
-    ["moretrees:fir_nuts"] = 1,
-    ["glooptest:kalite_lump"] = 1,
-    ["bees:bottle_honey"] = 3,
-    ["bees:honey_comb"] = 2,
-    ["fishing:fish_raw"] = 2,
-    ["fishing:fish_cooked"] = 4,
-    ["fishing:sushi"] = 6,
-    ["fishing:clownfish_raw"] = 2,
-    ["fishing:bluewhite_raw"] = 2,
-    ["fishing:exoticfish_raw"] = 2,
-    ["fishing:carp_raw"] = 2,
-    ["fishing:perch_raw"] = 2,
-    ["fishing:catfish_raw"] = 2,
-    ["fishing:shark_raw"] = 2,
-    ["fishing:shark_cooked"] = 6,
-    ["fishing:pike_raw"] = 2,
-    ["fishing:pike_cooked"] = 6,
+    ["mobs:honey"] = {6, 0, 0.005},   --из дикого улья
+    ["mobs:beehive"] = {4, 0, 0.005}, --улей
+    ["mobs:chicken_egg_fried"] = {2, 0.005},
+    ["mobs:chicken_raw"] = {2, 0, 0.3},
+    ["mobs:chicken_cooked"] = {3, 0, 0.04},
+    ["mobs:pork_raw"] = {4, 0, 0.3},
+    ["mobs:pork_cooked"] = {7, 0, 0.04},
+    ["mobs:bucket_milk"] = {6, 8, 0},
+    ["mobs:cheese"] = {4, 0, 0.02},
+    ["mobs:meat_raw"] = {3, 0, 0.3},
+    ["mobs:meat"] = {7, 0, 0.04},
+    ["witchcraft:potion_red"] = {20, 6, 0.01},
+    ["witchcraft:potion_red_2"] = {60, 6, 0.01},
+    ["witchcraft:potion_lightyellow"] = {5, 5, 0},
+    ["witchcraft:potion_blue"] = {0, 2, 0}, --water
+    ["flowers:mushroom_red"] = {-5, 0, 0},
+    ["flowers:mushroom_brown"] = {1, 0, 0.05},
+    ["default:apply"] = {2, 0, 0.01},
+    ["farming:rhubarb"] = {1, 1},
+    ["farming:rhubarb_pie"] = {6, 0},
+    ["farming:cucumber"] = {4, 0},
+    ["farming:bread"] = {5, 0, 0.1},
+    ["farming:coffee_cup"] = {2, 4, 0},
+    ["farming:coffee_cup_hot"] = {3, 5, 0},
+    ["farming:blueberries"] = {1, 1},
+    ["farming:muffing_blueberry"] = {2, 0},
+    ["farming:cookie"] = {2, 0},
+    ["farming:chocolate_dark"] = {3, 0},
+    ["farming:beans"] = {1, 0},
+    ["farming:carrot"] = {4, 0},
+    ["farming:carrot_gold"] = {6, 1},
+    ["farming:grapes"] = {2, 1},
+    ["farming:corn"] = {3, 0},
+    ["farming:corn_cob"] = {5, 0},
+    ["farming:raspberries"] = {1, 1},
+    ["farming:smoothie_raspberry"] = {2, 4},
+    ["farming:donut"] = {4, 0},
+    ["farming:donut_chocolate"] = {6, 0},
+    ["farming:donut_apple"] = {6, 0},
+    ["farming:tomate"] = {4, 1},
+    ["farming:melon_slice"] = {2, 2},
+    ["farming:pumpkin_slice"] = {2, 0},
+    ["farming:pumpkin_bread"] = {8, 0},
+    ["farming:popato"] = {1, 0},
+    ["farming:baked_popato"] = {6, 0},
+    ["cooked_rat"] = {6, 0, 0.05},
+    ["farming_plus:tomato_item"] = {4, 1},
+    ["farming_plus:banana"] = {6, 0},
+    ["farming_plus:orange_item"] = {4, 1},
+    ["farming_plus:carrot_item"] = {3, 0},
+    ["farming_plus:strawberry_item"] = {2, 1},
+    ["bushes:basket_strawberry"] = {18, 0},
+    ["bushes:basket_blackberry"] = {18, 0},
+    ["bushes:basket_blueberry"] = {18, 0},
+    ["bushes:basket_raspberry"] = {18, 0},
+    ["bushes:basket_gooseberry"] = {18, 0},
+    ["bushes:basket_mixed_berry"] = {18, 0},
+    ["bushes:sugar"] = {1, 0, 0},
+    ["bushes:strawberry_pie_raw"] = {4, 0, 0.04},
+    ["bushes:blackberry_pie_raw"] = {4, 0, 0.04},
+    ["bushes:blueberry_pie_raw"] = {4, 0, 0.04},
+    ["bushes:raspberry_pie_raw"] = {4, 0, 0.04},
+    ["bushes:gooseberry_pie_raw"] = {4, 0, 0.04},
+    ["bushes:mixed_berry_pie_raw"] = {4, 0, 0.04},
+    ["framing_plus:strawberry_item"] = {2, 1},
+    ["bushes:strawberry_pie_cooked"] = {6, 0},
+    ["bushes:blackberry_pie_cooked"] = {6, 0},
+    ["bushes:blueberry_pie_cooked"] = {6, 0},
+    ["bushes:raspberry_pie_cooked"] = {6, 0},
+    ["bushes:gooseberry_pie_cooked"] = {6, 0},
+    ["bushes:mixed_berry_pie_cooked"] = {6, 0},
+    ["bushes:strawberry_pie_slice"] = {1, 0},
+    ["bushes:blueberry_pie_slice"] = {1, 0},
+    ["bushes:raspberry_pie_slice"] = {1, 0},
+    ["bushes:blackberry_pie_slice"] = {1, 0},
+    ["bushes:gooseberry_pie_slice"] = {1, 0},
+    ["bushes:mixed_berry_pie_slice"] = {1, 0},
+    ["beer_mug"] = {2, 4},
+    ["homedecor:soda_can"] = {2, 6},
+    ["moretrees:coconut_milk"] = {2, 4},
+    ["moretrees:raw_coconut"] = {4, 0},
+    ["moretrees:acorn_muffin"] = {4, 0},
+    ["moretrees:spruce_nuts"] = {1, 0},
+    ["moretrees:cedar_nuts"] = {1, 0},
+    ["moretrees:fir_nuts"] = {1, 0},
+    ["glooptest:kalite_lump"] = {1, 0, 0.04},
+    ["bees:bottle_honey"] = {3, 0},
+    ["bees:honey_comb"] = {2, 0},
+    ["fishing:fish_raw"] = {2, 0, 0.3},
+    ["fishing:fish_cooked"] = {4, 0},
+    ["fishing:sushi"] = {6, 0},
+    ["fishing:clownfish_raw"] = {2, 0, 0.3},
+    ["fishing:bluewhite_raw"] = {2, 0, 0.3},
+    ["fishing:exoticfish_raw"] = {2, 0, 0.3},
+    ["fishing:carp_raw"] = {2, 0, 0.3},
+    ["fishing:perch_raw"] = {2, 0, 0.3},
+    ["fishing:catfish_raw"] = {2, 0, 0.3},
+    ["fishing:shark_raw"] = {2, 0, 0.3},
+    ["fishing:shark_cooked"] = {6, 0},
+    ["fishing:pike_raw"] = {6, 0, 0.3},
+    ["fishing:pike_cooked"] = {6, 0},
+    ["dwarves:beer"] = {4, 6},
+    ["dwarves:apple_cider"] = {4, 6},
+    ["dwarves:midus"] = {2, 6},
+    ["dwarves:tequila"] = {3, 6},
+    ["dwarves:tequila_with_lime"] = {5, 6},
+    ["dwarves:sake"] = {4, 6},
+    ["farming:onigiri"] = {3, 0},
+    ["farming:tea_cup"] = {0, 6},
 }
 
 minetest.register_on_item_eat(
    function(hpChange, replacementItem, itemStack, player, pointedThing)
       if itemStack:take_item() ~= nil then
+         local itemname = itemStack:get_name();
+         local eat, drink, poisoned = foods[itemname];
+         if not eat then
+            print("Unknown food:"..itemname);
+            eat = hpChange;
+            drink = hpChange / 2;
+         end
+         if not poisoned then
+            poisoned = settings.foodPoisoningProb;
+         end
          local ps = playerStates[player];
          if ps then
-            if hpChange > 0 then
-               local pp = math.max(0, settings.foodPoisoningProb);
+            if eat > 0 then
+               local pp = math.max(0, poisoned);
 
                if math.random() <= 1.0 - pp then
                   local update = false;
-                  update = ps:addFood(hpChange, true) or update;
-                  update = ps:addWater(hpChange / 2, true) or update;
+                  update = ps:addFood(eat, true) or update;
+                  update = ps:addWater(drink, true) or update;
                   if update then ps:updateHud(); end;
                else
                   minetest.chat_send_player(player:get_player_name(),
                                             settings.foodPoisoningMessage);
-                  ps:addPoison(hpChange);
+                  ps:addPoison(eat);
                end;
-            elseif hpChange < 0 then
+            elseif eat < 0 then
                minetest.chat_send_player(player:get_player_name(),
                                          settings.foodPoisoningMessage);
-               ps:addPoison(-hpChange);
+               ps:addPoison(-eat);
             end;
          end;
 

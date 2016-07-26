@@ -113,7 +113,7 @@ minetest.register_globalstep(
 local foods = {
     ["mobs:honey"] = {6, 0, 0.005},   --из дикого улья
     ["mobs:beehive"] = {4, 0, 0.005}, --улей
-    ["mobs:chicken_egg_fried"] = {2, 0.005},
+    ["mobs:chicken_egg_fried"] = {2, 0},
     ["mobs:chicken_raw"] = {2, 0, 0.3},
     ["mobs:chicken_cooked"] = {3, 0, 0.04},
     ["mobs:pork_raw"] = {4, 0, 0.3},
@@ -127,7 +127,7 @@ local foods = {
     ["witchcraft:potion_lightyellow"] = {5, 5, 0},
     ["witchcraft:potion_blue"] = {0, 2, 0}, --water
     ["flowers:mushroom_red"] = {-5, 0, 0},
-    ["flowers:mushroom_brown"] = {1, 0, 0.05},
+    ["flowers:mushroom_brown"] = {1, 0},
     ["default:apply"] = {2, 0, 0.01},
     ["farming:rhubarb"] = {1, 1},
     ["farming:rhubarb_pie"] = {6, 0},
@@ -176,12 +176,12 @@ local foods = {
     ["bushes:gooseberry_pie_raw"] = {4, 0, 0.04},
     ["bushes:mixed_berry_pie_raw"] = {4, 0, 0.04},
     ["framing_plus:strawberry_item"] = {2, 1},
-    ["bushes:strawberry_pie_cooked"] = {6, 0},
-    ["bushes:blackberry_pie_cooked"] = {6, 0},
-    ["bushes:blueberry_pie_cooked"] = {6, 0},
-    ["bushes:raspberry_pie_cooked"] = {6, 0},
-    ["bushes:gooseberry_pie_cooked"] = {6, 0},
-    ["bushes:mixed_berry_pie_cooked"] = {6, 0},
+    ["bushes:strawberry_pie_cooked"] = {7, 0},
+    ["bushes:blackberry_pie_cooked"] = {7, 0},
+    ["bushes:blueberry_pie_cooked"] = {7, 0},
+    ["bushes:raspberry_pie_cooked"] = {7, 0},
+    ["bushes:gooseberry_pie_cooked"] = {7, 0},
+    ["bushes:mixed_berry_pie_cooked"] = {7, 0},
     ["bushes:strawberry_pie_slice"] = {1, 0},
     ["bushes:blueberry_pie_slice"] = {1, 0},
     ["bushes:raspberry_pie_slice"] = {1, 0},
@@ -246,7 +246,7 @@ minetest.register_on_item_eat(
                 minetest.chat_send_player(player:get_player_name(), "Try eat any other")
             end
             eat = eat * (1-mult)
-            drink = drink * (1-(mult/2))
+            drink = drink * (1-(mult/4))
             if eat >= 0 then
                local pp = math.max(0, poisoned);
 
@@ -265,7 +265,9 @@ minetest.register_on_item_eat(
                                          settings.foodPoisoningMessage);
                ps:addPoison(-eat);
             end;
-            ps:register_food(itemname)
+            if itemname ~= "witchcraft:potion_blue" then
+                ps:register_food(itemname)
+            end
          end;
 
          if itemStack:is_empty() then

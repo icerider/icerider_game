@@ -31,7 +31,7 @@ minetest.register_node("dwarves:barrel", {
 
 		},
 	},
-groups = {choppy=6,oddly_breakable_by_hand=5},
+groups = {choppy=2,oddly_breakable_by_hand=5},
 legacy_facedir_simple = true,
 sounds = default.node_sound_wood_defaults(),
 water=5000;
@@ -52,6 +52,17 @@ inv:set_size("src", 1)
 inv:set_size("dst", 4)
 
 end,	
+drop = {
+	items = {
+		{items = {"bucket:bucket_empty"}, rarity = 1},
+		{items = {"moretrees:oak_planks"}, rarity = 1},
+		{items = {"moretrees:oak_planks"}, rarity = 1},
+		{items = {"moretrees:oak_planks"}, rarity = 1},
+		{items = {"moretrees:oak_planks"}, rarity = 2},
+		{items = {"moretrees:oak_planks"}, rarity = 3},
+		{items = {"moretrees:oak_planks"}, rarity = 4},
+	}
+},
 can_dig = function(pos,player)
 local meta = minetest.env:get_meta(pos);
 local inv = meta:get_inventory()
@@ -145,7 +156,7 @@ new_item =nil
 src_item=items:to_table()
 item_name=src_item["name"]
 
-if item_name=="farming:wheat_seed" then new_item=ItemStack("dwarves:beer") return new_item end
+if item_name=="farming:seed_wheat" then new_item=ItemStack("dwarves:beer") return new_item end
 if item_name=="default:apple" then new_item=ItemStack("dwarves:apple_cider") return new_item end
 if item_name=="mobs:honey" then new_item=ItemStack("dwarves:midus") return new_item end
 if item_name=="bees:honey_comb" then new_item=ItemStack("dwarves:midus") return new_item end

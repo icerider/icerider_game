@@ -38,13 +38,13 @@ useWallclock = true;
  --
  -- default: food_perDay = 4;
  --
-food_perDay = 8;
+food_perDay = 6;
 
 --- Base amount of water (hydration) lost each day, in points (half-icons).
  --
  -- default: water_perDay = 8;
  --
-water_perDay = 12;
+water_perDay = 10;
 
 --- Amount poison decreases each day, in points (half-icons).
  --
@@ -199,7 +199,7 @@ exertionHoldingBreathMax = 10;
  --
  -- default: foodPoisoningProb = 0.025;
  --
-foodPoisoningProb = 0.025;
+foodPoisoningProb = 0.01;
 
 
 ---- Status Effects

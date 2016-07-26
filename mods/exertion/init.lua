@@ -247,15 +247,11 @@ minetest.register_on_item_eat(
             end
             eat = eat * (1-mult)
             drink = drink * (1-(mult/2))
-            print("DEBUG eat:"..eat)
             if eat >= 0 then
                local pp = math.max(0, poisoned);
 
                if math.random() <= 1.0 - pp then
                   local update = false;
-                  if itemname == "mobs:meat" then
-                    eat = -10
-                  end
                   update = ps:addFood(eat, true) or update;
                   update = ps:addWater(drink, true) or update;
                   if update then ps:updateHud(); end;

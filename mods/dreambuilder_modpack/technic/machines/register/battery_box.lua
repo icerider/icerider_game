@@ -16,6 +16,20 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_tool("technic:re_battery", {
+    description = S("RE Battery"),
+    inventory_image = "technic_re_battery.png",
+    wear_represents = "technic_RE_charge",
+    on_refill = technic.refill_RE_charge,
+    tool_capabilities = {
+        charge = 0,
+        max_drop_level = 0,
+        groupcaps = {
+            fleshy = {times={}, uses=20000, maxlevel=0}
+        }
+    }
+})
+
 minetest.register_craft({
 	output = 'technic:re_battery',
 	recipe = {

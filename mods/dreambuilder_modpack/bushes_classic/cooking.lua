@@ -56,6 +56,20 @@ for i, berry in ipairs(bushes_classic.bushes) do
 				on_use = minetest.item_eat(1),
 			})
 		end
+		if berry == "blueberry"  then
+			minetest.register_alias("farming:blueberries", "bushes:"..berry)
+			minetest.register_alias("farming:blueberry_1", "bushes:"..berry.."_bush")
+			minetest.register_alias("farming:blueberry_2", "bushes:"..berry.."_bush")
+			minetest.register_alias("farming:blueberry_3", "bushes:"..berry.."_bush")
+			minetest.register_alias("farming:blueberry_4", "bushes:"..berry.."_bush")
+		end
+		if berry == "raspberry"  then
+			minetest.register_alias("farming:raspberries", "bushes:"..berry)
+			minetest.register_alias("farming:raspberry_1", "bushes:"..berry.."_bush")
+			minetest.register_alias("farming:raspberry_2", "bushes:"..berry.."_bush")
+			minetest.register_alias("farming:raspberry_3", "bushes:"..berry.."_bush")
+			minetest.register_alias("farming:raspberry_4", "bushes:"..berry.."_bush")
+		end
 		minetest.register_craft({
 			output = "bushes:"..berry.."_pie_raw 1",
 			recipe = {

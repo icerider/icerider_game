@@ -57,6 +57,7 @@ minetest.register_craftitem("mobs:honey", {
 	description = "Honey",
 	inventory_image = "mobs_honey_inv.png",
 	on_use = minetest.item_eat(6),
+	groups = { food_honey = 1}
 })
 
 -- beehive (when placed spawns bee)
@@ -69,7 +70,7 @@ minetest.register_node("mobs:beehive", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	walkable = true,
-	groups = {fleshy=3,dig_immediate=3},
+	groups = {fleshy=3,dig_immediate=3, food_beehive=1},
 	on_use = minetest.item_eat(4),
 	sounds = default.node_sound_defaults(),
 

@@ -168,6 +168,12 @@ local foods = {
     ["bushes:basket_raspberry"] = {18, 0},
     ["bushes:basket_gooseberry"] = {18, 0},
     ["bushes:basket_mixed_berry"] = {18, 0},
+    ["bushes:strawberry"] = {1, 1},
+    ["bushes:blackberry"] = {1, 1},
+    ["bushes:blueberry"] = {1, 1},
+    ["bushes:raspberry"] = {1, 1},
+    ["bushes:gooseberry"] = {1, 1},
+    ["bushes:mixed_berry"] = {1, 1},
     ["bushes:sugar"] = {1, 0, 0},
     ["bushes:strawberry_pie_raw"] = {4, 0, 0.04},
     ["bushes:blackberry_pie_raw"] = {4, 0, 0.04},
@@ -213,13 +219,20 @@ local foods = {
     ["fishing:pike_raw"] = {6, 0, 0.3},
     ["fishing:pike_cooked"] = {6, 0},
     ["dwarves:beer"] = {4, 6},
-    ["dwarves:apple_cider"] = {4, 6},
-    ["dwarves:midus"] = {2, 6},
-    ["dwarves:tequila"] = {3, 6},
-    ["dwarves:tequila_with_lime"] = {5, 6},
-    ["dwarves:sake"] = {4, 6},
+    ["dwarves:apple_cider"] = {4, 8},
+    ["dwarves:midus"] = {2, 8},
+    ["dwarves:tequila"] = {3, 8},
+    ["dwarves:tequila_with_lime"] = {5, 8},
+    ["dwarves:sake"] = {4, 8},
     ["farming:onigiri"] = {3, 0},
     ["farming:tea_cup"] = {0, 8},
+    ["pizza:pizza"] = {30, 0},
+    ["pizza:pizzaslice"] = {6, 0},
+    ["food:soup_tomato"] = {10, 3},
+    ["food:soup_meat"] = {12, 3},
+    ["food:apple_juice"] = {2, 6},
+    ["food:orange_juice"] = {2, 6},
+    ["food:cactus_juice"] = {2, 6},
 }
 
 minetest.register_on_item_eat(
@@ -240,17 +253,25 @@ minetest.register_on_item_eat(
             poisoned = settings.foodPoisoningProb;
          end
          local ps = playerStates[player];
+         local mult = ps:get_food_mult(itemname)
          if ps then
-            local mult = ps:get_food_mult(itemname)
-            if eat and mult > 0.4 then
-                minetest.chat_send_player(player:get_player_name(), "Try eat any other")
-            end
-            eat = eat * (1-mult)
-            drink = drink * (1-(mult/4))
             if eat >= 0 then
-               local pp = math.max(0, poisoned);
+               local pp = math.max(0, poisoned+mult/20);
 
                if math.random() <= 1.0 - pp then
+                  if eat and mult > 0.4 then
+                      minetest.chat_send_player(player:get_player_name(), "Try eat any other")
+                  end
+                  if eat > 0 then
+                    eat = math.max(1, eat * (1-mult))
+                  else
+                    eat = eat * (1-mult)
+                  end
+                  if drink > 0 then
+                    drink = math.max(1, drink * (1-(mult/4)))
+                  else
+                    drink = drink * (1-(mult/4))
+                  end
                   local update = false;
                   update = ps:addFood(eat, true) or update;
                   update = ps:addWater(drink, true) or update;

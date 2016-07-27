@@ -539,9 +539,8 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'default:book',
 	recipe = {
-		{'default:paper'},
-		{'default:paper'},
-		{'default:paper'},
+		{'mobs:leather', 'default:paper'},
+		{'default:paper', 'default:paper'},
 	}
 })
 

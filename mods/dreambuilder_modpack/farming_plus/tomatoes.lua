@@ -82,6 +82,7 @@ minetest.register_craftitem("farming_plus:tomato_item", {
 	description = S("Tomato"),
 	inventory_image = "farming_tomato.png",
 	on_use = minetest.item_eat(4),
+	groups = { food_tomato = 1 }
 })
 
 farming.add_plant("farming_plus:tomato", {"farming_plus:tomato_1", "farming_plus:tomato_2", "farming_plus:tomato_3"}, 50, 20)

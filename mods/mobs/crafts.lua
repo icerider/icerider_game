@@ -20,6 +20,7 @@ minetest.register_craftitem("mobs:leather", {
 minetest.register_craftitem("mobs:meat_raw", {
 	description = "Raw Meat",
 	inventory_image = "mobs_meat_raw.png",
+	groups = { food_meat = 1 },
 	on_use = minetest.item_eat(3),
 })
 
@@ -27,6 +28,7 @@ minetest.register_craftitem("mobs:meat_raw", {
 minetest.register_craftitem("mobs:meat", {
 	description = "Meat",
 	inventory_image = "mobs_meat.png",
+	groups = { food_meat = 1 },
 	on_use = minetest.item_eat(8),
 })
 

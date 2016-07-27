@@ -81,6 +81,7 @@ minetest.register_node("farming_plus:orange", {
 minetest.register_craftitem("farming_plus:orange_item", {
 	description = S("Orange"),
 	inventory_image = "farming_orange.png",
+	groups = { food_orange = 1 },
 	on_use = minetest.item_eat(4),
 })
 

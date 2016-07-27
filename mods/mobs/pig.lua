@@ -78,6 +78,7 @@ mobs:register_egg("mobs:pig", "Pig", "mobs_pig_inv.png", 1)
 minetest.register_craftitem("mobs:pork_raw", {
 	description = "Raw Porkchop",
 	inventory_image = "mobs_pork_raw.png",
+	groups = { food_meat = 1 },
 	on_use = minetest.item_eat(4),
 })
 
@@ -85,6 +86,7 @@ minetest.register_craftitem("mobs:pork_raw", {
 minetest.register_craftitem("mobs:pork_cooked", {
 	description = "Cooked Porkchop",
 	inventory_image = "mobs_pork_cooked.png",
+	groups = { food_meat = 1 },
 	on_use = minetest.item_eat(8),
 })
 

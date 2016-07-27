@@ -509,7 +509,7 @@ minetest.register_node("default:apple", {
 		fixed = {-0.2, -0.5, -0.2, 0.2, 0, 0.2}
 	},
 	groups = {fleshy = 3, dig_immediate = 3, flammable = 2,
-		leafdecay = 3, leafdecay_drop = 1},
+		leafdecay = 3, leafdecay_drop = 1, food_apple = 1},
 	on_use = minetest.item_eat(2),
 	sounds = default.node_sound_leaves_defaults(),
 
@@ -886,7 +886,7 @@ minetest.register_node("default:cactus", {
 	tiles = {"default_cactus_top.png", "default_cactus_top.png",
 		"default_cactus_side.png"},
 	paramtype2 = "facedir",
-	groups = {snappy = 1, choppy = 3},
+	groups = {snappy = 1, choppy = 3, food_cactus = 1},
 	sounds = default.node_sound_wood_defaults(),
 	on_place = minetest.rotate_node,
 })

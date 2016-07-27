@@ -244,6 +244,7 @@ minetest.register_craft({
 minetest.register_craftitem("mobs:chicken_raw", {
 description = "Raw Chicken",
 	inventory_image = "mobs_chicken_raw.png",
+	groups = { food_meat = 1 },
 	on_use = minetest.item_eat(2),
 })
 
@@ -251,6 +252,7 @@ description = "Raw Chicken",
 minetest.register_craftitem("mobs:chicken_cooked", {
 description = "Cooked Chicken",
 	inventory_image = "mobs_chicken_cooked.png",
+	groups = { food_meat = 1 },
 	on_use = minetest.item_eat(4), -- Modif MFF
 })
 

@@ -6,6 +6,7 @@ tnt
 fire
 unified_inventory
 exertion
+enchanting
 moretrees
 biome_lib
 farming

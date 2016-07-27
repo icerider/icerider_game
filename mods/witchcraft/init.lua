@@ -92,3 +92,88 @@ dofile(MOD_PATH.."/pot.lua")
 dofile(MOD_PATH.."/potions.lua")
 dofile(MOD_PATH.."/scrolls.lua")
 dofile(MOD_PATH.."/brewing_stand.lua")
+
+
+enchanting:register_tools("technic_armor", {
+	materials = "tin, lead, carbon, stainless",
+	armor = 1,
+	tools = {
+		boots      = {enchants = "strong, speed"},
+		chestplate = {enchants = "strong"},
+		helmet     = {enchants = "strong"},
+		leggings   = {enchants = "strong"}
+	}
+})
+
+enchanting:register_tools("moreores", {
+	materials = "silver",
+	armor = 1,
+	tools = {
+		boots      = {enchants = "strong, speed"},
+		chestplate = {enchants = "strong"},
+		helmet     = {enchants = "strong"},
+		leggings   = {enchants = "strong"}
+	}
+})
+
+enchanting:register_tools("moreores", {
+	materials = "silver, mithril",
+	tools = {
+		axe    = {enchants = "durable, fast"},
+		pick   = {enchants = "durable, fast"}, 
+		shovel = {enchants = "durable, fast"},
+		sword  = {enchants = "sharp"}
+	}
+})
+
+enchanting:register_tools("gloopblocks", {
+	materials = "evil, cement",
+	tools = {
+		axe    = {enchants = "durable, fast"},
+		pick   = {enchants = "durable, fast"}, 
+		shovel = {enchants = "durable, fast"},
+		sword  = {enchants = "sharp"}
+	}
+})
+
+enchanting:register_tools("3d_armor", {
+	materials = "mithril",
+	armor = 1,
+	tools = {
+		boots      = {enchants = "strong, speed"},
+		chestplate = {enchants = "strong"},
+		helmet     = {enchants = "strong"},
+		leggings   = {enchants = "strong"}
+	}
+})
+
+enchanting:register_tools("technic_aluminum", {
+	materials = "aluminum, ruby, sapphire",
+	armor = 1,
+	tools = {
+		boots      = {enchants = "strong, speed"},
+		chestplate = {enchants = "strong"},
+		helmet     = {enchants = "strong"},
+		leggings   = {enchants = "strong"}
+	}
+})
+
+enchanting:register_tools("technic_aluminum", {
+	materials = "aluminum",
+	tools = {
+		axe    = {enchants = "durable, fast"},
+		pick   = {enchants = "durable, fast"}, 
+		shovel = {enchants = "durable, fast"},
+		sword  = {enchants = "sharp"}
+	}
+})
+
+enchanting:register_tools("glooptest", {
+	materials = "alatro, arol",
+	tools = {
+		axe    = {enchants = "durable, fast"},
+		pick   = {enchants = "durable, fast"}, 
+		shovel = {enchants = "durable, fast"},
+		sword  = {enchants = "sharp"}
+	}
+})

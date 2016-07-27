@@ -1,4 +1,15 @@
-local enchanting = {}
+local MOD_NAME = minetest.get_current_modname() or "enchanting";
+local MOD_PATH = minetest.get_modpath(MOD_NAME);
+
+
+-- reset player invisibility if they go offline
+--
+---invisibility potion by Tenplus1(DWTFYWT V2), see darkpurple potion for on_use effect
+---
+
+enchanting = { MOD_NAME = MOD_NAME, MOD_PATH = MOD_PATH}
+_G[MOD_NAME] = enchanting;
+
 screwdriver = screwdriver or {}
 
 -- Cost in Mese crystal(s) for enchanting.
@@ -247,7 +258,7 @@ function enchanting:register_tools(mod, def)
 			})
 		end
 
-		if mod == "3d_armor" then
+		if def.armor then
 			local original_armor_groups = original_tool.groups
 			local armorcaps = {}
 			armorcaps.not_in_creative_inventory = 1
@@ -257,7 +268,7 @@ function enchanting:register_tools(mod, def)
 					armorcaps[armor_group] = math.ceil(value * enchanting.strength)
 				elseif enchant == "speed" then
 					armorcaps[armor_group] = value
-					armorcaps.physics_speed = 0.5 --enchanting.speed
+					armorcaps.physics_speed = 0.4 --enchanting.speed
 					armorcaps.physics_jump = 0.4 --enchanting.jump
 				end
 			end
@@ -265,7 +276,7 @@ function enchanting:register_tools(mod, def)
 			minetest.register_tool(":"..mod..":enchanted_"..tool.."_"..material.."_"..enchant, {
 				description = "Enchanted "..cap(material).." "..cap(tool).." ("..cap(enchant)..")",
 				inventory_image = original_tool.inventory_image,
-				texture = "3d_armor_"..tool.."_"..material,
+				texture = original_tool.texture,
 				wield_image = original_tool.wield_image,
 				groups = armorcaps,
 				wear = 0
@@ -288,6 +299,7 @@ enchanting:register_tools("default", {
 
 enchanting:register_tools("3d_armor", {
 	materials = "steel, bronze, gold, diamond",
+	armor = 1,
 	tools = {
 		boots      = {enchants = "strong, speed"},
 		chestplate = {enchants = "strong"},
@@ -295,4 +307,3 @@ enchanting:register_tools("3d_armor", {
 		leggings   = {enchants = "strong"}
 	}
 })
-

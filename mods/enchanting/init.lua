@@ -13,15 +13,15 @@ _G[MOD_NAME] = enchanting;
 screwdriver = screwdriver or {}
 
 -- Cost in Mese crystal(s) for enchanting.
-local mese_cost = 1
+local mese_cost = 5
 
 -- Force of the enchantments.
 enchanting.uses     = 1.2  -- Durability
 enchanting.times    = 0.1  -- Efficiency
 enchanting.damages  = 1    -- Sharpness
 enchanting.strength = 1.2  -- Armor strength (3d_armor only)
-enchanting.speed    = 0.2  -- Player speed (3d_armor only)
-enchanting.jump     = 0.2  -- Player jumping (3d_armor only)
+enchanting.speed    = 0.4  -- Player speed (3d_armor only)
+enchanting.jump     = 0.4  -- Player jumping (3d_armor only)
 
 function enchanting.formspec(pos, num)
 	local meta = minetest.get_meta(pos)
@@ -78,13 +78,20 @@ function enchanting.fields(pos, _, fields, sender)
 	local mod, name = tool:get_name():match("(.*):(.*)")
 	local field = next(fields)
 	local enchanted_tool = (mod or "")..":enchanted_"..(name or "").."_"..field
+	local p1 = {x=pos.x-2, y=pos.y, z=pos.z-2}
+	local p2 = {x=pos.x+2, y=pos.y+1, z=pos.z+2}
+	local l_mese_cost = mese_cost
+	local bookshelf = minetest.find_nodes_in_area(p1,p2, {"default:bookshelf"})
+	if bookshelf then
+		l_mese_cost = l_mese_cost - math.min(4, #bookshelf)
+	end
 	local gem_name = mese:get_name()
         if field == "sharp" and gem_name == "glooptest:ruby_gem" or field == "durable" and gem_name == "glooptest:amethist_gem" or field == "fast" and gem_name == "glooptest:emerald_gem" or field == "strong" and gem_name == "glooptest:sapphire_gem" or field == "speed" and gem_name == "glooptest:topaz_gem" then
-		if mese:get_count() >= mese_cost and minetest.registered_tools[enchanted_tool] then
+		if mese:get_count() >= l_mese_cost and minetest.registered_tools[enchanted_tool] then
 			minetest.sound_play("xdecor_enchanting", {to_player=sender:get_player_name(), gain=0.8})
 			tool:replace(enchanted_tool)
 			tool:add_wear(orig_wear)
-			mese:take_item(mese_cost)
+			mese:take_item(l_mese_cost)
 			inv:set_stack("mese", 1, mese)
 			inv:set_stack("tool", 1, tool)
 		end
@@ -268,8 +275,8 @@ function enchanting:register_tools(mod, def)
 					armorcaps[armor_group] = math.ceil(value * enchanting.strength)
 				elseif enchant == "speed" then
 					armorcaps[armor_group] = value
-					armorcaps.physics_speed = 0.4 --enchanting.speed
-					armorcaps.physics_jump = 0.4 --enchanting.jump
+					armorcaps.physics_speed = enchanting.speed
+					armorcaps.physics_jump = enchanting.jump
 				end
 			end
 

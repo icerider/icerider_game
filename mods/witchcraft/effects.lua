@@ -658,7 +658,7 @@ function register_magic(name, textures, damage, node_action, area_nodes_action, 
     })
 end
 
-register_magic("witchcraft:fire", {"witchcraft_flame.png"}, 12,
+register_magic("witchcraft:fire", {"witchcraft_flame.png"}, 18,
     function(self, p, t, n)
         if n ~= "witchcraft:fire" and n ~= "air" and n ~="default:dirt_with_grass" and n ~="default:dirt_with_dry_grass" and n ~="default:stone"  then
             minetest.env:set_node(t, {name="fire:basic_flame"})
@@ -695,7 +695,7 @@ register_magic("witchcraft:fire", {"witchcraft_flame.png"}, 12,
     end
 )
 
-register_magic("witchcraft:fire_2", {"witchcraft_flame.png"}, 20,
+register_magic("witchcraft:fire_2", {"witchcraft_flame.png"}, 30,
     function(self, p, t, n)
         if n ~= "witchcraft:fire" and n ~= "air" and n ~="default:dirt_with_grass" and n ~="default:dirt_with_dry_grass" and n ~="default:stone"  then
             minetest.env:set_node(t, {name="fire:basic_flame"})

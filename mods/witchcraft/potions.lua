@@ -189,6 +189,13 @@ witchcraft.register_potion({
 
 witchcraft.register_potion({
     basename = "green",
+    description = "Green Filling Potion",
+    on_use = minetest.item_eat(2, "vessels:glass_bottle"),
+})
+
+witchcraft.register_potion({
+    basename = "green_2",
+    image = "witchcraft_potion_green.png^[colorize:black:50",
     description = "Grow Plant Potion",
     on_use = potion_farming_grow
 })
@@ -231,7 +238,7 @@ witchcraft.register_potion({
     image = "witchcraft_potion_red_green.png^[colorize:black:50",
     description = "Fast Potion (lv_2)",
     effect_type = "high_speed",
-    duration = 30
+    duration = 60
 })
 
 witchcraft.register_potion({

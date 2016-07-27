@@ -126,6 +126,7 @@ local foods = {
     ["witchcraft:potion_red_2"] = {60, 6, 0.01},
     ["witchcraft:potion_lightyellow"] = {5, 5, 0},
     ["witchcraft:potion_blue"] = {0, 2, 0}, --water
+    ["witchcraft:potion_green"] = {2, 2, 0}, --water
     ["flowers:mushroom_red"] = {-5, 0, 0},
     ["flowers:mushroom_brown"] = {1, 0},
     ["default:apply"] = {2, 0, 0.01},
@@ -286,7 +287,7 @@ minetest.register_on_item_eat(
                                          settings.foodPoisoningMessage);
                ps:addPoison(-eat);
             end;
-            if itemname ~= "witchcraft:potion_blue" then
+            if itemname ~= "witchcraft:potion_blue" and itemname ~= "witchcraft:potion_green" then
                 ps:register_food(itemname)
             end
          end;

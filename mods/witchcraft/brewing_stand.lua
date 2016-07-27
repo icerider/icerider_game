@@ -25,9 +25,9 @@ local recipes = {
 	{"witchcraft:potion_ggreen", "witchcraft:potion_grey", "witchcraft:potion_red_2",   "witchcraft:potion_gpurple"},
 	{"witchcraft:potion_red 2", "witchcraft:potion_grey", "witchcraft:potion_yellow 2",   "witchcraft:potion_red_yellow"},
 	{"witchcraft:potion_red_yellow", "witchcraft:potion_grey", "witchcraft:potion_blue2 2",   "witchcraft:potion_white"},
-	{"witchcraft:potion_green 2", "witchcraft:potion_grey", "witchcraft:potion_brown 2",   "witchcraft:potion_green2"},
-	{"witchcraft:potion_red", "witchcraft:potion_grey", "witchcraft:potion_green",   "witchcraft:potion_red_green"},
-	{"witchcraft:potion_red_green", "witchcraft:potion_magenta", "",   "witchcraft:potion_red_green_2"},
+	{"witchcraft:potion_green_2 2", "witchcraft:potion_grey", "witchcraft:potion_brown 2",   "witchcraft:potion_green2"},
+	{"witchcraft:potion_red 2", "witchcraft:potion_green 2", "", "witchcraft:potion_red_green"},
+	{"witchcraft:potion_red_green", "witchcraft:potion_grey", "witchcraft:potion_magenta",   "witchcraft:potion_red_green_2"},
 	{"witchcraft:potion_purple", "witchcraft:potion_grey", "witchcraft:potion_yellow",   "witchcraft:potion_purple_2"},
 	{"witchcraft:potion_yellow_2", "witchcraft:potion_brown 2", "witchcraft:potion_red_blue",   "witchcraft:potion_cyan"},
 	{"witchcraft:potion_cyan", "witchcraft:potion_grey_2", "witchcraft:potion_brown 2",   "witchcraft:potion_aqua"},
@@ -40,6 +40,7 @@ local recipes = {
 	{"witchcraft:potion_red_2", "witchcraft:potion_grey", "witchcraft:potion_brown 2",  "witchcraft:potion_gred"},
 	{"technic:sulfur_lump", "vessels:glass_bottle", "",   "witchcraft:potion_so2"},
 	{"technic:sulfur_dust", "vessels:glass_bottle", "",   "witchcraft:potion_so2"},
+	{"witchcraft:potion_green", "witchcraft:potion_green", "",   "witchcraft:potion_green_2"},
 	{"witchcraft:potion_so2", "witchcraft:potion_blue", "",   "technic:h2so4"},
 }
 

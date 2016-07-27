@@ -284,12 +284,14 @@ minetest.register_node("witchcraft:pot", {
 				wield_item == "bucket:bucket_river_water" then
 			minetest.set_node(pos, {name="witchcraft:pot_blue", param2=node.param2})
 			local meta = minetest.get_meta(pos)
-			meta:set_int("capacity", 3)
+			meta:set_int("capacity", 4)
+			meta:set_string("infotext", "Capacity:4")
 			item:replace("bucket:bucket_empty")
 		elseif wield_item == "bucket:bucket_lava" then
 			minetest.set_node(pos, {name="witchcraft:pot_lava", param2=node.param2})
 			local meta = minetest.get_meta(pos)
-			meta:set_int("capacity", 3)
+			meta:set_int("capacity", 4)
+			meta:set_string("infotext", "Capacity:4")
 			item:replace("bucket:bucket_empty")
 		elseif wield_item == "vessels:drinking_glass" then
 			item:replace("witchcraft:bottle_slime")
@@ -370,31 +372,38 @@ for _, color in ipairs(witchcraft.pot) do
             else
                 meta:set_int("capacity", capacity)
             end
+            meta:set_string("infotext", "Capacity:"..capacity)
         else
+            local meta = minetest.get_meta(pos)
+            local capacity = (meta:get_int("capacity") or 1)
+
             local result = nil
 
+            local count = item:get_count()
+            local n_count = min(count, capacity)
+            local rstack = ItemStack(wield_item)
             result = technic.get_recipe("cauldron", {ItemStack("witchcraft:pot_"..color),
-                                                           ItemStack(wield_item)})
+                                                           rstack})
             if not result then
-                print("NO RESULT "..wield_item.."$$$$"..minetest.get_item_group(wield_item, "leaves"))
                 if minetest.get_item_group(wield_item, "leaves") > 0 then
+                    rstack = ItemStack("group:leaves")
                     result = technic.get_recipe("cauldron", {ItemStack("witchcraft:pot_"..color),
-                                                                   ItemStack("group:leaves")})
+                                                                   rstack})
                 end
-            end
-            if result then
-                print("RESULT "..wield_item)
             end
             local capacity = nil
             if result then
                 local spl = string.gmatch(result.output, "%S+")
                 local output = spl()
-                capacity = spl() or 1
+                local capmult = spl() or 1
+                capacity = capmult * n_count
                 minetest.set_node(pos, {name=output, param2=node.param2})
             end
-            local meta = minetest.get_meta(pos)
+            meta = minetest.get_meta(pos)
+
             if string.find(wield_item, "witchcraft:potion_grey") then
                 capacity = (meta:get_int("capacity") or 1)
+                n_count = 1
                 if wield_item  == "witchcraft:potion_grey_2"
                 then
                     capacity = capacity + 2
@@ -404,10 +413,11 @@ for _, color in ipairs(witchcraft.pot) do
             end
             if capacity then
                 meta:set_int("capacity", capacity)
-                item:take_item()
+                item:take_item(n_count)
                 if string.find(wield_item, "witchcraft:potion_") then
                     use_bottle(item, clicker)
                 end
+                meta:set_string("infotext", "Capacity:"..capacity)
             end
         end
     end,
@@ -550,7 +560,7 @@ local recipes = {
 	{"witchcraft:pot_blue",         "flowers:mushroom_brown",         "witchcraft:pot_brown"},
 	{"witchcraft:pot_blue",         "mobs:dung",                      "witchcraft:pot_brown"},
 	{"witchcraft:pot_blue",         "flowers:geranium",               "witchcraft:pot_blue2"},
-	{"witchcraft:pot_blue",         "farming:blueberries",            "witchcraft:pot_blue2"},
+	{"witchcraft:pot_blue",         "bushes:blueberry",               "witchcraft:pot_blue2"},
 	{"witchcraft:pot_blue",         "flowers:mushroom_red",           "witchcraft:pot_red"},
 	{"witchcraft:pot_blue",         "flowers:rose",                   "witchcraft:pot_red"},
 	{"witchcraft:pot_blue",         "default:apple",                  "witchcraft:pot_red"},
@@ -558,8 +568,8 @@ local recipes = {
 	{"witchcraft:pot_blue",         "flowers:dandelion_yellow",       "witchcraft:pot_yellow"},
 	{"witchcraft:pot_blue",         "flowers:viola",                  "witchcraft:pot_purple"},
 	{"witchcraft:pot_blue",         "farming:grapes",                 "witchcraft:pot_purple"},
-	{"witchcraft:pot_blue",         "witchcraft:herb",                "witchcraft:pot_green 4"},
-	{"witchcraft:pot_blue",         "group:leaves",                   "witchcraft:pot_green 2"},
+	{"witchcraft:pot_blue",         "witchcraft:herb",                "witchcraft:pot_green"},
+	{"witchcraft:pot_blue",         "group:leaves",                   "witchcraft:pot_green"},
 	{"witchcraft:pot_blue",         "flowers:tulip",                  "witchcraft:pot_orange"},
 	{"witchcraft:pot_blue",         "farming_plus:orange_item",       "witchcraft:pot_orange"},
 	{"witchcraft:pot_blue",         "bushes:blackberry",              "witchcraft:pot_magenta"},
@@ -567,7 +577,7 @@ local recipes = {
 	{"witchcraft:pot_blue",         "default:mese_crystal_fragment",  "witchcraft:pot_lightyellow"},
 	{"witchcraft:pot_blue",         "mobs:zombie_tibia",              "witchcraft:pot_grey"},
 	{"witchcraft:pot_blue",         "mobs:lava_orb",                  "witchcraft:pot_grey 2"},
-	{"witchcraft:pot_blue",         "mobs:minotaur_horn",             "witchcraft:pot_grey 2"},
+	{"witchcraft:pot_blue",         "mobs:minotaur_horn",             "witchcraft:pot_grey 3"},
 	{"witchcraft:pot_brown",        "witchcraft:bottle_eyes",         "witchcraft:pot_gcyan 2"},
 	{"witchcraft:pot_red",          "mobs:minotaur_lots_of_fur",      "witchcraft:pot_darkpurple 2"},
 	{"witchcraft:pot_yellow",       "mobs:dungeon_master_diamond",    "witchcraft:pot_aqua 4"},

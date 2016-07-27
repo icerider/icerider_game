@@ -49,10 +49,10 @@ function technic.register_can(d)
 			if pointed_thing.type ~= "node" then return end
 			local pos = pointed_thing.under
 			local def = minetest.registered_nodes[minetest.get_node(pos).name] or {}
-			if def.on_rightclick and user and not user:get_player_control().sneak then
+			if minetest.get_node(pos).name ~= "witchcraft:pot" and def.on_rightclick and user and not user:get_player_control().sneak then
 				return def.on_rightclick(pos, minetest.get_node(pos), user, itemstack, pointed_thing)
 			end
-			if not def.buildable_to then
+			if not def.buildable_to and minetest.get_node(pos).name ~= "witchcraft:pot" then
 				pos = pointed_thing.above
 				def = minetest.registered_nodes[minetest.get_node(pos).name] or {}
 				if not def.buildable_to then return end
@@ -63,11 +63,27 @@ function technic.register_can(d)
 				minetest.log("action", user:get_player_name().." tried to place "..data.liquid_source_name.." at protected position "..minetest.pos_to_string(pos).." with a "..data.can_name)
 				return
 			end
-			if data.liquid_source_name2 ~= nil then
-				minetest.set_node(pos, {name=data.liquid_source_name2})
+			if minetest.get_node(pos).name == "witchcraft:pot" then
+				local node = minetest.get_node(pos)
+				if data.liquid_source_name == "default:water_source" then
+					minetest.set_node(pos, {name="witchcraft:pot_blue", param2=node.param2})
+					local meta = minetest.get_meta(pos)
+					meta:set_int("capacity", 4)
+					meta:set_string("infotext", "Capacity:4")
+				elseif data.liquid_source_name == "default:lava_source" then
+					minetest.set_node(pos, {name="witchcraft:pot_lava", param2=node.param2})
+					local meta = minetest.get_meta(pos)
+					meta:set_int("capacity", 4)
+					meta:set_string("infotext", "Capacity:4")
+				end
 			else
-				minetest.set_node(pos, {name=data.liquid_source_name})
+				if data.liquid_source_name2 ~= nil then
+					minetest.set_node(pos, {name=data.liquid_source_name2})
+				else
+					minetest.set_node(pos, {name=data.liquid_source_name})
+				end
 			end
+			
 			charge = charge - 1
 			itemstack:set_metadata(tostring(charge))
 			set_can_wear(itemstack, charge, data.can_capacity)

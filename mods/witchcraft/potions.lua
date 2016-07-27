@@ -184,7 +184,8 @@ witchcraft.register_potion({
 witchcraft.register_potion({
     basename = "lava",
     description = "Bottle of Lava",
-    on_use = potion_change_node({"air", "default:lava_flowing"}, "default:lava_source", true)
+    effect_type = "poison",
+    duration = 10,
 })
 
 witchcraft.register_potion({

@@ -68,7 +68,7 @@ local function find_next_plant_pos(data, area, minp, maxp)
 	local c_soil = minetest.get_content_id("farming:soil")
 	local c_soil_wet = minetest.get_content_id("farming:soil_wet")
 	local c_hydro_soil = minetest.get_content_id("hydroponics:bucket_dry")
-	local c_hydro_soil_wet = minetest.get_content_id("hydroponics:bucket_dry")
+	local c_hydro_soil_wet = minetest.get_content_id("hydroponics:bucket_wet")
 
 
 	for z = minp.z, maxp.z do

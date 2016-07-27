@@ -15,14 +15,14 @@ function farming.add_plant(full_grown, names, interval, chance)
 		chance = chance,
 		action = function(pos, node)
 			pos.y = pos.y-1
-			if minetest.get_node(pos).name ~= "farming:soil_wet" then
+			if minetest.get_item_group(minetest.get_node(pos).name, "soil") < 3 then
 				return
 			end
 			pos.y = pos.y+1
 			if not minetest.get_node_light(pos) then
 				return
 			end
-			if minetest.get_node_light(pos) < 8 then
+			if minetest.get_node_light(pos) < 11 then
 				return
 			end
 			local step = nil

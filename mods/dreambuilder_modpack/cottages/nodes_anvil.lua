@@ -164,6 +164,7 @@ minetest.register_node("cottages:anvil", {
 
 		local meta = minetest.get_meta(pos);
 		local inv  = meta:get_inventory();
+    local hammer_dmg = 1500;
 
 		local input = inv:get_stack('input',1);
 		local input_name = input:get_name()
@@ -175,6 +176,9 @@ minetest.register_node("cottages:anvil", {
 		if wieldedtype ~= "diamond" and wieldedtype ~= "mese" then
 			if input_name:find("carbon") or input_name:find("stainless") or input_name:find("cast") then
 				return
+			end
+			if input_name:find("steel") and wieldedtype == "steel" then
+				hammer_dmg = 2500
 			end
 			if wieldedtype ~= "bronze" then
 				if not input_name:find(wieldedtype) then
@@ -277,7 +281,7 @@ minetest.register_node("cottages:anvil", {
 		inv:set_stack("input", 1, input)
 
 		-- damage the hammer slightly
-		wielded:add_wear( 1500 );
+		wielded:add_wear( hammer_dmg );
 		puncher:set_wielded_item( wielded );
 
 		-- do not spam too much
@@ -297,9 +301,9 @@ minetest.register_node("cottages:anvil", {
 minetest.register_craft({
 	output = "cottages:anvil",
 	recipe = {
-                {cottages.craftitem_steel,cottages.craftitem_steel,cottages.craftitem_steel},
-                {'',                   cottages.craftitem_steel,''                   },
-                {cottages.craftitem_steel,cottages.craftitem_steel,cottages.craftitem_steel} },
+                {"technic:cast_iron_ingot", "technic:cast_iron_ingot", "technic:cast_iron_ingot"},
+                {'',                   "technic:cast_iron_ingot", ''                   },
+                {"technic:cast_iron_ingot", "technic:cast_iron_ingot", "technic:cast_iron_ingot"}},
 })
 
 

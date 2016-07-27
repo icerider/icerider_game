@@ -31,10 +31,9 @@ minetest.register_node("castle:anvil",{
 minetest.register_craft({
 	output = "castle:anvil",
 	recipe = {
-		{"default:steel_ingot","default:steel_ingot","default:steel_ingot"},
-		{"","default:steel_ingot", ""},
-		{"default:steel_ingot", "default:steel_ingot","default:steel_ingot"},
-	}
+    {"technic:cast_iron_ingot", "technic:cast_iron_ingot", "technic:cast_iron_ingot"},
+    {'',                   "technic:cast_iron_ingot", ''                   },
+    {"technic:cast_iron_ingot", "technic:cast_iron_ingot", "technic:cast_iron_ingot"}},
 })
 
 minetest.register_node("castle:workbench",{

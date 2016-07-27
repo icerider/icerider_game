@@ -148,6 +148,22 @@ minetest.register_craft({
 })
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
+	local name = itemstack:get_name()
+	for _, v in ipairs({"default:pick_steel",
+		"default:axe_steel",
+		"default:shovel_steel",
+		"default:sword_steel",
+		"3d_armor:helmet_steel",
+		"3d_armor:chestplate_steel",
+		"3d_armor:leggings_steel",
+		"3d_armor:boots_steel"}) do
+		if name == v then
+			itemstack:add_wear(50000)
+		end
+	end
+end)
+
+minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
 	if itemstack:get_name() ~= "default:book_written" then
 		return
 	end

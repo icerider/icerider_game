@@ -135,7 +135,7 @@ minetest.register_abm({
 			local dirt = minetest.get_node(dirtpos)
 			local is_soil = minetest.get_item_group(dirt.name, "soil") or minetest.get_item_group(dirt.name, "potting_soil")
 
-			if is_soil and (dirt.name == "farming:soil_wet" or math.random(1,3) == 1) then
+			if is_soil and (dirt.name == "farming:soil_wet" or dirt.name == "hydroponics:bucket_wet" or math.random(1,3) == 1) then
 				minetest.set_node( pos, {name = "bushes:" .. bush_name .. "_bush"})
 			end
 		end

@@ -16,20 +16,6 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_tool("technic:re_battery", {
-    description = S("RE Battery"),
-    inventory_image = "technic_re_battery.png",
-    wear_represents = "technic_RE_charge",
-    on_refill = technic.refill_RE_charge,
-    tool_capabilities = {
-        charge = 0,
-        max_drop_level = 0,
-        groupcaps = {
-            fleshy = {times={}, uses=20000, maxlevel=0}
-        }
-    }
-})
-
 minetest.register_craft({
 	output = 'technic:re_battery',
 	recipe = {
@@ -71,20 +57,6 @@ minetest.register_craft({
 		{'technic:lead_oxide_ingot', 'technic:lead_ingot', 'technic:lead_ingot'},
 		{'homedecor:plastic_sheeting', 'technic:h2so4',   'homedecor:plastic_sheeting'},
 		{'homedecor:plastic_sheeting', 'homedecor:plastic_sheeting', 'homedecor:plastic_sheeting'},
-	}
-})
-
-minetest.register_tool("technic:re_battery", {
-	description = S("RE Battery"),
-	inventory_image = "technic_re_battery.png",
-	wear_represents = "technic_RE_charge",
-	on_refill = technic.refill_RE_charge,
-	tool_capabilities = {
-		charge = 0,
-		max_drop_level = 0,
-		groupcaps = {
-			fleshy = {times={}, uses=10000, maxlevel=0}
-		}
 	}
 })
 

@@ -21,6 +21,21 @@ minetest.register_craftitem( "technic:diamond_drill_head", {
 	inventory_image = "technic_diamond_drill_head.png",
 })
 
+minetest.register_tool("technic:re_battery", {
+    description = "RE Battery",
+    inventory_image = "technic_re_battery.png",
+    wear_represents = "technic_RE_charge",
+    on_refill = technic.refill_RE_charge,
+    tool_capabilities = {
+        charge = 0,
+        max_drop_level = 0,
+        groupcaps = {
+            fleshy = {times={}, uses=20000, maxlevel=0}
+        }
+    },
+    on_use = technic.recharger
+})
+
 minetest.register_tool("technic:blue_energy_crystal", {
 	description = S("Blue Energy Crystal"),
 	inventory_image = minetest.inventorycube(
@@ -30,11 +45,13 @@ minetest.register_tool("technic:blue_energy_crystal", {
 	wear_represents = "technic_RE_charge",
 	on_refill = technic.refill_RE_charge,
 	tool_capabilities = {
+    charge = 0,
 		max_drop_level = 0,
 		groupcaps = {
 			fleshy = {times={}, uses=10000, maxlevel=0}
 		}
-	}
+	},
+  on_use = technic.recharger
 }) 
 
 minetest.register_tool("technic:green_energy_crystal", {
@@ -50,7 +67,8 @@ minetest.register_tool("technic:green_energy_crystal", {
 		groupcaps = {
 			fleshy = {times={}, uses=10000, maxlevel=0}
 		}
-	}
+	},
+  on_use = technic.recharger
 }) 
 
 minetest.register_tool("technic:red_energy_crystal", {
@@ -66,7 +84,8 @@ minetest.register_tool("technic:red_energy_crystal", {
 		groupcaps = {
 			fleshy = {times={}, uses=10000, maxlevel=0}
 		}
-	}
+	},
+  on_use = technic.recharger
 }) 
 
 

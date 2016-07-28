@@ -277,13 +277,91 @@ function technic.register_battery_box(data)
 
 end -- End registration
 
+function technic.register_portable_battery_box(data)
+	local tier = data.tier
+	local ltier = string.lower(tier)
 
-function technic.charge_tools(meta, batt_charge, charge_step)
+	local formspec =
+		"invsize[8,9;]"..
+		"image[1,1;1,2;technic_power_meter_bg.png]"..
+		"list[current_name;src;3,1;1,1;]"..
+		"image[4,1;1,1;technic_battery_reload.png]"..
+		"list[current_name;dst;5,1;1,1;]"..
+		"label[0,0;"..S("Portable Battery Box").."]"..
+		"label[3,0;"..S("Charge").."]"..
+		"label[5,0;"..S("Discharge").."]"..
+		"label[1,3;"..S("Power level").."]"..
+		"list[current_player;main;0,5;8,4;]"..
+		"listring[current_name;dst]"..
+		"listring[current_player;main]"..
+		"listring[current_name;src]"..
+		"listring[current_player;main]"
+
+	local run = function(pos, node)
+		local meta           = minetest.get_meta(pos)
+
+		local max_charge = data.max_charge
+    local current_charge = 0
+			
+		-- Charging/discharging tools here
+		local tool_full, tool_empty
+		current_charge, tool_empty = technic.discharge_tools(meta,
+				current_charge, data.charge_step, max_charge)
+		current_charge, tool_full = technic.charge_tools(meta,
+				current_charge, data.charge_step)
+		if current_charge > 0 then
+			current_charge, tool_full = technic.charge_tools(meta,
+					current_charge, data.charge_step, "dst")
+		end
+	end
+
+	i = 0
+	local groups = {snappy=2, choppy=2, oddly_breakable_by_hand=2}
+		
+	minetest.register_node("technic:portable_battery_box"..i, {
+		description = S("Portable Battery Box"):format(tier),
+		tiles = {"technic_"..ltier.."_battery_box_top.png",
+				 "technic_"..ltier.."_battery_box_bottom.png",
+			 "technic_"..ltier.."_battery_box_side.png^technic_power_meter"..i..".png",
+			 "technic_"..ltier.."_battery_box_side.png^technic_power_meter"..i..".png",
+			 "technic_"..ltier.."_battery_box_side.png^technic_power_meter"..i..".png",
+			 "technic_"..ltier.."_battery_box_side.png^technic_power_meter"..i..".png"},
+		groups = groups,
+		connect_sides = {"bottom"},
+		paramtype2 = "facedir",
+		sounds = default.node_sound_wood_defaults(),
+		on_construct = function(pos)
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			local node = minetest.get_node(pos)
+
+			meta:set_string("infotext", S("Portable Battery Box"))
+			meta:set_string("formspec", formspec)
+			meta:set_int(tier.."_EU_demand", 0)
+			meta:set_int(tier.."_EU_supply", 0)
+			meta:set_int(tier.."_EU_input",  0)
+			meta:set_float("internal_EU_charge", 0)
+			inv:set_size("src", 1)
+			inv:set_size("dst", 1)
+			inv:set_size("upgrade1", 1)
+			inv:set_size("upgrade2", 1)
+		end,
+		can_dig = technic.machine_can_dig,
+		allow_metadata_inventory_put = technic.machine_inventory_put,
+		allow_metadata_inventory_take = technic.machine_inventory_take,
+		allow_metadata_inventory_move = technic.machine_inventory_move,
+		on_punch = run,
+	})
+
+end -- End registration
+
+function technic.charge_tools(meta, batt_charge, charge_step, slot)
+	local placename = slot or "src"
 	local inv = meta:get_inventory()
-	if inv:is_empty("src") then
+	if inv:is_empty(placename) then
 		return batt_charge, false
 	end
-	local src_stack = inv:get_stack("src", 1)
+	local src_stack = inv:get_stack(placename, 1)
 
 	local tool_name = src_stack:get_name()
 	if not technic.power_tools[tool_name] then
@@ -309,14 +387,15 @@ function technic.charge_tools(meta, batt_charge, charge_step)
 	technic.set_RE_wear(src_stack, tool_charge, item_max_charge)
 	src_meta.charge = tool_charge
 	src_stack:set_metadata(minetest.serialize(src_meta))
-	inv:set_stack("src", 1, src_stack)
+	inv:set_stack(placename, 1, src_stack)
 	return batt_charge, (tool_charge == item_max_charge)
 end
 
 
-function technic.discharge_tools(meta, batt_charge, charge_step, max_charge)
+function technic.discharge_tools(meta, batt_charge, charge_step, max_charge, slot)
+	local placename = slot or "dst"
 	local inv = meta:get_inventory()
-	if inv:is_empty("dst") then
+	if inv:is_empty(placename) then
 		return batt_charge, false
 	end
 	srcstack = inv:get_stack("dst", 1)
@@ -346,7 +425,7 @@ function technic.discharge_tools(meta, batt_charge, charge_step, max_charge)
 	technic.set_RE_wear(srcstack, tool_charge, item_max_charge)
 	src_meta.charge = tool_charge
 	srcstack:set_metadata(minetest.serialize(src_meta))
-	inv:set_stack("dst", 1, srcstack)
+	inv:set_stack(placename, 1, srcstack)
 	return batt_charge, (tool_charge == 0)
 end
 

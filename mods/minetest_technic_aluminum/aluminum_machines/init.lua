@@ -46,7 +46,7 @@ if (minetest) then
 		end
 		for _, recipe in ipairs({
 		  lv_to_mv("technic:mv_alloy_furnace", "technic:lv_alloy_furnace"),
-		  lv_to_mv("technic:mv_electric_furnace", "technic:mv_electric_furnace"),
+		  lv_to_mv("technic:mv_electric_furnace", "technic:lv_electric_furnace"),
 		  lv_to_mv("technic:mv_compressor", "technic:lv_compressor"),
 		  lv_to_mv("technic:mv_extractor", "technic:lv_extractor"),
 		  lv_to_mv("technic:mv_generator", "technic:lv_generator"),

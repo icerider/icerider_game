@@ -156,17 +156,29 @@ local function harvester_dig(pos)
 		end
 	
 		local node = minetest.get_node(digpos)
-		drops = minetest.get_node_drops(node.name)		-- TODO get_node_drops(node, tool) optional tool...
-		
-		minetest.dig_node(digpos)
-		if minetest.get_node(digpos).name == node.name then
-			-- We tried to dig something undigable like a
-			-- filled chest. Notice that we check for a node
-			-- change, not for air. This is so that we get drops
-			-- from things like concrete posts with platforms,
-			-- which turn into regular concrete posts when dug.
-			drops = {}
-		end
+		if (node.name == "bushes:strawberry_bush" or node.name == "bushes:raspberry_bush" or 
+        node.name == "bushes:blackberry_bush" or node.name == "bushes:blueberry_bush" or
+        node.name == "bushes:gooseberry_bush") then
+        local name_parts = node.name:split(":")
+        local bush_name = name_parts[2]
+        local name = name_parts[2]:split("_")[1]
+        minetest.set_node(digpos, {type = "node", name = "bushes:fruitless_bush"})
+        local meta = minetest.get_meta(digpos)
+        meta:set_string('bush_type', bush_name)
+        drops = {ItemStack('bushes:'..name..' 4')}
+    else
+        drops = minetest.get_node_drops(node.name)		-- TODO get_node_drops(node, tool) optional tool...
+        
+        minetest.dig_node(digpos)
+        if minetest.get_node(digpos).name == node.name then
+            -- We tried to dig something undigable like a
+            -- filled chest. Notice that we check for a node
+            -- change, not for air. This is so that we get drops
+            -- from things like concrete posts with platforms,
+            -- which turn into regular concrete posts when dug.
+            drops = {}
+        end
+    end
 	end
 
 	return drops

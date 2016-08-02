@@ -185,6 +185,9 @@ autofarmer.harvester_dig_nodes = {
 	-- plantlife
 	["bushes:blackberry_bush"] = true,
 	["bushes:raspberry_bush"] = true,
+	["bushes:strawberry_bush"] = true,
+	["bushes:blueberry_bush"] = true,
+	["bushes:gooseberry_bush"] = true,
 
 } 
 -- END OF HARVESTER NODES

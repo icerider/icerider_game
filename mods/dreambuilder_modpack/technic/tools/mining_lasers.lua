@@ -63,7 +63,7 @@ local function laser_shoot(player, range, particle_texture, sound)
 	-- Adjust to head height
 	start_pos.y = start_pos.y + 1.9
 	minetest.add_particle({
-		pos = startpos,
+		pos = start_pos,
 		vel = dir,
 		acc = vector.multiply(dir, 50),
 		expirationtime = range / 11,

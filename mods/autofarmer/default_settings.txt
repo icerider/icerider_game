@@ -45,6 +45,8 @@ autofarmer.seeds_nodes = {
 	["farming:seed_wheat"]= "farming:wheat_1",
 	["farming:seed_cotton"]= "farming:cotton_1",
 	["farming:seed_barley"]= "farming:barley_1",
+	["farming:seed_rice"]= "farming:rice_1",
+	["farming:seed_tea"]= "farming:tea_1",
 	
 	-- old deprecated?/legacy?
 	["farming:pumpkin_seed"]= "farming:pumpkin_1",
@@ -72,6 +74,12 @@ autofarmer.seeds_nodes = {
 	["farming:rhubarb"]="farming:rhubarb_1",
 	["farming:tomato"]="farming:tomato_1",
 	["farming:potato"]="farming:potato_1",
+
+	["farming_plus:orange_seed"]="farming_plus:orange_1",
+	["farming_plus:tomato_seed"]="farming_plus:tomato_1",
+	["farming_plus:rhubarb_seed"]="farming_plus:rhubarb_1",
+	["farming_plus:carrot_seed"]="farming_plus:carrot_1",
+	["farming_plus:strawberry_seed"]="farming_plus:strawberry_1",
 	
 
 	-- trees usually keep their same name (sapling -> sapling)
@@ -113,6 +121,8 @@ autofarmer.harvester_dig_nodes = {
 	["farming:tomato_8"] = true,
 	["farming:coffee_5"] = true,
 	["farming:corn_8"] = true,
+	["farming:rice_4"] = true,
+	["farming:tea_4"] = true,
 	["farming:pumpkin_8"] = true,
 	["farming:carrot_8"] = true,
 	["farming:melon_8"] = true,
@@ -122,6 +132,15 @@ autofarmer.harvester_dig_nodes = {
 	["farming:potato_4"] = true,
 	["farming:rhubarb_3"] = true,
 	["farming:cocoa_3"] = true,
+	["farming_plus:carrot"] = true,
+	["farming_plus:orange"] = true,
+	["farming_plus:potato"] = true,
+	["farming_plus:tomato"] = true,
+	["farming_plus:strawberry"] = true,
+	["farming_plus:rhubarb"] = true,
+	["farming:pumpkin"] = true,
+
+
 
 	-- TODO things on stakes?
 -- 	["farming:grapes_8"] = true,
@@ -164,8 +183,8 @@ autofarmer.harvester_dig_nodes = {
 
 	-- ["ferns:fern_trunk"] = true,
 	-- plantlife
-	--["bushes:blackberry_bush"] = true,
-	--["bushes:raspberry_bush"] = true,
+	["bushes:blackberry_bush"] = true,
+	["bushes:raspberry_bush"] = true,
 
 } 
 -- END OF HARVESTER NODES

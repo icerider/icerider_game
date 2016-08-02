@@ -36,15 +36,15 @@ local crop_def = {
 minetest.register_node("farming:rice_1", table.copy(crop_def))
 
 -- stage 2
-crop_def.tiles = {"farming_cotton_2.png"}
+crop_def.tiles = {"farming_rice_2.png"}
 minetest.register_node("farming:rice_2", table.copy(crop_def))
 
 -- stage 3
-crop_def.tiles = {"farming_cotton_3.png"}
+crop_def.tiles = {"farming_rice_3.png"}
 minetest.register_node("farming:rice_3", table.copy(crop_def))
 --
 -- stage 4 (final)
-crop_def.tiles = {"farming_cotton_4.png"}
+crop_def.tiles = {"farming_rice.png"}
 crop_def.groups.growing = 0
 crop_def.drop = {
 	items = {

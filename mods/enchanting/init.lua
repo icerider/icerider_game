@@ -86,7 +86,7 @@ function enchanting.fields(pos, _, fields, sender)
 		l_mese_cost = l_mese_cost - math.min(4, #bookshelf)
 	end
 	local gem_name = mese:get_name()
-        if field == "sharp" and gem_name == "glooptest:ruby_gem" or field == "durable" and gem_name == "glooptest:amethist_gem" or field == "fast" and gem_name == "glooptest:emerald_gem" or field == "strong" and gem_name == "glooptest:sapphire_gem" or field == "speed" and gem_name == "glooptest:topaz_gem" then
+        if field == "sharp" and gem_name == "glooptest:ruby_gem" or field == "durable" and gem_name == "glooptest:amethyst_gem" or field == "fast" and gem_name == "glooptest:emerald_gem" or field == "strong" and gem_name == "glooptest:sapphire_gem" or field == "speed" and gem_name == "glooptest:topaz_gem" then
 		if mese:get_count() >= l_mese_cost and minetest.registered_tools[enchanted_tool] then
 			minetest.sound_play("xdecor_enchanting", {to_player=sender:get_player_name(), gain=0.8})
 			tool:replace(enchanted_tool)
@@ -112,8 +112,7 @@ end
 
 function enchanting.put(_, listname, _, stack)
 	local item = stack:get_name():match("[^:]+$")
-	print("DEBUG"..item)
-	if listname == "mese" and (item == "ruby_gem" or item == "topaz_gem" or item == "sapphire_gem" or item == "emerald_gem" or item == "amethist_gem") then
+	if listname == "mese" and (item == "ruby_gem" or item == "topaz_gem" or item == "sapphire_gem" or item == "emerald_gem" or item == "amethyst_gem") then
 		return stack:get_count()
 	elseif listname == "tool" and allowed(item) then
 		return 1 

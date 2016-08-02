@@ -281,6 +281,13 @@ glooptest.ore_module.register_ore("glooptest", "arol", "Arol", {
 			maxy = -20
 		}
 	},
+	block = {
+		makes = true,
+		texture = "gloopores_arol_block.png",
+		groups = {bendy=3,cracky=2,level=1},
+		sounds = stone_sounds,
+		fromingots = true
+	},
 	lump = {
 		makes = true,
 		name = "lump",

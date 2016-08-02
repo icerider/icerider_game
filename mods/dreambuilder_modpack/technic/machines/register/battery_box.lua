@@ -16,15 +16,6 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craft({
-	output = 'technic:re_battery',
-	recipe = {
-		{'group:wood', 'technic:zink_ingot', 'group:wood'},
-		{'group:wood', 'moreores:silver_ingot',   'group:wood'},
-		{'group:wood', 'technic:zink_ingot', 'group:wood'},
-	}
-})
-
 minetest.register_craftitem("technic:battery", {
 	description = S("Battery"),
 	inventory_image = "technic_battery.png",

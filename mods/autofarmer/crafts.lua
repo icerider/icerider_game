@@ -37,7 +37,7 @@ minetest.register_craft({
 	recipe = {
 		{"default:dirt", "default:dirt", "default:dirt"},
 		{"moreores:tin_block", "technic:motor", "moreores:tin_block"},
-		{"technic:MV_cable", "moreores:tin_block", "pipeworks:pipe_1_empty"}},
+		{"technic:mv_cable", "moreores:tin_block", "pipeworks:pipe_1_empty"}},
 	output = "autofarmer:harvester",
 })
 

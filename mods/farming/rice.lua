@@ -60,8 +60,8 @@ minetest.register_node("farming:rice_4", table.copy(crop_def))
 minetest.register_craft({
 	output = 'farming:onigiri',
 	recipe = {
-		{'', 'farming:rice_seed', ''},
-		{'farming:rice_seed', '', 'farming:rice_seed'},
+		{'', 'farming:seed_rice', ''},
+		{'farming:seed_rice', '', 'farming:seed_rice'},
 	}
 })
 

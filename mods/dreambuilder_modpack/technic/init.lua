@@ -92,3 +92,12 @@ if minetest.setting_getbool("log_mods") then
 	print(S("[Technic] Loaded in %f seconds"):format(os.clock() - load_start))
 end
 
+minetest.register_craft({
+	output = 'technic:re_battery',
+	recipe = {
+		{'group:wood', 'technic:zinc_ingot', 'group:wood'},
+		{'group:wood', 'moreores:silver_ingot',   'group:wood'},
+		{'group:wood', 'technic:zinc_ingot', 'group:wood'},
+	}
+})
+

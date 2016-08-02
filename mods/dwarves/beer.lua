@@ -162,7 +162,7 @@ if item_name=="mobs:honey" then new_item=ItemStack("dwarves:midus") return new_i
 if item_name=="bees:honey_comb" then new_item=ItemStack("dwarves:midus") return new_item end
 if item_name=="bees:bottle_honey" then new_item=ItemStack("dwarves:midus") return new_item end
 if item_name=="default:cactus" then new_item=ItemStack("dwarves:tequila") return new_item end
-if item_name=="farming:rice_seed" then new_item=ItemStack("dwarves:sake") return new_item end
+if item_name=="farming:seed_rice" then new_item=ItemStack("dwarves:sake") return new_item end
 
 return nil
 end
